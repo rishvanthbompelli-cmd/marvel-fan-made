@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Marvel Universe - Heroes</title>
+  <link rel="stylesheet" href="/static/css/hero.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="nav-brand">🦸‍♂️ MARVEL</div>
+    <button class="hamburger" onclick="toggleMenu()">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <ul class="nav-links">
+      <li><a href="#" class="active">Heroes</a></li>
+      <li><a href="/hero">Home</a></li>
+      <li><a href="#" onclick="showFavorites(); return false;">❤️ My Favorites</a></li>
+      <li><a href="#" onclick="handleLogout(); return false;">Logout</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO SECTION -->
+  <header class="hero-header">
+    <h1>Marvel Universe</h1>
+    <p>Explore 50+ characters from the MCU and beyond</p>
+  </header>
+
+  <!-- SEARCH BAR -->
+  <div class="search-container">
+    <i class="fas fa-search"></i>
+    <input type="text" id="heroSearch" placeholder="Search heroes..." onkeyup="filterHeroes()">
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <main class="container">
+    
+    <!-- 🛡 AVENGERS -->
+    <section id="avengers">
+      <h2 class="category-title">🛡 Avengers</h2>
+      <div class="card-grid">
+        <article class="card" onclick="selectHero(this, 'Iron Man')">
+          <img src="https://placehold.co/300x400/1a1a1a/e50914?text=Iron+Man" alt="Iron Man" loading="lazy">
+          <h3>Iron Man</h3>
+        </article>
+        <article class="card" onclick="selectHero(this, 'Captain America')">
+          <img src="https://placehold.co/300x400/1a1a1a/e50914?text=Captain+America" alt="Captain America" loading="lazy">
+          <h3>Captain America</h3>
+        </article>
+        <article class="card" onclick="selectHero(this, 'Thor')">
+          <img src="https://placehold.co/300x400/1a1a1a/e50914?text=Thor" alt="Thor" loading="lazy">
+          <h3>Thor</h3>
+        </article>
+        <article class="card" onclick="selectHero(this, 'Hulk')">
+          <img src="https://placehold.co/300x400/1a1a1a/e50914?text=Hulk" alt="Hulk" loading="lazy">
+          <h3>Hulk</h3>
+        </article>
+        <article class="card" onclick="selectHero(this, 'Black Widow')">
+          <img src="https://placehold.co/300x400/1a1a1a/e50914?text=Black+Widow" alt="Black Widow" loading="lazy">
+          <h3>Black Widow</h3>
+        </article>
+        <article class="card" onclick="selectHero(this, 'Hawkeye')">
+          <img src="https://placehold.co/300x400/1a1a1a/e50914?text=Hawkeye" alt="Hawkeye" loading="lazy">
+          <h3>Hawkeye</h3>
+        </article>
+        <article class="card" onclick="selectHero(this, 'Scarlet Witch')">
+          <img src="https://placehold.co/300x400/1a1a1a/e50914?text=Scarlet+Witch" alt="Scarlet Witch" loading="lazy">
+          <h3>Scarlet Witch</h3>
+        </article>
+        <article class="card" onclick="selectHero(this, 'Vision')">
+          <img src="https://placehold.co/300x400/1a1a1a/e50914?text=Vision" alt="Vision" loading="lazy">
+          <h3>Vision</h3>
+        </article>
+        <article class="card" onclick="selectHero(this, 'Falcon')">
+          <img src="https://placehold.co/300x400/1a1a1a/e50914?text=Falcon" alt="Falcon" loading="lazy">
+          <h3>Falcon</h3>
+        </article>
+        <article class="card" onclick="selectHero(this, 'Winter Soldier')">
+          <img src="https://placehold.co/300x400/1a1a1a/e50914?text=Winter+Soldier" alt="Winter Soldier" loading="lazy">
+          <h3>Winter Soldier</h3>
+        </article>
+        <article class="card" onclick="selectHero(this, 'War Machine')">
+          <img src="https://placehold.co/300x400/1a1a1a/e50914?text=War+Machine" alt="War Machine" loading="lazy">
+          <h3>War Machine</h3>
+        </article>
+        <article class="card" onclick="selectHero(this, 'Ant-Man')">
+          <img src="https://placehold.co/300x400/1a1a1a/e50914?text=Ant-Man" alt="Ant-Man" loading="lazy">
+          <h3>Ant-Man</h3>
+        </article>
+        <article class="card" onclick="selectHero(this, 'Wasp')">
+          <img src="https://placehold.co/300x400/1a1a1a/e50914?text=Wasp" alt="Wasp" loading="lazy">
+          <h3>Wasp</h3>
+        </article>
+      </div>
+    </section>
+
+    <!-- 🌌 GUARDIANS OF THE GALAXY -->
+    <section id="guardians">
+      <h2 class="category-title">🌌 Guardians of the Galaxy</h2>
+      <div class="card-grid">
+        <article class="card" onclick="selectHero(this, 'Star-Lord')">
+          <img src="https://placehold.co/300x400/1a1a1a/e50914?text=Star-Lord" alt="Star-Lord" loading="lazy">
+          <h3>Star-Lord</h3>
+        </article>
+        <article class="card" onclick="selectHero(this, 'Gamora')">
+          <img src="https://placehold.co/300x400/1a1a1a/e50914?text=Gamora" alt="Gamora" loading="lazy">
+          <h3>Gamora</h3>
+        </article>
+        <article class="card" onclick="selectHero(this, 'Drax')">
+          <img src="https://placehold.co/300x400/1a1a1a/e50914?text=Drax" alt="Drax" loading="lazy">
+          <h3>Drax</h3>
+        </article>
+        <article class="card" onclick="selectHero(this, 'Rocket')">
+          <img src="https://placehold.co/300x400/1a1a1a/e50914?text=Rocket" alt="Rocket" loading="lazy">
+          <h3>Rocket</h3>
+        </article>
+        <article class="card" onclick="selectHero(this, 'Groot')">
+          <img src="https://placehold.co/300x400/1a1a1a/e50914?text=Groot" alt="Groot" loading="lazy">
+          <h3>Groot</h3>
+        </article>
+        <article class="card" onclick="selectHero(this, 'Mantis')">
+          <img src="https://placehold.co/300x400/1a1a1a/e50914?text=Mantis" alt="Mantis" loading="lazy">
+          <h3>Mantis</h3>
+        </article>
+        <article class="card" onclick="selectHero(this, 'Nebula')">
+          <img src="https://placehold.co/300x400/1a1a1a/e50914?text=Nebula" alt="Nebula" loading="lazy">
+          <h3>Nebula</h3>
+        </article>
+      </div>
+    </section>
+
+    <!-- 🧬 X-MEN -->
+    <section id="xmen">
+      <h2 class="category-title">🧬 X-Men</h2>
+      <div class="card-grid">
+        <article class="card" onclick="selectHero(this, 'Wolverine')">
+          <img src="https://placehold.co/300x400/1a1a1a/e50914?text=Wolverine" alt="Wolverine" loading="lazy">
+          <h3>Wolverine</h3>
+        </article>
+        <article class="card" onclick="selectHero(this, 'Professor X')">
+          <img src="https://placehold.co/300x400/1a1a1a/e50914?text=Professor+X" alt="Professor X" loading="lazy">
+          <h3>Professor X</h3>
+        </article>
+        <article class="card" onclick="selectHero(this, 'Magneto')">
+          <img src="https://placehold.co/300x400/1a1a1a/e50914?text=Magneto" alt="Magneto" loading="lazy">
+          <h3>Magneto</h3>
+        </article>
+        <article class="card" onclick="selectHero(this, 'Deadpool')">
+          <img src="https://placehold.co/300x400/1a1a1a/e50914?text=Deadpool" alt="Deadpool" loading="lazy">
+          <h3>Deadpool</h3>
+        </article>
+        <article class="card" onclick="selectHero(this, 'Storm')">
+          <img src="https://placehold.co/300x400/1a1a1a/e50914?text=Storm" alt="Storm" loading="lazy">
+          <h3>Storm</h3>
+        </article>
+        <article class="card" onclick="selectHero(this, 'Quicksilver')">
+          <img src="https://placehold.co/300x400/1a1a1a/e50914?text=Quicksilver" alt="Quicksilver" loading="lazy">
+          <h3>Quicksilver</h3>
+        </article>
+      </div>
+    </section>
+
+    <!-- 😈 VILLAINS -->
+    <section id="villains">
+      <h2 class="category-title">😈 Villains</h2>
+      <div class="card-grid">
+        <article class="card villain" onclick="selectHero(this, 'Thanos')">
+          <img src="https://placehold.co/300x400/1a1a1a/e50914?text=Thanos" alt="Thanos" loading="lazy">
+          <h3>Thanos</h3>
+        </article>
+        <article class="card villain" onclick="selectHero(this, 'Loki')">
+          <img src="https://placehold.co/300x400/1a1a1a/e50914?text=Loki" alt="Loki" loading="lazy">
+          <h3>Loki</h3>
+        </article>
+        <article class="card villain" onclick="selectHero(this, 'Ultron')">
+          <img src="https://placehold.co/300x400/1a1a1a/e50914?text=Ultron" alt="Ultron" loading="lazy">
+          <h3>Ultron</h3>
+        </article>
+        <article class="card villain" onclick="selectHero(this, 'Venom')">
+          <img src="https://placehold.co/300x400/1a1a1a/e50914?text=Venom" alt="Venom" loading="lazy">
+          <h3>Venom</h3>
+        </article>
+        <article class="card villain" onclick="selectHero(this, 'Green Goblin')">
+          <img src="https://placehold.co/300x400/1a1a1a/e50914?text=Green+Goblin" alt="Green Goblin" loading="lazy">
+          <h3>Green Goblin</h3>
+        </article>
+        <article class="card villain" onclick="selectHero(this, 'Doctor Octopus')">
+          <img src="https://placehold.co/300x400/1a1a1a/e50914?text=Doc+Octopus" alt="Doctor Octopus" loading="lazy">
+          <h3>Doctor Octopus</h3>
+        </article>
+      </div>
+    </section>
+
+    <!-- 🕷 SPIDER-MAN & MORE -->
+    <section id="spiderman">
+      <h2 class="category-title">🕷 Spider-Man & Others</h2>
+      <div class="card-grid">
+        <article class="card" onclick="selectHero(this, 'Spider-Man')">
+          <img src="https://placehold.co/300x400/1a1a1a/e50914?text=Spider-Man" alt="Spider-Man" loading="lazy">
+          <h3>Spider-Man</h3>
+        </article>
+        <article class="card" onclick="selectHero(this, 'Doctor Strange')">
+          <img src="https://placehold.co/300x400/1a1a1a/e50914?text=Doctor+Strange" alt="Doctor Strange" loading="lazy">
+          <h3>Doctor Strange</h3>
+        </article>
+        <article class="card" onclick="selectHero(this, 'Black Panther')">
+          <img src="https://placehold.co/300x400/1a1a1a/e50914?text=Black+Panther" alt="Black Panther" loading="lazy">
+          <h3>Black Panther</h3>
+        </article>
+        <article class="card" onclick="selectHero(this, 'Captain Marvel')">
+          <img src="https://placehold.co/300x400/1a1a1a/e50914?text=Captain+Marvel" alt="Captain Marvel" loading="lazy">
+          <h3>Captain Marvel</h3>
+        </article>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- HERO DETAILS MODAL -->
+  <dialog id="heroModal" class="modal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal()">&times;</button>
+      <img id="modalImage" src="" alt="">
+      <h2 id="modalName"></h2>
+      <p id="modalDesc"></p>
+      <div id="moviesSection" style="display: none;">
+        <h4 style="color: #e50914; margin: 1rem 0 0.5rem;">🎬 Movies:</h4>
+        <ul id="moviesList" style="text-align: left; padding-left: 1rem; color: #ccc;"></ul>
+      </div>
+      <div style="margin-top: 1rem;">
+        <button id="favoriteBtn" onclick="toggleFavorite()">❤️ Add to Favorites</button>
+        <button id="removeBtn" onclick="removeFromFavorites()" style="display: none; background: #ff4444;">❌ Remove from Favorites</button>
+      </div>
+      <p id="favoriteMsg"></p>
+    </div>
+  </dialog>
+
+  <!-- FAVORITES MODAL -->
+  <dialog id="favoritesModal" class="modal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeFavoritesModal()">&times;</button>
+      <h2 style="color: #e50914;">❤️ My Favorites</h2>
+      <div id="favoritesList" style="margin-top: 1rem; text-align: left;"></div>
+    </div>
+  </dialog>
+
+  <script>
+    let currentHeroName = "";
+    let currentHeroData = null;
+    let userFavorites = [];
+
+    // Hamburger menu toggle
+    function toggleMenu() {
+      document.querySelector('.nav-links').classList.toggle('active');
+    }
+
+    // Search functionality
+    function filterHeroes() {
+      const searchInput = document.getElementById('heroSearch').value.toLowerCase();
+      const cards = document.querySelectorAll('.card');
+      const sections = document.querySelectorAll('section');
+
+      cards.forEach(card => {
+        const heroName = card.querySelector('h3').innerText.toLowerCase();
+        if (heroName.includes(searchInput)) {
+          card.style.display = '';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      sections.forEach(section => {
+        const allCards = section.querySelectorAll('.card');
+        const visibleCount = Array.from(allCards).filter(c => c.style.display !== 'none').length;
+        section.style.display = visibleCount > 0 ? '' : 'none';
+      });
+    }
+
+    // Load user favorites
+    async function loadFavorites() {
+      try {
+        const response = await fetch('/favorites');
+        const data = await response.json();
+        if (data.success) {
+          userFavorites = data.favorites || [];
+        }
+      } catch (e) {
+        console.log('Could not load favorites');
+      }
+    }
+
+    // Select hero and show details
+    async function selectHero(card, name) {
+      currentHeroName = name;
+      
+      const img = card.querySelector('img');
+      document.getElementById('modalImage').src = img.src;
+      document.getElementById('modalImage').alt = name;
+      document.getElementById('modalName').textContent = name;
+
+      // Load hero data and movies
+      try {
+        const response = await fetch(`/hero-movies/${encodeURIComponent(name)}`);
+        const data = await response.json();
+        
+        if (data.description) {
+          document.getElementById('modalDesc').textContent = data.description;
+        } else {
+          document.getElementById('modalDesc').textContent = 'Click to see more details about this hero!';
+        }
+
+        // Show movies
+        const moviesSection = document.getElementById('moviesSection');
+        const moviesList = document.getElementById('moviesList');
+        
+        if (data.movies && data.movies.length > 0) {
+          moviesSection.style.display = 'block';
+          moviesList.innerHTML = data.movies.map(movie => `<li>${movie}</li>`).join('');
+        } else {
+          moviesSection.style.display = 'none';
+        }
+        
+        currentHeroData = data;
+      } catch (e) {
+        document.getElementById('modalDesc').textContent = 'Click to see more details about this hero!';
+        document.getElementById('moviesSection').style.display = 'none';
+      }
+
+      // Update favorite button
+      updateFavoriteButtons();
+      
+      // Show modal
+      document.getElementById('heroModal').showModal();
+    }
+
+    function updateFavoriteButtons() {
+      const isFavorite = userFavorites.includes(currentHeroName);
+      const favoriteBtn = document.getElementById('favoriteBtn');
+      const removeBtn = document.getElementById('removeBtn');
+      
+      if (isFavorite) {
+        favoriteBtn.style.display = 'none';
+        removeBtn.style.display = 'inline-block';
+      } else {
+        favoriteBtn.style.display = 'inline-block';
+        favoriteBtn.textContent = '❤️ Add to Favorites';
+        removeBtn.style.display = 'none';
+      }
+    }
+
+    async function toggleFavorite() {
+      try {
+        const response = await fetch('/favorites', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ heroName: currentHeroName })
+        });
+        const data = await response.json();
+        
+        if (data.success) {
+          userFavorites = data.favorites;
+          updateFavoriteButtons();
+          document.getElementById('favoriteMsg').textContent = data.message;
+        }
+      } catch (e) {
+        alert('Failed to add to favorites');
+      }
+    }
+
+    async function removeFromFavorites() {
+      try {
+        const response = await fetch('/favorites/remove', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ heroName: currentHeroName })
+        });
+        const data = await response.json();
+        
+        if (data.success) {
+          userFavorites = data.favorites;
+          updateFavoriteButtons();
+          document.getElementById('favoriteMsg').textContent = data.message;
+        }
+      } catch (e) {
+        alert('Failed to remove from favorites');
+      }
+    }
+
+    function closeModal() {
+      document.getElementById('heroModal').close();
+      document.getElementById('favoriteMsg').textContent = '';
+    }
+
+    async function showFavorites() {
+      await loadFavorites();
+      
+      const favoritesList = document.getElementById('favoritesList');
+      
+      if (userFavorites.length === 0) {
+        favoritesList.innerHTML = '<p style="color: #888; text-align: center;">No favorites yet! Click on a hero and add them to your favorites.</p>';
+      } else {
+        favoritesList.innerHTML = userFavorites.map(hero => `
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.5rem; background: rgba(229, 9, 20, 0.1); border-radius: 8px; margin-bottom: 0.5rem;">
+            <span onclick="selectHeroByName('${hero}')" style="cursor: pointer; flex: 1;">${hero}</span>
+            <button onclick="removeFav('${hero}')" style="background: #ff4444; border: none; color: white; padding: 0.3rem 0.8rem; border-radius: 5px; cursor: pointer;">❌</button>
+          </div>
+        `).join('');
+      }
+      
+      document.getElementById('favoritesModal').showModal();
+    }
+
+    function selectHeroByName(name) {
+      closeFavoritesModal();
+      // Find the hero card
+      const cards = document.querySelectorAll('.card');
+      cards.forEach(card => {
+        if (card.querySelector('h3').textContent === name) {
+          selectHero(card, name);
+        }
+      });
+    }
+
+    async function removeFav(name) {
+      try {
+        const response = await fetch('/favorites/remove', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ heroName: name })
+        });
+        const data = await response.json();
+        if (data.success) {
+          userFavorites = data.favorites;
+          showFavorites();
+        }
+      } catch (e) {
+        console.log('Failed to remove');
+      }
+    }
+
+    function closeFavoritesModal() {
+      document.getElementById('favoritesModal').close();
+    }
+
+    // Close modal on backdrop click
+    document.getElementById('heroModal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeModal();
+      }
+    });
+
+    document.getElementById('favoritesModal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeFavoritesModal();
+      }
+    });
+
+    // Logout
+    async function handleLogout() {
+      try {
+        await fetch('/logout', { method: 'POST' });
+        localStorage.removeItem('marvelUser');
+        window.location.href = '/';
+      } catch (e) {
+        console.log('Logout failed');
+      }
+    }
+
+    // Load favorites on page load
+    loadFavorites();
+  </script>
+</body>
+</html>

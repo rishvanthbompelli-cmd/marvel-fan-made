@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Marvel Universe - Login</title>
+  <link rel="stylesheet" href="/static/css/login.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="nav-brand">🦸‍♂️ MARVEL</div>
+    <ul class="nav-links">
+      <li><a href="#" class="active">Login</a></li>
+      <li id="logoutItem" style="display: none;"><a href="#" onclick="handleLogout()">Logout</a></li>
+    </ul>
+  </nav>
+
+  <!-- BACKGROUND PARTICLES -->
+  <div class="particles" id="particles"></div>
+
+  <!-- LIGHTNING EFFECT -->
+  <div class="lightning" id="lightning"></div>
+
+  <!-- LOGIN CONTAINER -->
+  <div class="login-container">
+    <div class="login-card" id="loginCard">
+      <!-- TITLE SECTION -->
+      <div class="title-section">
+        <h1 class="main-title">MARVEL</h1>
+        <h1 class="main-title accent">UNIVERSE</h1>
+        <p class="subtitle">Enter the Multiverse</p>
+      </div>
+
+      <!-- LOGIN FORM -->
+      <form id="loginForm" onsubmit="handleLogin(event)">
+        <!-- Full Name -->
+        <div class="input-group">
+          <i class="fas fa-user"></i>
+          <input type="text" id="fullName" placeholder="Full Name" required>
+        </div>
+
+        <!-- Email or Phone -->
+        <div class="input-group">
+          <i class="fas fa-envelope"></i>
+          <input type="text" id="emailPhone" placeholder="Email OR Phone Number" required>
+        </div>
+
+        <!-- Favorite Hero Dropdown -->
+        <div class="input-group">
+          <i class="fas fa-mask"></i>
+          <select id="favoriteHero" required>
+            <option value="" disabled selected>Select Your Favorite Hero</option>
+            <option value="iron-man">Iron Man</option>
+            <option value="captain-america">Captain America</option>
+            <option value="thor">Thor</option>
+            <option value="hulk">Hulk</option>
+            <option value="spider-man">Spider-Man</option>
+            <option value="doctor-strange">Doctor Strange</option>
+            <option value="scarlet-witch">Scarlet Witch</option>
+            <option value="black-panther">Black Panther</option>
+            <option value="loki">Loki</option>
+            <option value="deadpool">Deadpool</option>
+          </select>
+        </div>
+
+        <!-- Remember Me -->
+        <div class="remember-me">
+          <label>
+            <input type="checkbox" id="rememberMe">
+            <span class="checkmark"></span>
+            Remember Me
+          </label>
+        </div>
+
+        <!-- Login Button -->
+        <button type="submit" class="login-btn">
+          <span>Enter the Universe</span>
+          <i class="fas fa-bolt"></i>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Check session on load
+    async function checkSession() {
+      try {
+        const response = await fetch('/check-session');
+        const data = await response.json();
+        if (data.authenticated) {
+          document.getElementById('logoutItem').style.display = 'block';
+          document.getElementById('loginCard').style.display = 'none';
+          document.querySelector('.subtitle').textContent = `Welcome back, ${data.user.fullName}!`;
+        }
+      } catch (e) {
+        console.log('Session check failed');
+      }
+    }
+
+    // Create floating particles
+    function createParticles() {
+      const container = document.getElementById('particles');
+      const particleCount = 50;
+
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.animationDelay = Math.random() * 5 + 's';
+        particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+        container.appendChild(particle);
+      }
+    }
+
+    // Lightning effect
+    function createLightning() {
+      const lightning = document.getElementById('lightning');
+      setInterval(() => {
+        if (Math.random() > 0.97) {
+          lightning.style.opacity = 1;
+          lightning.style.transition = 'opacity 0.1s';
+          setTimeout(() => {
+            lightning.style.opacity = 0;
+          }, 100 + Math.random() * 200);
+        }
+      }, 2000);
+    }
+
+    // Initialize
+    createParticles();
+    createLightning();
+    checkSession();
+
+    // Form validation and login
+    async function handleLogin(event) {
+      event.preventDefault();
+      
+      const fullName = document.getElementById('fullName').value.trim();
+      const emailPhone = document.getElementById('emailPhone').value.trim();
+      const favoriteHero = document.getElementById('favoriteHero').value;
+
+      if (!fullName || !emailPhone || !favoriteHero) {
+        alert('Please fill in all fields!');
+        return;
+      }
+
+      try {
+        const response = await fetch('/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ fullName, emailPhone, favoriteHero })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          alert(data.message);
+          
+          // Save to localStorage if remember me is checked
+          if (document.getElementById('rememberMe').checked) {
+            localStorage.setItem('marvelUser', JSON.stringify({
+              name: fullName,
+              hero: favoriteHero
+            }));
+          }
+
+          window.location.href = '/hero';
+        } else {
+          alert(data.message);
+        }
+      } catch (e) {
+        alert('Login failed. Please try again.');
+      }
+    }
+
+    // Logout
+    async function handleLogout() {
+      try {
+        await fetch('/logout', { method: 'POST' });
+        localStorage.removeItem('marvelUser');
+        window.location.reload();
+      } catch (e) {
+        console.log('Logout failed');
+      }
+    }
+
+    // Load saved data
+    window.onload = function() {
+      const saved = localStorage.getItem('marvelUser');
+      if (saved) {
+        const data = JSON.parse(saved);
+        document.getElementById('fullName').value = data.name || '';
+        document.getElementById('favoriteHero').value = data.hero || '';
+        document.getElementById('rememberMe').checked = true;
+      }
+      checkSession();
+    };
+  </script>
+</body>
+</html>
