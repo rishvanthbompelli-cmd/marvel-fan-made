@@ -1,0 +1,234 @@
+/* Hero Detail Page Styles */
+.hero-detail-container {
+  min-height: 100vh;
+  padding: 100px 20px 40px;
+  background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%);
+}
+
+.hero-detail-card {
+  max-width: 900px;
+  margin: 0 auto;
+  background: linear-gradient(145deg, #1f1f1f 0%, #141414 100%);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(229, 9, 20, 0.2);
+  border: 1px solid rgba(229, 9, 20, 0.3);
+}
+
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #e50914;
+  text-decoration: none;
+  padding: 15px 25px;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.back-btn:hover {
+  color: #ff3344;
+  transform: translateX(-5px);
+}
+
+.hero-image-section {
+  width: 100%;
+  height: 400px;
+  overflow: hidden;
+  background: #000;
+}
+
+.hero-large-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  transition: transform 0.5s ease;
+}
+
+.hero-large-image:hover {
+  transform: scale(1.05);
+}
+
+.hero-info {
+  padding: 30px 40px 40px;
+}
+
+.hero-name {
+  font-size: 48px;
+  font-weight: 900;
+  color: #fff;
+  margin: 0 0 10px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-shadow: 0 0 20px rgba(229, 9, 20, 0.5);
+}
+
+.hero-category {
+  display: inline-block;
+  background: linear-gradient(135deg, #e50914, #b30711);
+  color: #fff;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 20px;
+}
+
+.hero-description {
+  font-size: 18px;
+  line-height: 1.7;
+  color: #ccc;
+  margin-bottom: 30px;
+}
+
+.movies-section {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 15px;
+  padding: 25px;
+  margin-bottom: 30px;
+  border: 1px solid rgba(229, 9, 20, 0.2);
+}
+
+.movies-section h3 {
+  color: #e50914;
+  font-size: 20px;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.movies-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 10px;
+}
+
+.movies-list li {
+  color: #aaa;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.movies-list li:hover {
+  background: rgba(229, 9, 20, 0.1);
+  color: #fff;
+  transform: translateX(5px);
+}
+
+.action-buttons {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.favorite-btn, .remove-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 28px;
+  border: none;
+  border-radius: 30px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.favorite-btn {
+  background: linear-gradient(135deg, #e50914, #b30711);
+  color: #fff;
+}
+
+.favorite-btn:hover {
+  background: linear-gradient(135deg, #ff3344, #e50914);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(229, 9, 20, 0.4);
+}
+
+.remove-btn {
+  background: linear-gradient(135deg, #666, #444);
+  color: #fff;
+}
+
+.remove-btn:hover {
+  background: linear-gradient(135deg, #ff4444, #cc3333);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(255, 68, 68, 0.4);
+}
+
+.favorite-message {
+  margin-top: 15px;
+  color: #4caf50;
+  font-weight: 600;
+}
+
+/* Modal styles */
+.modal-content {
+  background: #1f1f1f;
+  border: 1px solid rgba(229, 9, 20, 0.3);
+  border-radius: 15px;
+  padding: 25px;
+  max-width: 500px;
+  width: 90%;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 28px;
+  cursor: pointer;
+  float: right;
+  line-height: 1;
+}
+
+.modal-close:hover {
+  color: #e50914;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .hero-detail-container {
+    padding: 80px 15px 30px;
+  }
+
+  .hero-image-section {
+    height: 250px;
+  }
+
+  .hero-name {
+    font-size: 32px;
+  }
+
+  .hero-info {
+    padding: 20px;
+  }
+
+  .hero-description {
+    font-size: 16px;
+  }
+
+  .movies-list {
+    grid-template-columns: 1fr;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+  }
+
+  .favorite-btn, .remove-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}

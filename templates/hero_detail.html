@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Marvel Universe - {{ hero_name }}</title>
+  <link rel="stylesheet" href="/static/css/hero.css" />
+  <link rel="stylesheet" href="/static/css/hero_detail.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="nav-brand">🦸‍♂️ MARVEL</div>
+    <button class="hamburger" onclick="toggleMenu()">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <ul class="nav-links">
+      <li><a href="/hero">Home</a></li>
+      <li><a href="/timeline">Timeline</a></li>
+      <li><a href="#" onclick="showFavorites(); return false;">❤️ My Favorites</a></li>
+      <li><a href="#" onclick="handleLogout(); return false;">Logout</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO DETAIL CONTENT -->
+  <main class="hero-detail-container">
+    <div class="hero-detail-card">
+      <!-- Back Button -->
+      <a href="/hero" class="back-btn">
+        <i class="fas fa-arrow-left"></i> Back to Heroes
+      </a>
+
+      <!-- Hero Image -->
+      <div class="hero-image-section">
+        <img src="{{ hero_image }}" alt="{{ hero_name }}" class="hero-large-image" 
+             onerror="this.src='/static/assets/Iron-Man.jpg'">
+      </div>
+
+      <!-- Hero Info -->
+      <div class="hero-info">
+        <h1 class="hero-name">{{ hero_name }}</h1>
+        <span class="hero-category">{{ hero_data.category }}</span>
+        
+        <p class="hero-description">{{ hero_data.description }}</p>
+
+        <!-- Movies Section -->
+        <div class="movies-section">
+          <h3><i class="fas fa-film"></i> Movies & Appearances</h3>
+          <ul class="movies-list">
+            {% for movie in hero_data.movies %}
+            <li>{{ movie }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+          <button id="favoriteBtn" class="favorite-btn" onclick="toggleFavorite()">
+            <i class="fas fa-heart"></i> Add to Favorites
+          </button>
+          <button id="removeBtn" class="remove-btn" onclick="removeFromFavorites()" style="display: none;">
+            <i class="fas fa-heart-broken"></i> Remove from Favorites
+          </button>
+        </div>
+        <p id="favoriteMsg" class="favorite-message"></p>
+      </div>
+    </div>
+  </main>
+
+  <!-- FAVORITES MODAL -->
+  <dialog id="favoritesModal" class="modal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeFavoritesModal()">&times;</button>
+      <h2 style="color: #e50914;">❤️ My Favorites</h2>
+      <div id="favoritesList" style="margin-top: 1rem; text-align: left;"></div>
+    </div>
+  </dialog>
+
+  <script>
+    let currentHeroName = "{{ hero_name }}";
+    let userFavorites = [];
+
+    // Hamburger menu toggle
+    function toggleMenu() {
+      document.querySelector('.nav-links').classList.toggle('active');
+    }
+
+    // Load user favorites
+    async function loadFavorites() {
+      try {
+        const response = await fetch('/favorites');
+        const data = await response.json();
+        if (data.success) {
+          userFavorites = data.favorites || [];
+          updateFavoriteButtons();
+        }
+      } catch (e) {
+        console.log('Could not load favorites');
+      }
+    }
+
+    function updateFavoriteButtons() {
+      const isFavorite = userFavorites.includes(currentHeroName);
+      const favoriteBtn = document.getElementById('favoriteBtn');
+      const removeBtn = document.getElementById('removeBtn');
+      
+      if (isFavorite) {
+        favoriteBtn.style.display = 'none';
+        removeBtn.style.display = 'inline-flex';
+      } else {
+        favoriteBtn.style.display = 'inline-flex';
+        removeBtn.style.display = 'none';
+      }
+    }
+
+    async function toggleFavorite() {
+      try {
+        const response = await fetch('/favorites', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ heroName: currentHeroName })
+        });
+        const data = await response.json();
+        
+        if (data.success) {
+          userFavorites = data.favorites;
+          updateFavoriteButtons();
+          document.getElementById('favoriteMsg').textContent = data.message;
+        }
+      } catch (e) {
+        alert('Failed to add to favorites');
+      }
+    }
+
+    async function removeFromFavorites() {
+      try {
+        const response = await fetch('/favorites/remove', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ heroName: currentHeroName })
+        });
+        const data = await response.json();
+        
+        if (data.success) {
+          userFavorites = data.favorites;
+          updateFavoriteButtons();
+          document.getElementById('favoriteMsg').textContent = data.message;
+        }
+      } catch (e) {
+        alert('Failed to remove from favorites');
+      }
+    }
+
+    async function showFavorites() {
+      await loadFavorites();
+      
+      const favoritesList = document.getElementById('favoritesList');
+      
+      if (userFavorites.length === 0) {
+        favoritesList.innerHTML = '<p style="color: #888; text-align: center;">No favorites yet! Click on a hero and add them to your favorites.</p>';
+      } else {
+        favoritesList.innerHTML = userFavorites.map(hero => `
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.5rem; background: rgba(229, 9, 20, 0.1); border-radius: 8px; margin-bottom: 0.5rem;">
+            <a href="/hero/${hero.toLowerCase().replace(/\\s+/g, '-')}" style="color: #fff; text-decoration: none; flex: 1;">${hero}</a>
+            <button onclick="removeFav('${hero}')" style="background: #ff4444; border: none; color: white; padding: 0.3rem 0.8rem; border-radius: 5px; cursor: pointer;">❌</button>
+          </div>
+        `).join('');
+      }
+      
+      document.getElementById('favoritesModal').showModal();
+    }
+
+    async function removeFav(name) {
+      try {
+        const response = await fetch('/favorites/remove', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ heroName: name })
+        });
+        const data = await response.json();
+        if (data.success) {
+          userFavorites = data.favorites;
+          showFavorites();
+        }
+      } catch (e) {
+        console.log('Failed to remove');
+      }
+    }
+
+    function closeFavoritesModal() {
+      document.getElementById('favoritesModal').close();
+    }
+
+    // Close modal on backdrop click
+    document.getElementById('favoritesModal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeFavoritesModal();
+      }
+    });
+
+    // Logout
+    async function handleLogout() {
+      try {
+        await fetch('/logout', { method: 'POST' });
+        localStorage.removeItem('marvelUser');
+        window.location.href = '/';
+      } catch (e) {
+        console.log('Logout failed');
+      }
+    }
+
+    // Load favorites on page load
+    loadFavorites();
+  </script>
+</body>
+</html>

@@ -2,6 +2,9 @@ from flask import Flask, request, jsonify, render_template, session
 from flask_cors import CORS
 import mysql.connector
 import os
+import re
+import json
+import random
 
 template_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'templates'))
 static_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'static'))
@@ -17,6 +20,90 @@ db = mysql.connector.connect(
     database="otp_login"
 )
 cursor = db.cursor()
+
+# Regex patterns
+email_regex = r'^[^\s@]+@[^\s@]+\.[^\s@]+$'
+phone_regex = r'^\+?[\d\s-]{10,15}$'
+
+# Hero name to image mapping (handles special cases)
+HERO_IMAGE_MAP = {
+    "iron man": "Iron-Man.jpg",
+    "captain america": "captain america.jpg",
+    "thor": "thor.jpg",
+    "hulk": "hulk.jpg",
+    "black widow": "black widow.jpg",
+    "hawkeye": "hawkeye.jpg",
+    "scarlet witch": "scarlet witch.jpg",
+    "vision": "vision.jpg",
+    "spider-man": "spider-man.jpg",
+    "doctor strange": "doctor strange.jpg",
+    "black panther": "black panther.jpg",
+    "thanos": "thanos.jpg",
+    "loki": "loki.jpg",
+    "deadpool": "deapool.jpg",
+    "wolverine": "wolverine.jpg",
+    "star-lord": "star-lord.jpg",
+    "gamora": "gamora.jpg",
+    "rocket": "rocket.jpg",
+    "groot": "groot.jpg",
+    "falcon": "falcon.jpg",
+    "winter soldier": "winter soldier.jpg",
+    "war machine": "war machine.jpg",
+    "ant-man": "ant-man.jpg",
+    "wasp": "wasp.jpg",
+    "mantis": "mantis.jpg",
+    "nebula": "nebula.jpg",
+    "drax": "drax.jpg",
+    "venom": "venom.jpg",
+    "quicksilver": "quicksilver.jpg",
+    "storm": "storm.jpg",
+    "magneto": "magneto.jpg",
+    "ultron": "ultron.jpg",
+    "green goblin": "green goblin.jpg",
+    "doctor octopus": "doctor octopus.jpg",
+    "professor x": "professor x.jpg",
+    "captain marvel": "captain marvel.jpg",
+}
+
+# Hero slug to display name mapping
+HERO_SLUG_MAP = {
+    "iron-man": "Iron Man",
+    "captain-america": "Captain America",
+    "thor": "Thor",
+    "hulk": "Hulk",
+    "black-widow": "Black Widow",
+    "hawkeye": "Hawkeye",
+    "scarlet-witch": "Scarlet Witch",
+    "vision": "Vision",
+    "spider-man": "Spider-Man",
+    "doctor-strange": "Doctor Strange",
+    "black-panther": "Black Panther",
+    "thanos": "Thanos",
+    "loki": "Loki",
+    "deadpool": "Deadpool",
+    "wolverine": "Wolverine",
+    "star-lord": "Star-Lord",
+    "gamora": "Gamora",
+    "rocket": "Rocket",
+    "groot": "Groot",
+    "falcon": "Falcon",
+    "winter-soldier": "Winter Soldier",
+    "war-machine": "War Machine",
+    "ant-man": "Ant-Man",
+    "wasp": "Wasp",
+    "mantis": "Mantis",
+    "nebula": "Nebula",
+    "drax": "Drax",
+    "venom": "Venom",
+    "quicksilver": "Quicksilver",
+    "storm": "Storm",
+    "magneto": "Magneto",
+    "ultron": "Ultron",
+    "green-goblin": "Green Goblin",
+    "doctor-octopus": "Doctor Octopus",
+    "professor-x": "Professor X",
+    "captain-marvel": "Captain Marvel",
+}
 
 HEROES_DATA = {
     "Iron Man": {
@@ -113,7 +200,52 @@ HEROES_DATA = {
         "category": "Guardians",
         "description": "Sentient tree being from the Guardians of the Galaxy.",
         "movies": ["Guardians of the Galaxy (2014)", "Guardians of the Galaxy Vol. 2 (2017)", "Avengers: Infinity War (2018)", "Avengers: Endgame (2019)", "Guardians of the Galaxy Vol. 3 (2023)"]
-    }
+    },
+    "Falcon": {
+        "category": "Avengers",
+        "description": "Winged Avenger with exceptional aerial combat skills.",
+        "movies": ["Captain America: The Winter Soldier (2014)", "Captain America: Civil War (2016)", "Avengers: Infinity War (2018)", "Avengers: Endgame (2019)", "The Falcon and The Winter Soldier (2021)"]
+    },
+    "Winter Soldier": {
+        "category": "Avengers",
+        "description": "Former assassin with a mechanical arm and super-soldier abilities.",
+        "movies": ["Captain America: The Winter Soldier (2014)", "Captain America: Civil War (2016)", "Avengers: Infinity War (2018)", "Avengers: Endgame (2019)", "The Falcon and The Winter Soldier (2021)"]
+    },
+    "War Machine": {
+        "category": "Avengers",
+        "description": "U.S. Air Force colonel with advanced powered armor.",
+        "movies": ["Iron Man 2 (2010)", "The Avengers (2012)", "Captain America: Civil War (2016)", "Avengers: Infinity War (2018)", "Avengers: Endgame (2019)"]
+    },
+    "Ant-Man": {
+        "category": "Avengers",
+        "description": "Hero with suit that allows size manipulation.",
+        "movies": ["Ant-Man (2015)", "Ant-Man and the Wasp (2018)", "Avengers: Endgame (2019)", "Ant-Man and the Wasp: Quantumania (2023)"]
+    },
+    "Wasp": {
+        "category": "Avengers",
+        "description": "Hero with similar abilities to Ant-Man plus flying capabilities.",
+        "movies": ["Ant-Man (2015)", "Ant-Man and the Wasp (2018)", "Ant-Man and the Wasp: Quantumania (2023)"]
+    },
+    "Mantis": {
+        "category": "Guardians",
+        "description": "Empathic alien with plant-like abilities.",
+        "movies": ["Guardians of the Galaxy Vol. 2 (2017)", "Avengers: Infinity War (2018)", "Avengers: Endgame (2019)", "Guardians of the Galaxy Vol. 3 (2023)"]
+    },
+    "Nebula": {
+        "category": "Guardians",
+        "description": "Cybernetic alien, daughter of Thanos.",
+        "movies": ["Guardians of the Galaxy (2014)", "Guardians of the Galaxy Vol. 2 (2017)", "Avengers: Infinity War (2018)", "Avengers: Endgame (2019)"]
+    },
+    "Drax": {
+        "category": "Guardians",
+        "description": "Powerful warrior seeking revenge on Thanos.",
+        "movies": ["Guardians of the Galaxy (2014)", "Guardians of the Galaxy Vol. 2 (2017)", "Avengers: Infinity War (2018)", "Avengers: Endgame (2019)", "Guardians of the Galaxy Vol. 3 (2023)"]
+    },
+    "Captain Marvel": {
+        "category": "Cosmic",
+        "description": "Powerful Avenger with energy absorption abilities.",
+        "movies": ["Captain Marvel (2019)", "Avengers: Endgame (2019)", "The Marvels (2023)"]
+    },
 }
 
 HEROES = [
@@ -152,49 +284,66 @@ HEROES = [
     {"id": 33, "name": "Green Goblin", "category": "Villains"},
     {"id": 34, "name": "Doctor Octopus", "category": "Villains"},
     {"id": 35, "name": "Professor X", "category": "X-Men"},
-    {"id": 36, "name": "Jean Grey", "category": "X-Men"},
-    {"id": 37, "name": "Cyclops", "category": "X-Men"},
-    {"id": 38, "name": "Mystique", "category": "X-Men"},
-    {"id": 39, "name": "Shuri", "category": "Wakanda"},
-    {"id": 40, "name": "Okoye", "category": "Wakanda"},
-    {"id": 41, "name": "Killmonger", "category": "Villains"},
-    {"id": 42, "name": "Captain Marvel", "category": "Cosmic"},
-    {"id": 43, "name": "Monica Rambeau", "category": "Cosmic"},
-    {"id": 44, "name": "Wong", "category": "Mystic"},
-    {"id": 45, "name": "Odin", "category": "Mystic"},
-    {"id": 46, "name": "Hela", "category": "Villains"},
-    {"id": 47, "name": "Valkyrie", "category": "Mystic"},
-    {"id": 48, "name": "Kang", "category": "Villains"},
-    {"id": 49, "name": "Ronan", "category": "Villains"},
-    {"id": 50, "name": "Ego", "category": "Villains"},
-    {"id": 51, "name": "Dormammu", "category": "Villains"},
-    {"id": 52, "name": "Apocalypse", "category": "Villains"},
-    {"id": 53, "name": "Namor", "category": "Wakanda"},
-    {"id": 54, "name": "Morbius", "category": "Villains"},
-    {"id": 55, "name": "Carnage", "category": "Villains"},
-    {"id": 56, "name": "Mysterio", "category": "Villains"},
-    {"id": 57, "name": "Vulture", "category": "Villains"},
-    {"id": 58, "name": "Red Skull", "category": "Villains"},
+    {"id": 36, "name": "Captain Marvel", "category": "Cosmic"},
 ]
+
 
 @app.route("/")
 def home():
     return render_template("login.html")
 
+
 @app.route("/hero")
 def hero():
     return render_template("hero.html")
+
+
+@app.route("/hero/<hero_name>")
+def hero_detail(hero_name):
+    """Dynamic route for individual hero pages"""
+    # Try to find hero by slug mapping first
+    display_name = HERO_SLUG_MAP.get(hero_name.lower())
+    
+    if display_name:
+        hero_data = HEROES_DATA.get(display_name)
+    else:
+        # Try direct match
+        hero_data = HEROES_DATA.get(hero_name)
+        display_name = hero_name
+    
+    if not hero_data:
+        # Try case-insensitive search
+        for name, data in HEROES_DATA.items():
+            if name.lower() == hero_name.lower():
+                hero_data = data
+                display_name = name
+                break
+    
+    if not hero_data:
+        return "Hero not found", 404
+    
+    # Get image path for the hero using the mapping
+    hero_key = display_name.lower()
+    image_filename = HERO_IMAGE_MAP.get(hero_key, f"{hero_key}.jpg")
+    hero_image = f"/static/assets/{image_filename}"
+    
+    return render_template("hero_detail.html", 
+                         hero_name=display_name, 
+                         hero_data=hero_data,
+                         hero_image=hero_image)
+
+
+@app.route("/timeline")
+def timeline():
+    """MCU Timeline page"""
+    return render_template("timeline.html")
+
 
 @app.route("/login", methods=["POST"])
 def login():
     data = request.json
     full_name = data.get("fullName", "").strip()
     email_phone = data.get("emailPhone", "").strip()
-    favorite_hero = data.get("favoriteHero", "")
-    
-    import re
-    email_regex = r'^[^\s@]+@[^\s@]+\.[^\s@]+$'
-    phone_regex = r'^\+?[\d\s-]{10,}$'
     
     login_type = ""
     
@@ -217,13 +366,13 @@ def login():
     try:
         if login_type == "email":
             cursor.execute(
-                "INSERT INTO users (name, email, favorite_hero) VALUES (%s, %s, %s) ON DUPLICATE KEY UPDATE name = VALUES(name), favorite_hero = VALUES(favorite_hero)",
-                (full_name, email_phone, favorite_hero)
+                "INSERT INTO users (name, email) VALUES (%s, %s) ON DUPLICATE KEY UPDATE name = VALUES(name)",
+                (full_name, email_phone)
             )
         else:
             cursor.execute(
-                "INSERT INTO users (name, phone, favorite_hero) VALUES (%s, %s, %s) ON DUPLICATE KEY UPDATE name = VALUES(name), favorite_hero = VALUES(favorite_hero)",
-                (full_name, email_phone, favorite_hero)
+                "INSERT INTO users (name, phone) VALUES (%s, %s) ON DUPLICATE KEY UPDATE name = VALUES(name)",
+                (full_name, email_phone)
             )
         db.commit()
     except Exception as e:
@@ -232,25 +381,26 @@ def login():
     session['user'] = {
         'fullName': full_name,
         'email': email_phone if login_type == "email" else None,
-        'phone': email_phone if login_type == "phone" else None,
-        'favoriteHero': favorite_hero
+        'phone': email_phone if login_type == "phone" else None
     }
     
     return jsonify({
-        "success": True,
-        "message": f"Welcome to the Marvel Universe, {full_name}!"
+        "success": True
     })
+
 
 @app.route("/logout", methods=["POST"])
 def logout():
     session.pop('user', None)
     return jsonify({"success": True, "message": "Logged out successfully"})
 
+
 @app.route("/check-session")
 def check_session():
     if 'user' in session:
         return jsonify({"authenticated": True, "user": session['user']})
     return jsonify({"authenticated": False})
+
 
 @app.route("/search-heroes")
 def search_heroes():
@@ -260,20 +410,36 @@ def search_heroes():
         return jsonify(results)
     return jsonify(HEROES)
 
+
 @app.route("/hero-movies/<hero_name>")
 def get_hero_movies(hero_name):
-    hero_data = HEROES_DATA.get(hero_name)
+    # Try slug mapping first
+    display_name = HERO_SLUG_MAP.get(hero_name.lower())
+    if display_name:
+        hero_data = HEROES_DATA.get(display_name)
+    else:
+        hero_data = HEROES_DATA.get(hero_name)
+    
+    if not hero_data:
+        # Try case-insensitive
+        for name, data in HEROES_DATA.items():
+            if name.lower() == hero_name.lower():
+                hero_data = data
+                break
+    
     if hero_data:
         return jsonify(hero_data)
     return jsonify({"error": "Hero not found"})
+
 
 @app.route("/favorites", methods=["GET"])
 def get_favorites():
     if 'user' not in session:
         return jsonify({"success": False, "message": "Not logged in"})
     
-    email = session['user'].get('email')
-    phone = session['user'].get('phone')
+    user = session.get('user', {})
+    email = user.get('email')
+    phone = user.get('phone')
     
     if email:
         cursor.execute("SELECT favorites FROM users WHERE email=%s", (email,))
@@ -285,7 +451,6 @@ def get_favorites():
     result = cursor.fetchone()
     favorites = []
     if result and result[0]:
-        import json
         try:
             favorites = json.loads(result[0])
         except:
@@ -293,10 +458,11 @@ def get_favorites():
     
     return jsonify({"success": True, "favorites": favorites})
 
+
 @app.route("/favorites", methods=["POST"])
 def add_favorite():
     if 'user' not in session:
-        return jsonify({"success": False, "message": "Not logged in"})
+        return jsonify({"success": False, "message": "Not logged in. Please login first."})
     
     data = request.json
     hero_name = data.get("heroName")
@@ -304,21 +470,22 @@ def add_favorite():
     if not hero_name:
         return jsonify({"success": False, "message": "Hero name required"})
     
-    email = session['user'].get('email')
-    phone = session['user'].get('phone')
+    user = session.get('user', {})
+    email = user.get('email')
+    phone = user.get('phone')
+    
+    if not email and not phone:
+        return jsonify({"success": False, "message": "No user found in session"})
     
     # Get current favorites
     if email:
         cursor.execute("SELECT favorites FROM users WHERE email=%s", (email,))
     elif phone:
         cursor.execute("SELECT favorites FROM users WHERE phone=%s", (phone,))
-    else:
-        return jsonify({"success": False, "message": "No user found"})
     
     result = cursor.fetchone()
     favorites = []
     if result and result[0]:
-        import json
         try:
             favorites = json.loads(result[0])
         except:
@@ -328,7 +495,6 @@ def add_favorite():
     if hero_name not in favorites:
         favorites.append(hero_name)
     
-    import json
     favorites_json = json.dumps(favorites)
     
     if email:
@@ -340,10 +506,11 @@ def add_favorite():
     
     return jsonify({"success": True, "message": f"{hero_name} added to favorites!", "favorites": favorites})
 
+
 @app.route("/favorites/remove", methods=["POST"])
 def remove_favorite():
     if 'user' not in session:
-        return jsonify({"success": False, "message": "Not logged in"})
+        return jsonify({"success": False, "message": "Not logged in. Please login first."})
     
     data = request.json
     hero_name = data.get("heroName")
@@ -351,21 +518,22 @@ def remove_favorite():
     if not hero_name:
         return jsonify({"success": False, "message": "Hero name required"})
     
-    email = session['user'].get('email')
-    phone = session['user'].get('phone')
+    user = session.get('user', {})
+    email = user.get('email')
+    phone = user.get('phone')
+    
+    if not email and not phone:
+        return jsonify({"success": False, "message": "No user found in session"})
     
     # Get current favorites
     if email:
         cursor.execute("SELECT favorites FROM users WHERE email=%s", (email,))
     elif phone:
         cursor.execute("SELECT favorites FROM users WHERE phone=%s", (phone,))
-    else:
-        return jsonify({"success": False, "message": "No user found"})
     
     result = cursor.fetchone()
     favorites = []
     if result and result[0]:
-        import json
         try:
             favorites = json.loads(result[0])
         except:
@@ -375,7 +543,6 @@ def remove_favorite():
     if hero_name in favorites:
         favorites.remove(hero_name)
     
-    import json
     favorites_json = json.dumps(favorites)
     
     if email:
@@ -387,9 +554,9 @@ def remove_favorite():
     
     return jsonify({"success": True, "message": f"{hero_name} removed from favorites!", "favorites": favorites})
 
+
 @app.route("/send-otp", methods=["POST"])
 def send_otp():
-    import random
     phone = request.json.get("phone")
     otp = str(random.randint(100000, 999999))
 
@@ -401,6 +568,7 @@ def send_otp():
 
     print("OTP:", otp)
     return jsonify({"message": "OTP sent"})
+
 
 @app.route("/verify-otp", methods=["POST"])
 def verify_otp():
@@ -416,6 +584,7 @@ def verify_otp():
         return jsonify({"success": True, "message": "OTP Verified! Redirecting..."})
     else:
         return jsonify({"success": False, "message": "Invalid OTP!"})
+
 
 if __name__ == "__main__":
     app.run(debug=True)

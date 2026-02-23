@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Marvel Universe - MCU Timeline</title>
+  <link rel="stylesheet" href="/static/css/hero.css" />
+  <link rel="stylesheet" href="/static/css/timeline.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="nav-brand">🦸‍♂️ MARVEL</div>
+    <button class="hamburger" onclick="toggleMenu()">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <ul class="nav-links">
+      <li><a href="/hero">Home</a></li>
+      <li><a href="/timeline" class="active">Timeline</a></li>
+      <li><a href="#" onclick="showFavorites(); return false;">❤️ My Favorites</a></li>
+      <li><a href="#" onclick="handleLogout(); return false;">Logout</a></li>
+    </ul>
+  </nav>
+
+  <!-- TIMELINE HEADER -->
+  <header class="timeline-header">
+    <h1>Marvel Cinematic Universe</h1>
+    <p>Phase One - Phase Five</p>
+    <div class="timeline-legend">
+      <span class="legend-item"><span class="phase-dot phase1"></span> Phase 1</span>
+      <span class="legend-item"><span class="phase-dot phase2"></span> Phase 2</span>
+      <span class="legend-item"><span class="phase-dot phase3"></span> Phase 3</span>
+      <span class="legend-item"><span class="phase-dot phase4"></span> Phase 4</span>
+      <span class="legend-item"><span class="phase-dot phase5"></span> Phase 5</span>
+      <span class="legend-item"><span class="phase-dot phase6"></span> Phase 6</span>
+    </div>
+  </header>
+
+  <!-- TIMELINE CONTENT -->
+  <main class="timeline-container">
+    <div class="timeline-line"></div>
+
+    <!-- 2008 -->
+    <div class="timeline-item phase1" data-year="2008">
+      <div class="timeline-marker"></div>
+      <div class="timeline-content">
+        <div class="year-badge">2008</div>
+        <div class="movie-card">
+          <div class="movie-poster iron-man">
+            <i class="fas fa-shield-alt"></i>
+          </div>
+          <div class="movie-info">
+            <h3>Iron Man</h3>
+            <p>Tony Stark becomes Iron Man</p>
+          </div>
+        </div>
+        <div class="movie-card">
+          <div class="movie-poster hulk">
+            <i class="fas fa-fist-raised"></i>
+          </div>
+          <div class="movie-info">
+            <h3>The Incredible Hulk</h3>
+            <p>Bruce Banner's journey begins</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2010 -->
+    <div class="timeline-item phase1" data-year="2010">
+      <div class="timeline-marker"></div>
+      <div class="timeline-content">
+        <div class="year-badge">2010</div>
+        <div class="movie-card">
+          <div class="movie-poster iron-man-2">
+            <i class="fas fa-bolt"></i>
+          </div>
+          <div class="movie-info">
+            <h3>Iron Man 2</h3>
+            <p>Tony faces his father legacy</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2011 -->
+    <div class="timeline-item phase1" data-year="2011">
+      <div class="timeline-marker"></div>
+      <div class="timeline-content">
+        <div class="year-badge">2011</div>
+        <div class="movie-card">
+          <div class="movie-poster thor">
+            <i class="fas fa-hammer"></i>
+          </div>
+          <div class="movie-info">
+            <h3>Thor</h3>
+            <p>God of Thunder rises</p>
+          </div>
+        </div>
+        <div class="movie-card">
+          <div class="movie-poster captain-america">
+            <i class="fas fa-star"></i>
+          </div>
+          <div class="movie-info">
+            <h3>Captain America: The First Avenger</h3>
+            <p>The First Avenger awakens</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2012 -->
+    <div class="timeline-item phase1" data-year="2012">
+      <div class="timeline-marker"></div>
+      <div class="timeline-content">
+        <div class="year-badge">2012</div>
+        <div class="movie-card featured">
+          <div class="movie-poster avengers">
+            <i class="fas fa-users"></i>
+          </div>
+          <div class="movie-info">
+            <h3>The Avengers</h3>
+            <p>Earth's mightiest heroes unite</p>
+            <span class="milestone">MCU Phase 1 Culmination</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2013 -->
+    <div class="timeline-item phase2" data-year="2013">
+      <div class="timeline-marker"></div>
+      <div class="timeline-content">
+        <div class="year-badge">2013</div>
+        <div class="movie-card">
+          <div class="movie-poster iron-man-3">
+            <i class="fas fa-fire"></i>
+          </div>
+          <div class="movie-info">
+            <h3>Iron Man 3</h3>
+            <p>Tony faces his demons</p>
+          </div>
+        </div>
+        <div class="movie-card">
+          <div class="movie-poster thor-dark-world">
+            <i class="fas fa-moon"></i>
+          </div>
+          <div class="movie-info">
+            <h3>Thor: The Dark World</h3>
+            <p>Dark Elves threaten reality</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2014 -->
+    <div class="timeline-item phase2" data-year="2014">
+      <div class="timeline-marker"></div>
+      <div class="timeline-content">
+        <div class="year-badge">2014</div>
+        <div class="movie-card">
+          <div class="movie-poster winter-soldier">
+            <i class="fas fa-shield-alt"></i>
+          </div>
+          <div class="movie-info">
+            <h3>Captain America: The Winter Soldier</h3>
+            <p>Steve vs Hydra</p>
+          </div>
+        </div>
+        <div class="movie-card">
+          <div class="movie-poster gotg">
+            <i class="fas fa-rocket"></i>
+          </div>
+          <div class="movie-info">
+            <h3>Guardians of the Galaxy</h3>
+            <p>A new team rises</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2015 -->
+    <div class="timeline-item phase2" data-year="2015">
+      <div class="timeline-marker"></div>
+      <div class="timeline-content">
+        <div class="year-badge">2015</div>
+        <div class="movie-card">
+          <div class="movie-poster age-of-ultron">
+            <i class="fas fa-robot"></i>
+          </div>
+          <div class="movie-info">
+            <h3>Avengers: Age of Ultron</h3>
+            <p>Ultron rises</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2016 -->
+    <div class="timeline-item phase3" data-year="2016">
+      <div class="timeline-marker"></div>
+      <div class="timeline-content">
+        <div class="year-badge">2016</div>
+        <div class="movie-card">
+          <div class="movie-poster civil-war">
+            <i class="fas fa-balance-scale"></i>
+          </div>
+          <div class="movie-info">
+            <h3>Captain America: Civil War</h3>
+            <p>Heroes divided</p>
+          </div>
+        </div>
+        <div class="movie-card">
+          <div class="movie-poster doctor-strange">
+            <i class="fas fa-magic"></i>
+          </div>
+          <div class="movie-info">
+            <h3>Doctor Strange</h3>
+            <p>Master of the Mystic Arts</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2017 -->
+    <div class="timeline-item phase3" data-year="2017">
+      <div class="timeline-marker"></div>
+      <div class="timeline-content">
+        <div class="year-badge">2017</div>
+        <div class="movie-card">
+          <div class="movie-poster gotg-vol2">
+            <i class="fas fa-music"></i>
+          </div>
+          <div class="movie-info">
+            <h3>Guardians of the Galaxy Vol. 2</h3>
+            <p>Family comes together</p>
+          </div>
+        </div>
+        <div class="movie-card">
+          <div class="movie-poster spider-man-homecoming">
+            <i class="fas fa-spider"></i>
+          </div>
+          <div class="movie-info">
+            <h3>Spider-Man: Homecoming</h3>
+            <p>Homecoming</p>
+          </div>
+        </div>
+        <div class="movie-card">
+          <div class="movie-poster ragnarok">
+            <i class="fas fa-crown"></i>
+          </div>
+          <div class="movie-info">
+            <h3>Thor: Ragnarok</h3>
+            <p>Planet Hulk meets Thor</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2018 -->
+    <div class="timeline-item phase3" data-year="2018">
+      <div class="timeline-marker"></div>
+      <div class="timeline-content">
+        <div class="year-badge">2018</div>
+        <div class="movie-card">
+          <div class="movie-poster black-panther">
+            <i class="fas fa-paw"></i>
+          </div>
+          <div class="movie-info">
+            <h3>Black Panther</h3>
+            <p>Wakanda forever</p>
+          </div>
+        </div>
+        <div class="movie-card featured">
+          <div class="movie-poster infinity-war">
+            <i class="fas fa-gem"></i>
+          </div>
+          <div class="movie-info">
+            <h3>Avengers: Infinity War</h3>
+            <p>The snap that changed everything</p>
+            <span class="milestone">Thanos arrives</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2019 -->
+    <div class="timeline-item phase3" data-year="2019">
+      <div class="timeline-marker"></div>
+      <div class="timeline-content">
+        <div class="year-badge">2019</div>
+        <div class="movie-card">
+          <div class="movie-poster captain-marvel">
+            <i class="fas fa-star-of-life"></i>
+          </div>
+          <div class="movie-info">
+            <h3>Captain Marvel</h3>
+            <p>Earth's mightiest hero</p>
+          </div>
+        </div>
+        <div class="movie-card featured">
+          <div class="movie-poster endgame">
+            <i class="fas fa-hourglass-half"></i>
+          </div>
+          <div class="movie-info">
+            <h3>Avengers: Endgame</h3>
+            <p>The epic conclusion</p>
+            <span class="milestone">End of an Era</span>
+          </div>
+        </div>
+        <div class="movie-card">
+          <div class="movie-poster far-from-home">
+            <i class="fas fa-plane"></i>
+          </div>
+          <div class="movie-info">
+            <h3>Spider-Man: Far From Home</h3>
+            <p>Far From Home</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2021 -->
+    <div class="timeline-item phase4" data-year="2021">
+      <div class="timeline-marker"></div>
+      <div class="timeline-content">
+        <div class="year-badge">2021</div>
+        <div class="movie-card">
+          <div class="movie-poster black-widow">
+            <i class="fas fa-user-secret"></i>
+          </div>
+          <div class="movie-info">
+            <h3>Black Widow</h3>
+            <p>Natasha's legacy</p>
+          </div>
+        </div>
+        <div class="movie-card">
+          <div class="movie-poster shang-chi">
+            <i class="fas fa-dragon"></i>
+          </div>
+          <div class="movie-info">
+            <h3>Shang-Chi and the Legend of the Ten Rings</h3>
+            <p>The Mandarin returns</p>
+          </div>
+        </div>
+        <div class="movie-card">
+          <div class="movie-poster eternals">
+            <i class="fas fa-infinity"></i>
+          </div>
+          <div class="movie-info">
+            <h3>Eternals</h3>
+            <p>Immortal warriors</p>
+          </div>
+        </div>
+        <div class="movie-card">
+          <div class="movie-poster no-way-home">
+            <i class="fas fa-house-user"></i>
+          </div>
+          <div class="movie-info">
+            <h3>Spider-Man: No Way Home</h3>
+            <p>Multiverse chaos</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2022 -->
+    <div class="timeline-item phase4" data-year="2022">
+      <div class="timeline-marker"></div>
+      <div class="timeline-content">
+        <div class="year-badge">2022</div>
+        <div class="movie-card">
+          <div class="movie-poster multiverse-of-madness">
+            <i class="fas fa-portal-enter"></i>
+          </div>
+          <div class="movie-info">
+            <h3>Doctor Strange: Multiverse of Madness</h3>
+            <p>Into the multiverse</p>
+          </div>
+        </div>
+        <div class="movie-card">
+          <div class="movie-poster love-and-thunder">
+            <i class="fas fa-bolt"></i>
+          </div>
+          <div class="movie-info">
+            <h3>Thor: Love and Thunder</h3>
+            <p>God of Thunder returns</p>
+          </div>
+        </div>
+        <div class="movie-card">
+          <div class="movie-poster wakanda-forever">
+            <i class="fas fa-hand-holding-heart"></i>
+          </div>
+          <div class="movie-info">
+            <h3>Black Panther: Wakanda Forever</h3>
+            <p>Tribute to a king</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2023 -->
+    <div class="timeline-item phase5" data-year="2023">
+      <div class="timeline-marker"></div>
+      <div class="timeline-content">
+        <div class="year-badge">2023</div>
+        <div class="movie-card featured">
+          <div class="movie-poster gotg-vol3">
+            <i class="fas fa-heart"></i>
+          </div>
+          <div class="movie-info">
+            <h3>Guardians of the Galaxy Vol. 3</h3>
+            <p>Final mission</p>
+            <span class="milestone">The End of the Saga</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2024 -->
+    <div class="timeline-item phase6" data-year="2024">
+      <div class="timeline-marker"></div>
+      <div class="timeline-content">
+        <div class="year-badge">2024</div>
+        <div class="movie-card">
+          <div class="movie-poster deadpool-wolverine">
+            <i class="fas fa-skull"></i>
+          </div>
+          <div class="movie-info">
+            <h3>Deadpool & Wolverine</h3>
+            <p>Deadpool teams up with Wolverine</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2025 -->
+    <div class="timeline-item phase6" data-year="2025">
+      <div class="timeline-marker"></div>
+      <div class="timeline-content">
+        <div class="year-badge">2025</div>
+        <div class="movie-card">
+          <div class="movie-poster fantastic-four">
+            <i class="fas fa-fire"></i>
+          </div>
+          <div class="movie-info">
+            <h3>Fantastic Four</h3>
+            <p>First family of Marvel joins MCU</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2026 -->
+    <div class="timeline-item phase6" data-year="2026">
+      <div class="timeline-marker"></div>
+      <div class="timeline-content">
+        <div class="year-badge">2026</div>
+        <div class="movie-card featured">
+          <div class="movie-poster avengers-secret-wars">
+            <i class="fas fa-shield-alt"></i>
+          </div>
+          <div class="movie-info">
+            <h3>Avengers: Secret Wars</h3>
+            <p>The Multiverse collapses</p>
+            <span class="milestone">New Era Begins</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Back Button -->
+  <div class="timeline-back">
+    <a href="/hero" class="back-btn">
+      <i class="fas fa-arrow-left"></i> Back to Heroes
+    </a>
+  </div>
+
+  <!-- FAVORITES MODAL -->
+  <dialog id="favoritesModal" class="modal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeFavoritesModal()">&times;</button>
+      <h2 style="color: #e50914;">❤️ My Favorites</h2>
+      <div id="favoritesList" style="margin-top: 1rem; text-align: left;"></div>
+    </div>
+  </dialog>
+
+  <script>
+    // Hamburger menu toggle
+    function toggleMenu() {
+      document.querySelector('.nav-links').classList.toggle('active');
+    }
+
+    async function showFavorites() {
+      try {
+        const response = await fetch('/favorites');
+        const data = await response.json();
+        
+        const favoritesList = document.getElementById('favoritesList');
+        
+        if (!data.success || data.favorites.length === 0) {
+          favoritesList.innerHTML = '<p style="color: #888; text-align: center;">No favorites yet!</p>';
+        } else {
+          favoritesList.innerHTML = data.favorites.map(hero => `
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.5rem; background: rgba(229, 9, 20, 0.1); border-radius: 8px; margin-bottom: 0.5rem;">
+              <a href="/hero/${hero.toLowerCase().replace(/\\s+/g, '-')}" style="color: #fff; text-decoration: none; flex: 1;">${hero}</a>
+              <button onclick="removeFav('${hero}')" style="background: #ff4444; border: none; color: white; padding: 0.3rem 0.8rem; border-radius: 5px; cursor: pointer;">❌</button>
+            </div>
+          `).join('');
+        }
+      } catch (e) {
+        console.log('Error loading favorites');
+      }
+      
+      document.getElementById('favoritesModal').showModal();
+    }
+
+    async function removeFav(name) {
+      try {
+        await fetch('/favorites/remove', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ heroName: name })
+        });
+        showFavorites();
+      } catch (e) {
+        console.log('Failed to remove');
+      }
+    }
+
+    function closeFavoritesModal() {
+      document.getElementById('favoritesModal').close();
+    }
+
+    async function handleLogout() {
+      try {
+        await fetch('/logout', { method: 'POST' });
+        window.location.href = '/';
+      } catch (e) {
+        console.log('Logout failed');
+      }
+    }
+
+    // Intersection Observer for animation
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.timeline-item').forEach(item => {
+      observer.observe(item);
+    });
+  </script>
+</body>
+</html>

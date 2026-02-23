@@ -12,8 +12,8 @@
   <nav class="navbar">
     <div class="nav-brand">🦸‍♂️ MARVEL</div>
     <ul class="nav-links">
+      <li><a href="/timeline">Timeline</a></li>
       <li><a href="#" class="active">Login</a></li>
-      <li id="logoutItem" style="display: none;"><a href="#" onclick="handleLogout()">Logout</a></li>
     </ul>
   </nav>
 
@@ -45,33 +45,6 @@
         <div class="input-group">
           <i class="fas fa-envelope"></i>
           <input type="text" id="emailPhone" placeholder="Email OR Phone Number" required>
-        </div>
-
-        <!-- Favorite Hero Dropdown -->
-        <div class="input-group">
-          <i class="fas fa-mask"></i>
-          <select id="favoriteHero" required>
-            <option value="" disabled selected>Select Your Favorite Hero</option>
-            <option value="iron-man">Iron Man</option>
-            <option value="captain-america">Captain America</option>
-            <option value="thor">Thor</option>
-            <option value="hulk">Hulk</option>
-            <option value="spider-man">Spider-Man</option>
-            <option value="doctor-strange">Doctor Strange</option>
-            <option value="scarlet-witch">Scarlet Witch</option>
-            <option value="black-panther">Black Panther</option>
-            <option value="loki">Loki</option>
-            <option value="deadpool">Deadpool</option>
-          </select>
-        </div>
-
-        <!-- Remember Me -->
-        <div class="remember-me">
-          <label>
-            <input type="checkbox" id="rememberMe">
-            <span class="checkmark"></span>
-            Remember Me
-          </label>
         </div>
 
         <!-- Login Button -->
@@ -139,9 +112,8 @@
       
       const fullName = document.getElementById('fullName').value.trim();
       const emailPhone = document.getElementById('emailPhone').value.trim();
-      const favoriteHero = document.getElementById('favoriteHero').value;
 
-      if (!fullName || !emailPhone || !favoriteHero) {
+      if (!fullName || !emailPhone) {
         alert('Please fill in all fields!');
         return;
       }
@@ -150,22 +122,20 @@
         const response = await fetch('/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ fullName, emailPhone, favoriteHero })
+          body: JSON.stringify({ fullName, emailPhone })
         });
 
         const data = await response.json();
 
         if (data.success) {
-          alert(data.message);
-          
           // Save to localStorage if remember me is checked
-          if (document.getElementById('rememberMe').checked) {
+          if (document.getElementById('rememberMe') && document.getElementById('rememberMe').checked) {
             localStorage.setItem('marvelUser', JSON.stringify({
-              name: fullName,
-              hero: favoriteHero
+              name: fullName
             }));
           }
 
+          // Redirect directly to hero page
           window.location.href = '/hero';
         } else {
           alert(data.message);
@@ -192,8 +162,6 @@
       if (saved) {
         const data = JSON.parse(saved);
         document.getElementById('fullName').value = data.name || '';
-        document.getElementById('favoriteHero').value = data.hero || '';
-        document.getElementById('rememberMe').checked = true;
       }
       checkSession();
     };

@@ -17,8 +17,8 @@
       <span></span>
     </button>
     <ul class="nav-links">
-      <li><a href="#" class="active">Heroes</a></li>
-      <li><a href="/hero">Home</a></li>
+      <li><a href="/hero" class="active">Heroes</a></li>
+      <li><a href="/timeline">Timeline</a></li>
       <li><a href="#" onclick="showFavorites(); return false;">❤️ My Favorites</a></li>
       <li><a href="#" onclick="handleLogout(); return false;">Logout</a></li>
     </ul>
@@ -43,55 +43,55 @@
     <section id="avengers">
       <h2 class="category-title">🛡 Avengers</h2>
       <div class="card-grid">
-        <article class="card" onclick="selectHero(this, 'Iron Man')">
-          <img src="/static/assets/Iron-Man.jpg.jpg" alt="Iron Man" loading="lazy">
+        <article class="card" onclick="window.location.href='/hero/iron-man'">
+          <img src="/static/assets/Iron-Man.jpg" alt="Iron Man" loading="lazy">
           <h3>Iron Man</h3>
         </article>
-        <article class="card" onclick="selectHero(this, 'Captain America')">
+        <article class="card" onclick="window.location.href='/hero/captain-america'">
           <img src="/static/assets/captain america.jpg" alt="Captain America" loading="lazy">
           <h3>Captain America</h3>
         </article>
-        <article class="card" onclick="selectHero(this, 'Thor')">
+        <article class="card" onclick="window.location.href='/hero/thor'">
           <img src="/static/assets/thor.jpg" alt="Thor" loading="lazy">
           <h3>Thor</h3>
         </article>
-        <article class="card" onclick="selectHero(this, 'Hulk')">
+        <article class="card" onclick="window.location.href='/hero/hulk'">
           <img src="/static/assets/hulk.jpg" alt="Hulk" loading="lazy">
           <h3>Hulk</h3>
         </article>
-        <article class="card" onclick="selectHero(this, 'Black Widow')">
+        <article class="card" onclick="window.location.href='/hero/black-widow'">
           <img src="/static/assets/black widow.jpg" alt="Black Widow" loading="lazy">
           <h3>Black Widow</h3>
         </article>
-        <article class="card" onclick="selectHero(this, 'Hawkeye')">
+        <article class="card" onclick="window.location.href='/hero/hawkeye'">
           <img src="/static/assets/hawkeye.jpg" alt="Hawkeye" loading="lazy">
           <h3>Hawkeye</h3>
         </article>
-        <article class="card" onclick="selectHero(this, 'Scarlet Witch')">
+        <article class="card" onclick="window.location.href='/hero/scarlet-witch'">
           <img src="/static/assets/scarlet witch.jpg" alt="Scarlet Witch" loading="lazy">
           <h3>Scarlet Witch</h3>
         </article>
-        <article class="card" onclick="selectHero(this, 'Vision')">
+        <article class="card" onclick="window.location.href='/hero/vision'">
           <img src="/static/assets/vision.jpg" alt="Vision" loading="lazy">
           <h3>Vision</h3>
         </article>
-        <article class="card" onclick="selectHero(this, 'Falcon')">
+        <article class="card" onclick="window.location.href='/hero/falcon'">
           <img src="/static/assets/falcon.jpg" alt="Falcon" loading="lazy">
           <h3>Falcon</h3>
         </article>
-        <article class="card" onclick="selectHero(this, 'Winter Soldier')">
+        <article class="card" onclick="window.location.href='/hero/winter-soldier'">
           <img src="/static/assets/winter soldier.jpg" alt="Winter Soldier" loading="lazy">
           <h3>Winter Soldier</h3>
         </article>
-        <article class="card" onclick="selectHero(this, 'War Machine')">
+        <article class="card" onclick="window.location.href='/hero/war-machine'">
           <img src="/static/assets/war machine.jpg" alt="War Machine" loading="lazy">
           <h3>War Machine</h3>
         </article>
-        <article class="card" onclick="selectHero(this, 'Ant-Man')">
+        <article class="card" onclick="window.location.href='/hero/ant-man'">
           <img src="/static/assets/ant-man.jpg" alt="Ant-Man" loading="lazy">
           <h3>Ant-Man</h3>
         </article>
-        <article class="card" onclick="selectHero(this, 'Wasp')">
+        <article class="card" onclick="window.location.href='/hero/wasp'">
           <img src="/static/assets/wasp.jpg" alt="Wasp" loading="lazy">
           <h3>Wasp</h3>
         </article>
@@ -102,31 +102,31 @@
     <section id="guardians">
       <h2 class="category-title">🌌 Guardians of the Galaxy</h2>
       <div class="card-grid">
-        <article class="card" onclick="selectHero(this, 'Star-Lord')">
+        <article class="card" onclick="window.location.href='/hero/star-lord'">
           <img src="/static/assets/star-lord.jpg" alt="Star-Lord" loading="lazy">
           <h3>Star-Lord</h3>
         </article>
-        <article class="card" onclick="selectHero(this, 'Gamora')">
+        <article class="card" onclick="window.location.href='/hero/gamora'">
           <img src="/static/assets/gamora.jpg" alt="Gamora" loading="lazy">
           <h3>Gamora</h3>
         </article>
-        <article class="card" onclick="selectHero(this, 'Drax')">
+        <article class="card" onclick="window.location.href='/hero/drax'">
           <img src="/static/assets/drax.jpg" alt="Drax" loading="lazy">
           <h3>Drax</h3>
         </article>
-        <article class="card" onclick="selectHero(this, 'Rocket')">
+        <article class="card" onclick="window.location.href='/hero/rocket'">
           <img src="/static/assets/rocket.jpg" alt="Rocket" loading="lazy">
           <h3>Rocket</h3>
         </article>
-        <article class="card" onclick="selectHero(this, 'Groot')">
+        <article class="card" onclick="window.location.href='/hero/groot'">
           <img src="/static/assets/groot.jpg" alt="Groot" loading="lazy">
           <h3>Groot</h3>
         </article>
-        <article class="card" onclick="selectHero(this, 'Mantis')">
+        <article class="card" onclick="window.location.href='/hero/mantis'">
           <img src="/static/assets/mantis.jpg" alt="Mantis" loading="lazy">
           <h3>Mantis</h3>
         </article>
-        <article class="card" onclick="selectHero(this, 'Nebula')">
+        <article class="card" onclick="window.location.href='/hero/nebula'">
           <img src="/static/assets/nebula.jpg" alt="Nebula" loading="lazy">
           <h3>Nebula</h3>
         </article>
@@ -137,27 +137,27 @@
     <section id="xmen">
       <h2 class="category-title">🧬 X-Men</h2>
       <div class="card-grid">
-        <article class="card" onclick="selectHero(this, 'Wolverine')">
+        <article class="card" onclick="window.location.href='/hero/wolverine'">
           <img src="/static/assets/wolverine.jpg" alt="Wolverine" loading="lazy">
           <h3>Wolverine</h3>
         </article>
-        <article class="card" onclick="selectHero(this, 'Professor X')">
+        <article class="card" onclick="window.location.href='/hero/professor-x'">
           <img src="/static/assets/professor x.jpg" alt="Professor X" loading="lazy">
           <h3>Professor X</h3>
         </article>
-        <article class="card" onclick="selectHero(this, 'Magneto')">
+        <article class="card" onclick="window.location.href='/hero/magneto'">
           <img src="/static/assets/magneto.jpg" alt="Magneto" loading="lazy">
           <h3>Magneto</h3>
         </article>
-        <article class="card" onclick="selectHero(this, 'Deadpool')">
+        <article class="card" onclick="window.location.href='/hero/deadpool'">
           <img src="/static/assets/deapool.jpg" alt="Deadpool" loading="lazy">
           <h3>Deadpool</h3>
         </article>
-        <article class="card" onclick="selectHero(this, 'Storm')">
+        <article class="card" onclick="window.location.href='/hero/storm'">
           <img src="/static/assets/storm.jpg" alt="Storm" loading="lazy">
           <h3>Storm</h3>
         </article>
-        <article class="card" onclick="selectHero(this, 'Quicksilver')">
+        <article class="card" onclick="window.location.href='/hero/quicksilver'">
           <img src="/static/assets/quicksilver.jpg" alt="Quicksilver" loading="lazy">
           <h3>Quicksilver</h3>
         </article>
@@ -168,27 +168,27 @@
     <section id="villains">
       <h2 class="category-title">😈 Villains</h2>
       <div class="card-grid">
-        <article class="card villain" onclick="selectHero(this, 'Thanos')">
+        <article class="card villain" onclick="window.location.href='/hero/thanos'">
           <img src="/static/assets/thanos.jpg" alt="Thanos" loading="lazy">
           <h3>Thanos</h3>
         </article>
-        <article class="card villain" onclick="selectHero(this, 'Loki')">
+        <article class="card villain" onclick="window.location.href='/hero/loki'">
           <img src="/static/assets/loki.jpg" alt="Loki" loading="lazy">
           <h3>Loki</h3>
         </article>
-        <article class="card villain" onclick="selectHero(this, 'Ultron')">
+        <article class="card villain" onclick="window.location.href='/hero/ultron'">
           <img src="/static/assets/ultron.jpg" alt="Ultron" loading="lazy">
           <h3>Ultron</h3>
         </article>
-        <article class="card villain" onclick="selectHero(this, 'Venom')">
+        <article class="card villain" onclick="window.location.href='/hero/venom'">
           <img src="/static/assets/venom.jpg" alt="Venom" loading="lazy">
           <h3>Venom</h3>
         </article>
-        <article class="card villain" onclick="selectHero(this, 'Green Goblin')">
+        <article class="card villain" onclick="window.location.href='/hero/green-goblin'">
           <img src="/static/assets/green goblin.jpg" alt="Green Goblin" loading="lazy">
           <h3>Green Goblin</h3>
         </article>
-        <article class="card villain" onclick="selectHero(this, 'Doctor Octopus')">
+        <article class="card villain" onclick="window.location.href='/hero/doctor-octopus'">
           <img src="/static/assets/doctor octopus.jpg" alt="Doctor Octopus" loading="lazy">
           <h3>Doctor Octopus</h3>
         </article>
@@ -199,19 +199,19 @@
     <section id="spiderman">
       <h2 class="category-title">🕷 Spider-Man & Others</h2>
       <div class="card-grid">
-        <article class="card" onclick="selectHero(this, 'Spider-Man')">
+        <article class="card" onclick="window.location.href='/hero/spider-man'">
           <img src="/static/assets/spider-man.jpg" alt="Spider-Man" loading="lazy">
           <h3>Spider-Man</h3>
         </article>
-        <article class="card" onclick="selectHero(this, 'Doctor Strange')">
+        <article class="card" onclick="window.location.href='/hero/doctor-strange'">
           <img src="/static/assets/doctor strange.jpg" alt="Doctor Strange" loading="lazy">
           <h3>Doctor Strange</h3>
         </article>
-        <article class="card" onclick="selectHero(this, 'Black Panther')">
+        <article class="card" onclick="window.location.href='/hero/black-panther'">
           <img src="/static/assets/black panther.jpg" alt="Black Panther" loading="lazy">
           <h3>Black Panther</h3>
         </article>
-        <article class="card" onclick="selectHero(this, 'Captain Marvel')">
+        <article class="card" onclick="window.location.href='/hero/captain-marvel'">
           <img src="/static/assets/captain marvel.jpg" alt="Captain Marvel" loading="lazy">
           <h3>Captain Marvel</h3>
         </article>
@@ -219,25 +219,6 @@
     </section>
 
   </main>
-
-  <!-- HERO DETAILS MODAL -->
-  <dialog id="heroModal" class="modal">
-    <div class="modal-content">
-      <button class="modal-close" onclick="closeModal()">&times;</button>
-      <img id="modalImage" src="" alt="">
-      <h2 id="modalName"></h2>
-      <p id="modalDesc"></p>
-      <div id="moviesSection" style="display: none;">
-        <h4 style="color: #e50914; margin: 1rem 0 0.5rem;">🎬 Movies:</h4>
-        <ul id="moviesList" style="text-align: left; padding-left: 1rem; color: #ccc;"></ul>
-      </div>
-      <div style="margin-top: 1rem;">
-        <button id="favoriteBtn" onclick="toggleFavorite()">❤️ Add to Favorites</button>
-        <button id="removeBtn" onclick="removeFromFavorites()" style="display: none; background: #ff4444;">❌ Remove from Favorites</button>
-      </div>
-      <p id="favoriteMsg"></p>
-    </div>
-  </dialog>
 
   <!-- FAVORITES MODAL -->
   <dialog id="favoritesModal" class="modal">
@@ -249,8 +230,6 @@
   </dialog>
 
   <script>
-    let currentHeroName = "";
-    let currentHeroData = null;
     let userFavorites = [];
 
     // Hamburger menu toggle
@@ -293,108 +272,6 @@
       }
     }
 
-    // Select hero and show details
-    async function selectHero(card, name) {
-      currentHeroName = name;
-      
-      const img = card.querySelector('img');
-      document.getElementById('modalImage').src = img.src;
-      document.getElementById('modalImage').alt = name;
-      document.getElementById('modalName').textContent = name;
-
-      // Load hero data and movies
-      try {
-        const response = await fetch(`/hero-movies/${encodeURIComponent(name)}`);
-        const data = await response.json();
-        
-        if (data.description) {
-          document.getElementById('modalDesc').textContent = data.description;
-        } else {
-          document.getElementById('modalDesc').textContent = 'Click to see more details about this hero!';
-        }
-
-        // Show movies
-        const moviesSection = document.getElementById('moviesSection');
-        const moviesList = document.getElementById('moviesList');
-        
-        if (data.movies && data.movies.length > 0) {
-          moviesSection.style.display = 'block';
-          moviesList.innerHTML = data.movies.map(movie => `<li>${movie}</li>`).join('');
-        } else {
-          moviesSection.style.display = 'none';
-        }
-        
-        currentHeroData = data;
-      } catch (e) {
-        document.getElementById('modalDesc').textContent = 'Click to see more details about this hero!';
-        document.getElementById('moviesSection').style.display = 'none';
-      }
-
-      // Update favorite button
-      updateFavoriteButtons();
-      
-      // Show modal
-      document.getElementById('heroModal').showModal();
-    }
-
-    function updateFavoriteButtons() {
-      const isFavorite = userFavorites.includes(currentHeroName);
-      const favoriteBtn = document.getElementById('favoriteBtn');
-      const removeBtn = document.getElementById('removeBtn');
-      
-      if (isFavorite) {
-        favoriteBtn.style.display = 'none';
-        removeBtn.style.display = 'inline-block';
-      } else {
-        favoriteBtn.style.display = 'inline-block';
-        favoriteBtn.textContent = '❤️ Add to Favorites';
-        removeBtn.style.display = 'none';
-      }
-    }
-
-    async function toggleFavorite() {
-      try {
-        const response = await fetch('/favorites', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ heroName: currentHeroName })
-        });
-        const data = await response.json();
-        
-        if (data.success) {
-          userFavorites = data.favorites;
-          updateFavoriteButtons();
-          document.getElementById('favoriteMsg').textContent = data.message;
-        }
-      } catch (e) {
-        alert('Failed to add to favorites');
-      }
-    }
-
-    async function removeFromFavorites() {
-      try {
-        const response = await fetch('/favorites/remove', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ heroName: currentHeroName })
-        });
-        const data = await response.json();
-        
-        if (data.success) {
-          userFavorites = data.favorites;
-          updateFavoriteButtons();
-          document.getElementById('favoriteMsg').textContent = data.message;
-        }
-      } catch (e) {
-        alert('Failed to remove from favorites');
-      }
-    }
-
-    function closeModal() {
-      document.getElementById('heroModal').close();
-      document.getElementById('favoriteMsg').textContent = '';
-    }
-
     async function showFavorites() {
       await loadFavorites();
       
@@ -416,13 +293,9 @@
 
     function selectHeroByName(name) {
       closeFavoritesModal();
-      // Find the hero card
-      const cards = document.querySelectorAll('.card');
-      cards.forEach(card => {
-        if (card.querySelector('h3').textContent === name) {
-          selectHero(card, name);
-        }
-      });
+      // Navigate to hero detail page
+      const heroSlug = name.toLowerCase().replace(/\s+/g, '-');
+      window.location.href = '/hero/' + heroSlug;
     }
 
     async function removeFav(name) {
@@ -447,12 +320,6 @@
     }
 
     // Close modal on backdrop click
-    document.getElementById('heroModal').addEventListener('click', function(e) {
-      if (e.target === this) {
-        closeModal();
-      }
-    });
-
     document.getElementById('favoritesModal').addEventListener('click', function(e) {
       if (e.target === this) {
         closeFavoritesModal();
