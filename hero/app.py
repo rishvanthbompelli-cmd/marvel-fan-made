@@ -9,7 +9,7 @@ import random
 template_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'templates'))
 static_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'static'))
 app = Flask(__name__, template_folder=template_dir, static_folder=static_dir, static_url_path='/static')
-CORS(app)
+CORS(app, supports_credentials=True)
 
 app.secret_key = 'marvel_secret_key_12345'
 
@@ -63,6 +63,52 @@ HERO_IMAGE_MAP = {
     "doctor octopus": "doctor octopus.jpg",
     "professor x": "professor x.jpg",
     "captain marvel": "captain marvel.jpg",
+    # New heroes (Post-Endgame & Multiverse Saga)
+    "shang-chi": "shang-chi.jpg",
+    "kate bishop": "kate-bishop.jpg",
+    "yelena belova": "yelena-belova.jpg",
+    "moon knight": "moon-knight.jpg",
+    "ms. marvel": "ms-marvel.jpg",
+    "she-hulk": "she-hulk.jpg",
+    "america chavez": "america-chavez.jpg",
+    "namor": "namor.jpg",
+    "shuri": "shuri.jpg",
+    "gorr the god butcher": "gorr.jpg",
+    "kang the conqueror": "kang.jpg",
+    "sylvie": "sylvie.jpg",
+    "red guardian": "red-guardian.jpg",
+    "taskmaster": "taskmaster.jpg",
+    "sersi": "sersi.jpg",
+    "ikaris": "ikaris.jpg",
+    "druig": "druig.jpg",
+    "king valkyrie": "valkyrie.jpg",
+    "hercules": "hercules.jpg",
+    "adam warlock": "adam-warlock.jpg",
+    "high evolutionary": "high-evolutionary.jpg",
+    "clea": "clea.jpg",
+    "blade": "blade.jpg",
+    "daredevil": "daredevil.jpg",
+    "echo": "echo.jpg",
+    "agatha harkness": "agatha-harkness.jpg",
+    "ironheart": "ironheart.jpg",
+    "nova": "nova.jpg",
+    "silver surfer": "silver-surfer.jpg",
+    "mr. fantastic": "mr-fantastic.jpg",
+    "invisible woman": "invisible-woman.jpg",
+    "human torch": "human-torch.jpg",
+    "the thing": "the-thing.jpg",
+    # Anime characters
+    "gojo satoru": "gojo-satoru.jpg",
+    "yuji itadori": "yuji-itadori.jpg",
+    "sung jin-woo": "sung-jin-woo.jpg",
+    "tanjiro kamado": "tanjiro-kamado.jpg",
+    "eren yeager": "eren-yeager.jpg",
+    # Telugu heroes
+    "prabhas": "prabhas.jpg",
+    "allu arjun": "allu-arjun.jpg",
+    "ram charan": "ram-charan.jpg",
+    "ntr jr": "ntr-jr.jpg",
+    "mahesh babu": "mahesh-babu.jpg",
 }
 
 # Hero slug to display name mapping
@@ -103,6 +149,52 @@ HERO_SLUG_MAP = {
     "doctor-octopus": "Doctor Octopus",
     "professor-x": "Professor X",
     "captain-marvel": "Captain Marvel",
+    # New heroes (Post-Endgame & Multiverse Saga)
+    "shang-chi": "Shang-Chi",
+    "kate-bishop": "Kate Bishop",
+    "yelena-belova": "Yelena Belova",
+    "moon-knight": "Moon Knight",
+    "ms-marvel": "Ms. Marvel",
+    "she-hulk": "She-Hulk",
+    "america-chavez": "America Chavez",
+    "namor": "Namor",
+    "shuri": "Shuri",
+    "gorr": "Gorr the God Butcher",
+    "kang": "Kang the Conqueror",
+    "sylvie": "Sylvie",
+    "red-guardian": "Red Guardian",
+    "taskmaster": "Taskmaster",
+    "sersi": "Sersi",
+    "ikaris": "Ikaris",
+    "druig": "Druig",
+    "king-valkyrie": "King Valkyrie",
+    "hercules": "Hercules",
+    "adam-warlock": "Adam Warlock",
+    "high-evolutionary": "High Evolutionary",
+    "clea": "Clea",
+    "blade": "Blade",
+    "daredevil": "Daredevil",
+    "echo": "Echo",
+    "agatha-harkness": "Agatha Harkness",
+    "ironheart": "Ironheart",
+    "nova": "Nova",
+    "silver-surfer": "Silver Surfer",
+    "mr-fantastic": "Mr. Fantastic",
+    "invisible-woman": "Invisible Woman",
+    "human-torch": "Human Torch",
+    "the-thing": "The Thing",
+    # Anime characters
+    "gojo-satoru": "Gojo Satoru",
+    "yuji-itadori": "Yuji Itadori",
+    "sung-jin-woo": "Sung Jin-Woo",
+    "tanjiro-kamado": "Tanjiro Kamado",
+    "eren-yeager": "Eren Yeager",
+    # Telugu heroes
+    "prabhas": "Prabhas",
+    "allu-arjun": "Allu Arjun",
+    "ram-charan": "Ram Charan",
+    "ntr-jr": "NTR Jr",
+    "mahesh-babu": "Mahesh Babu",
 }
 
 HEROES_DATA = {
@@ -246,6 +338,224 @@ HEROES_DATA = {
         "description": "Powerful Avenger with energy absorption abilities.",
         "movies": ["Captain Marvel (2019)", "Avengers: Endgame (2019)", "The Marvels (2023)"]
     },
+    # New heroes (Post-Endgame & Multiverse Saga)
+    "Shang-Chi": {
+        "category": "Mystic",
+        "description": "Martial arts master with the Ten Rings.",
+        "movies": ["Shang-Chi and the Legend of the Ten Rings (2021)"]
+    },
+    "Kate Bishop": {
+        "category": "Avengers",
+        "description": "Young archer and Hawkeye's protégé.",
+        "movies": ["Hawkeye (2021)"]
+    },
+    "Yelena Belova": {
+        "category": "Avengers",
+        "description": "Red Guardian's daughter, skilled assassin.",
+        "movies": ["Black Widow (2021)", "Hawkeye (2021)"]
+    },
+    "Moon Knight": {
+        "category": "Mystic",
+        "description": "Avenger with multiple identities, granted powers by Khonshu.",
+        "movies": ["Moon Knight (2022)"]
+    },
+    "Ms. Marvel": {
+        "category": "Cosmic",
+        "description": "Inhuman with cosmic embers powers.",
+        "movies": ["Ms. Marvel (2022)", "The Marvels (2023)"]
+    },
+    "She-Hulk": {
+        "category": "Avengers",
+        "description": "Lawyer and Hulk cousin with gamma powers.",
+        "movies": ["She-Hulk (2022)"]
+    },
+    "America Chavez": {
+        "category": "Mystic",
+        "description": "Teenager with power to travel the multiverse.",
+        "movies": ["Doctor Strange in the Multiverse of Madness (2022)"]
+    },
+    "Namor": {
+        "category": "Wakanda",
+        "description": "King of Atlantis, mutant with underwater abilities.",
+        "movies": ["Black Panther: Wakanda Forever (2022)"]
+    },
+    "Shuri": {
+        "category": "Wakanda",
+        "description": "Genius inventor, Black Panther of Wakanda.",
+        "movies": ["Black Panther (2018)", "Avengers: Infinity War (2018)", "Avengers: Endgame (2019)", "Black Panther: Wakanda Forever (2022)"]
+    },
+    "Gorr the God Butcher": {
+        "category": "Villains",
+        "description": "Serial killer of gods wielding All-Black the Necrosword.",
+        "movies": ["Thor: Love and Thunder (2022)"]
+    },
+    "Kang the Conqueror": {
+        "category": "Villains",
+        "description": "Multiversal conqueror from the 31st century.",
+        "movies": ["Ant-Man and the Wasp: Quantumania (2023)", "Avengers: The Kang Dynasty (2025)"]
+    },
+    "Sylvie": {
+        "category": "Mystic",
+        "description": "Variant of Loki, skilled at enchantment magic.",
+        "movies": ["Loki (2021)"]
+    },
+    "Red Guardian": {
+        "category": "Avengers",
+        "description": "Russia's super-soldier, father of Yelena Belova.",
+        "movies": ["Black Widow (2021)"]
+    },
+    "Taskmaster": {
+        "category": "Villains",
+        "description": "Mercenary with photographic reflexes.",
+        "movies": ["Black Widow (2021)"]
+    },
+    "Sersi": {
+        "category": "Cosmic",
+        "description": "Eternal with matter manipulation powers.",
+        "movies": ["Eternals (2021)"]
+    },
+    "Ikaris": {
+        "category": "Cosmic",
+        "description": "Eternal with solar energy manipulation.",
+        "movies": ["Eternals (2021)"]
+    },
+    "Druig": {
+        "category": "Cosmic",
+        "description": "Eternal with telepathic and telekinetic abilities.",
+        "movies": ["Eternals (2021)"]
+    },
+    "King Valkyrie": {
+        "category": "Asgard",
+        "description": "Warrior queen of New Asgard, successor to Thor.",
+        "movies": ["Thor: Ragnarok (2017)", "Avengers: Endgame (2019)", "Thor: Love and Thunder (2022)"]
+    },
+    "Hercules": {
+        "category": "Cosmic",
+        "description": "Olympian god, son of Zeus.",
+        "movies": ["Thor: Love and Thunder (2022)"]
+    },
+    "Adam Warlock": {
+        "category": "Guardians",
+        "description": "Artificial being known as Him, powerful cosmic entity.",
+        "movies": ["Guardians of the Galaxy Vol. 3 (2023)"]
+    },
+    "High Evolutionary": {
+        "category": "Villains",
+        "description": "Mad scientist who created Adam Warlock.",
+        "movies": ["Guardians of the Galaxy Vol. 3 (2023)"]
+    },
+    "Clea": {
+        "category": "Mystic",
+        "description": "Dormammu's daughter, master of the dark dimension.",
+        "movies": ["Doctor Strange in the Multiverse of Madness (2022)"]
+    },
+    "Blade": {
+        "category": "Mystic",
+        "description": "Daywalker, half-vampire vampire hunter.",
+        "movies": ["Blade (2025)"]
+    },
+    "Daredevil": {
+        "category": "Street",
+        "description": "Blind lawyer by day, vigilante by night.",
+        "movies": ["Daredevil (2024)"]
+    },
+    "Echo": {
+        "category": "Street",
+        "description": "Native American assassin with photographic reflexes.",
+        "movies": ["Echo (2023)"]
+    },
+    "Agatha Harkness": {
+        "category": "Mystic",
+        "description": " centuries-old witch, mentor to Scarlet Witch.",
+        "movies": ["WandaVision (2021)", "Agatha: Darkhold Diaries (2023)"]
+    },
+    "Ironheart": {
+        "category": "Avengers",
+        "description": "Genius inventor with advanced armor technology.",
+        "movies": ["Ironheart (2024)"]
+    },
+    "Nova": {
+        "category": "Cosmic",
+        "description": "Human-Rhodey hybrid with Nova Force powers.",
+        "movies": ["Nova (2026)"]
+    },
+    "Silver Surfer": {
+        "category": "Cosmic",
+        "description": " Herald of Galactus, powered by the Power Cosmic.",
+        "movies": ["Fantastic Four (2025)", "Silver Surfer (2026)"]
+    },
+    "Mr. Fantastic": {
+        "category": "Fantastic Four",
+        "description": "Leader of the Fantastic Four, genius inventor with elastic body.",
+        "movies": ["Fantastic Four (2025)"]
+    },
+    "Invisible Woman": {
+        "category": "Fantastic Four",
+        "description": "Fantastic Four member with invisibility and force field powers.",
+        "movies": ["Fantastic Four (2025)"]
+    },
+    "Human Torch": {
+        "category": "Fantastic Four",
+        "description": "Fantastic Four member with flame powers.",
+        "movies": ["Fantastic Four (2025)"]
+    },
+    "The Thing": {
+        "category": "Fantastic Four",
+        "description": "Fantastic Four member with super strength and durability.",
+        "movies": ["Fantastic Four (2025)"]
+    },
+    # Anime characters
+    "Gojo Satoru": {
+        "category": "Anime",
+        "description": "Strongest sorcerer from Jujutsu Kaisen.",
+        "movies": ["Jujutsu Kaisen 0"]
+    },
+    "Yuji Itadori": {
+        "category": "Anime",
+        "description": "Jujutsu sorcerer and vessel of Sukuna.",
+        "movies": ["Jujutsu Kaisen 0"]
+    },
+    "Sung Jin-Woo": {
+        "category": "Anime",
+        "description": "Shadow Monarch from Solo Leveling.",
+        "movies": ["Solo Leveling Season 1"]
+    },
+    "Tanjiro Kamado": {
+        "category": "Anime",
+        "description": "Demon Slayer fighting to save his sister.",
+        "movies": ["Demon Slayer: Mugen Train"]
+    },
+    "Eren Yeager": {
+        "category": "Anime",
+        "description": "Main protagonist of Attack on Titan.",
+        "movies": ["Attack on Titan Final Season"]
+    },
+    # Telugu heroes
+    "Prabhas": {
+        "category": "Telugu",
+        "description": "Pan-India superstar.",
+        "movies": ["Baahubali", "Salaar", "Kalki 2898 AD"]
+    },
+    "Allu Arjun": {
+        "category": "Telugu",
+        "description": "Stylish star of Telugu cinema.",
+        "movies": ["Pushpa", "Ala Vaikunthapurramuloo"]
+    },
+    "Ram Charan": {
+        "category": "Telugu",
+        "description": "RRR global star.",
+        "movies": ["RRR", "Magadheera"]
+    },
+    "NTR Jr": {
+        "category": "Telugu",
+        "description": "Powerful performer from RRR.",
+        "movies": ["RRR", "Temper"]
+    },
+    "Mahesh Babu": {
+        "category": "Telugu",
+        "description": "Superstar of Telugu industry.",
+        "movies": ["Pokiri", "Srimanthudu"]
+    },
 }
 
 HEROES = [
@@ -285,19 +595,66 @@ HEROES = [
     {"id": 34, "name": "Doctor Octopus", "category": "Villains"},
     {"id": 35, "name": "Professor X", "category": "X-Men"},
     {"id": 36, "name": "Captain Marvel", "category": "Cosmic"},
+    # New heroes (Post-Endgame & Multiverse Saga) - IDs 37+
+    {"id": 37, "name": "Shang-Chi", "category": "Mystic"},
+    {"id": 38, "name": "Kate Bishop", "category": "Avengers"},
+    {"id": 39, "name": "Yelena Belova", "category": "Avengers"},
+    {"id": 40, "name": "Moon Knight", "category": "Mystic"},
+    {"id": 41, "name": "Ms. Marvel", "category": "Cosmic"},
+    {"id": 42, "name": "She-Hulk", "category": "Avengers"},
+    {"id": 43, "name": "America Chavez", "category": "Mystic"},
+    {"id": 44, "name": "Namor", "category": "Wakanda"},
+    {"id": 45, "name": "Shuri", "category": "Wakanda"},
+    {"id": 46, "name": "Gorr the God Butcher", "category": "Villains"},
+    {"id": 47, "name": "Kang the Conqueror", "category": "Villains"},
+    {"id": 48, "name": "Sylvie", "category": "Mystic"},
+    {"id": 49, "name": "Red Guardian", "category": "Avengers"},
+    {"id": 50, "name": "Taskmaster", "category": "Villains"},
+    {"id": 51, "name": "Sersi", "category": "Cosmic"},
+    {"id": 52, "name": "Ikaris", "category": "Cosmic"},
+    {"id": 53, "name": "Druig", "category": "Cosmic"},
+    {"id": 54, "name": "King Valkyrie", "category": "Asgard"},
+    {"id": 55, "name": "Hercules", "category": "Cosmic"},
+    {"id": 56, "name": "Adam Warlock", "category": "Guardians"},
+    {"id": 57, "name": "High Evolutionary", "category": "Villains"},
+    {"id": 58, "name": "Clea", "category": "Mystic"},
+    {"id": 59, "name": "Blade", "category": "Mystic"},
+    {"id": 60, "name": "Daredevil", "category": "Street"},
+    {"id": 61, "name": "Echo", "category": "Street"},
+    {"id": 62, "name": "Agatha Harkness", "category": "Mystic"},
+    {"id": 63, "name": "Ironheart", "category": "Avengers"},
+    {"id": 64, "name": "Nova", "category": "Cosmic"},
+    {"id": 65, "name": "Silver Surfer", "category": "Cosmic"},
+    {"id": 66, "name": "Mr. Fantastic", "category": "Fantastic Four"},
+    {"id": 67, "name": "Invisible Woman", "category": "Fantastic Four"},
+    {"id": 68, "name": "Human Torch", "category": "Fantastic Four"},
+    {"id": 69, "name": "The Thing", "category": "Fantastic Four"},
+    # Anime characters - IDs 70-74
+    {"id": 70, "name": "Gojo Satoru", "category": "Anime"},
+    {"id": 71, "name": "Yuji Itadori", "category": "Anime"},
+    {"id": 72, "name": "Sung Jin-Woo", "category": "Anime"},
+    {"id": 73, "name": "Tanjiro Kamado", "category": "Anime"},
+    {"id": 74, "name": "Eren Yeager", "category": "Anime"},
+    # Telugu heroes - IDs 75-79
+    {"id": 75, "name": "Prabhas", "category": "Telugu"},
+    {"id": 76, "name": "Allu Arjun", "category": "Telugu"},
+    {"id": 77, "name": "Ram Charan", "category": "Telugu"},
+    {"id": 78, "name": "NTR Jr", "category": "Telugu"},
+    {"id": 79, "name": "Mahesh Babu", "category": "Telugu"},
 ]
 
 
 @app.route("/")
 def home():
-    return render_template("login.html")
+    """Landing page - Multiverse Hub with cinematic intro"""
+    return render_template("landing.html")
 
 
 @app.route("/hero")
 def hero():
     return render_template("hero.html")
-
-
+ 
+ 
 @app.route("/hero/<hero_name>")
 def hero_detail(hero_name):
     """Dynamic route for individual hero pages"""
@@ -331,6 +688,15 @@ def hero_detail(hero_name):
                          hero_name=display_name, 
                          hero_data=hero_data,
                          hero_image=hero_image)
+
+
+@app.route("/universe/<category>")
+def universe(category):
+    """Universe page with category-specific theme"""
+    valid_categories = ['marvel', 'anime', 'telugu']
+    if category not in valid_categories:
+        return redirect("/")
+    return render_template("universe.html", category=category)
 
 
 @app.route("/timeline")
@@ -389,9 +755,11 @@ def login():
     })
 
 
-@app.route("/logout", methods=["POST"])
+@app.route("/logout", methods=["POST", "GET"])
 def logout():
     session.pop('user', None)
+    if request.method == "GET":
+        return redirect("/")
     return jsonify({"success": True, "message": "Logged out successfully"})
 
 
@@ -405,10 +773,41 @@ def check_session():
 @app.route("/search-heroes")
 def search_heroes():
     query = request.args.get('q', '').lower()
+    category = request.args.get('category', '').lower()
+    
+    results = HEROES
+    
+    # Filter by category if provided
+    if category:
+        if category == 'marvel':
+            results = [h for h in results if h.get('category', '') in ['Avengers', 'Guardians', 'Street', 'Cosmic', 'Mystic', 'Villains', 'X-Men', 'Spider-Verse', 'Fantastic Four']]
+        elif category == 'anime':
+            results = [h for h in results if h.get('category', '') == 'Anime']
+        elif category == 'telugu':
+            results = [h for h in results if h.get('category', '') == 'Telugu']
+    
+    # Filter by search query if provided
     if query:
-        results = [h for h in HEROES if query in h['name'].lower()]
-        return jsonify(results)
-    return jsonify(HEROES)
+        results = [h for h in results if query in h['name'].lower()]
+    
+    return jsonify(results)
+
+
+@app.route("/category-heroes/<category>")
+def get_category_heroes(category):
+    """Get heroes by category: marvel, anime, or telugu"""
+    cat = category.lower()
+    
+    if cat == 'marvel':
+        results = [h for h in HEROES if h.get('category', '') in ['Avengers', 'Guardians', 'Street', 'Cosmic', 'Mystic', 'Villains', 'X-Men', 'Spider-Verse', 'Fantastic Four']]
+    elif cat == 'anime':
+        results = [h for h in HEROES if h.get('category', '') == 'Anime']
+    elif cat == 'telugu':
+        results = [h for h in HEROES if h.get('category', '') == 'Telugu']
+    else:
+        results = []
+    
+    return jsonify(results)
 
 
 @app.route("/hero-movies/<hero_name>")
@@ -584,6 +983,85 @@ def verify_otp():
         return jsonify({"success": True, "message": "OTP Verified! Redirecting..."})
     else:
         return jsonify({"success": False, "message": "Invalid OTP!"})
+
+
+# ========================================
+# NEW ROUTES FOR CINEMATIC FEATURES
+# ========================================
+
+@app.route("/compare")
+def compare():
+    """Hero Power Comparison Tool"""
+    # Get all heroes for dropdown
+    heroes_list = [
+        {"id": h['id'], "name": h['name'], "category": h.get('category', '')}
+        for h in HEROES
+    ]
+    return render_template("compare.html", heroes=heroes_list)
+
+
+@app.route("/world")
+def world():
+    """Interactive World Map"""
+    return render_template("world.html")
+
+
+@app.route("/world-map")
+def world_map():
+    """Interactive World Map - Full Screen"""
+    return render_template("world_map.html")
+
+
+@app.route("/achievements")
+def achievements():
+    """User Achievements & Badges"""
+    return render_template("achievements.html")
+
+
+@app.route("/recommendations")
+def recommendations():
+    """Personalized Hero Recommendations"""
+    return render_template("recommendations.html")
+
+
+@app.route("/trending")
+def trending():
+    """Trending Heroes API"""
+    # Get heroes sorted by popularity (mock data based on favorites count)
+    trending_heroes = []
+    return jsonify(trending_heroes)
+
+
+# ========================================
+# ENHANCED ROUTES WITH NEW FEATURES
+# ========================================
+
+@app.route("/category-heroes/<category>")
+def enhanced_category_heroes(category):
+    """Get heroes by category: marvel, anime, or telugu with enhanced data"""
+    cat = category.lower()
+    
+    if cat == 'marvel':
+        results = [h for h in HEROES if h.get('category', '') in ['Avengers', 'Guardians', 'Street', 'Cosmic', 'Mystic', 'Villains', 'X-Men', 'Spider-Verse', 'Fantastic Four', 'Wakanda', 'Asgard']]
+    elif cat == 'anime':
+        results = [h for h in HEROES if h.get('category', '') == 'Anime']
+    elif cat == 'telugu':
+        results = [h for h in HEROES if h.get('category', '') == 'Telugu']
+    else:
+        results = []
+    
+    # Add image and stats to each hero
+    enhanced_results = []
+    for h in results:
+        hero_key = h['name'].lower()
+        image_filename = HERO_IMAGE_MAP.get(hero_key, f"{hero_key}.jpg")
+        enhanced_results.append({
+            **h,
+            "image": f"/static/assets/{image_filename}",
+            "slug": h['name'].lower().replace(' ', '-')
+        })
+    
+    return jsonify(enhanced_results)
 
 
 if __name__ == "__main__":
