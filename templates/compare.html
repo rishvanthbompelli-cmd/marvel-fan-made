@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>⚔️ Hero Comparison - Multiverse Hub</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;600;700&family=Montserrat:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="/static/css/main.css">
+  <style>
+    .compare-page {
+      min-height: 100vh;
+      padding-top: 80px;
+      background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #0a0a0a 100%);
+    }
+
+    .compare-header {
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .compare-header h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 3rem;
+      background: linear-gradient(90deg, #e62429, #1e90ff, #d4af37);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 1rem;
+    }
+
+    .compare-header p {
+      color: #aaa;
+      font-size: 1.1rem;
+    }
+
+    .compare-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    .compare-selectors {
+      display: flex;
+      gap: 2rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 3rem;
+    }
+
+    .selector-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .selector-label {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.9rem;
+      color: #aaa;
+    }
+
+    .compare-selector {
+      width: 280px;
+      padding: 1rem 1.5rem;
+      font-size: 1rem;
+      font-family: 'Poppins', sans-serif;
+      background: rgba(255, 255, 255, 0.1);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      border-radius: 15px;
+      color: #fff;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .compare-selector:focus {
+      outline: none;
+      border-color: var(--universe-primary, #e62429);
+      box-shadow: 0 0 20px var(--universe-glow, rgba(230, 36, 41, 0.3));
+    }
+
+    .compare-selector option {
+      background: #1a1a2e;
+      color: #fff;
+    }
+
+    .compare-btn {
+      padding: 1rem 3rem;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.1rem;
+      background: linear-gradient(135deg, #e62429, #ff6b6b);
+      border: none;
+      border-radius: 50px;
+      color: #fff;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-top: 1rem;
+    }
+
+    .compare-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 10px 30px rgba(230, 36, 41, 0.4);
+    }
+
+    .comparison-results {
+      display: none;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 30px;
+      padding: 2rem;
+      margin-top: 2rem;
+    }
+
+    .comparison-results.active {
+      display: block;
+      animation: fadeIn 0.5s ease;
+    }
+
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+
+    .comparison-hero {
+      text-align: center;
+    }
+
+    .comparison-hero h3 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+      color: var(--universe-primary, #e62429);
+    }
+
+    .comparison-hero img {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 3px solid var(--universe-primary, #e62429);
+      margin-bottom: 1.5rem;
+    }
+
+    .stat-comparison {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .stat-row {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .stat-name {
+      width: 100px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.8rem;
+      color: #aaa;
+    }
+
+    .stat-bar-container {
+      flex: 1;
+      height: 20px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .stat-bar {
+      height: 100%;
+      border-radius: 10px;
+      transition: width 1s ease-out;
+      animation: barGrow 1s ease-out;
+    }
+
+    .stat-bar.hero1 {
+      background: linear-gradient(90deg, #e62429, #ff6b6b);
+    }
+
+    .stat-bar.hero2 {
+      background: linear-gradient(90deg, #1e90ff, #6bb3ff);
+    }
+
+    .stat-value {
+      width: 40px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.9rem;
+      color: #fff;
+    }
+
+    @keyframes barGrow {
+      0% { width: 0; }
+    }
+
+    .vs-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2rem;
+      color: #fff;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      margin: 0 auto;
+    }
+
+    .tips-section {
+      margin-top: 3rem;
+      padding: 2rem;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 20px;
+    }
+
+    .tips-section h3 {
+      font-family: 'Orbitron', sans-serif;
+      margin-bottom: 1rem;
+      color: #aaa;
+    }
+
+    .tips-section ul {
+      list-style: none;
+      color: #888;
+    }
+
+    .tips-section li {
+      padding: 0.5rem 0;
+      padding-left: 2rem;
+      position: relative;
+    }
+
+    .tips-section li::before {
+      content: '💡';
+      position: absolute;
+      left: 0;
+    }
+
+    @media (max-width: 768px) {
+      .comparison-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .compare-selectors {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .compare-selector {
+        width: 100%;
+        max-width: 300px;
+      }
+    }
+  </style>
+</head>
+<body data-theme="dark" data-universe="marvel">
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="nav-brand" id="navBrand" onclick="window.location.href='/'">🌌 MULTIVERSE HUB</div>
+    <button class="hamburger" onclick="toggleMenu()">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <ul class="nav-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/universe/marvel">Marvel</a></li>
+      <li><a href="/universe/anime">Anime</a></li>
+      <li><a href="/universe/telugu">Telugu</a></li>
+      <li><a href="/compare">Compare</a></li>
+      <li><a href="/world">World Map</a></li>
+      <li><a href="/timeline">Timeline</a></li>
+    </ul>
+    <div class="theme-toggle dark" id="themeToggle" onclick="toggleTheme()"></div>
+  </nav>
+
+  <!-- Particles Background -->
+  <div class="particles"></div>
+
+  <!-- Main Content -->
+  <div class="compare-page">
+    <div class="compare-header">
+      <h1>⚔️ POWER COMPARISON</h1>
+      <p>Compare heroes across all universes and discover the ultimate champion</p>
+    </div>
+
+    <div class="compare-container">
+      <div class="compare-selectors">
+        <div class="selector-group">
+          <label class="selector-label">SELECT FIRST HERO</label>
+          <select class="compare-selector" id="compareHero1">
+            <option value="">Choose a hero...</option>
+            {% for hero in heroes %}
+            <option value="{{ hero.name }}">{{ hero.name }} ({{ hero.category }})</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="selector-group">
+          <label class="selector-label">SELECT SECOND HERO</label>
+          <select class="compare-selector" id="compareHero2">
+            <option value="">Choose a hero...</option>
+            {% for hero in heroes %}
+            <option value="{{ hero.name }}">{{ hero.name }} ({{ hero.category }})</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+
+      <div style="text-align: center;">
+        <button class="compare-btn" onclick="compareHeroes()">
+          ⚔️ COMPARE NOW
+        </button>
+      </div>
+
+      <div class="comparison-results" id="comparisonResults">
+        <div class="comparison-grid">
+          <div class="comparison-hero" id="hero1Panel">
+            <!-- Hero 1 details will be inserted here -->
+          </div>
+          
+          <div class="vs-divider">VS</div>
+          
+          <div class="comparison-hero" id="hero2Panel">
+            <!-- Hero 2 details will be inserted here -->
+          </div>
+        </div>
+
+        <div class="stat-comparison" id="statComparison">
+          <!-- Stats comparison will be inserted here -->
+        </div>
+      </div>
+
+      <div class="tips-section">
+        <h3>💡 COMPARISON TIPS</h3>
+        <ul>
+          <li>Compare heroes from different universes to discover unexpected matchups</li>
+          <li>Power levels are based on MCU movie appearances and fan consensus</li>
+          <li>Share your favorite comparisons with friends!</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Reality Shift Overlay -->
+  <div class="reality-shift" id="realityShift"></div>
+
+  <script src="/static/js/main.js"></script>
+  <script>
+    // Comparison stats database (mock data)
+    const heroStats = {
+      'Iron Man': { power: 95, intelligence: 98, speed: 70, strength: 75, popularity: 98 },
+      'Captain America': { power: 80, intelligence: 85, speed: 65, strength: 90, popularity: 95 },
+      'Thor': { power: 98, intelligence: 75, speed: 85, strength: 98, popularity: 92 },
+      'Hulk': { power: 100, intelligence: 60, speed: 60, strength: 100, popularity: 90 },
+      'Spider-Man': { power: 85, intelligence: 90, speed: 90, strength: 70, popularity: 99 },
+      'Doctor Strange': { power: 95, intelligence: 98, speed: 60, strength: 50, popularity: 88 },
+      'Black Panther': { power: 85, intelligence: 90, speed: 75, strength: 80, popularity: 85 },
+      'Thanos': { power: 100, intelligence: 95, speed: 70, strength: 100, popularity: 97 },
+      'Loki': { power: 90, intelligence: 92, speed: 80, strength: 70, popularity: 94 },
+      'Deadpool': { power: 75, intelligence: 80, speed: 85, strength: 70, popularity: 91 },
+      'Wolverine': { power: 80, intelligence: 75, speed: 75, strength: 85, popularity: 93 },
+      'Gojo Satoru': { power: 99, intelligence: 95, speed: 90, strength: 75, popularity: 95 },
+      'Prabhas': { power: 85, intelligence: 80, speed: 75, strength: 85, popularity: 90 },
+      'Allu Arjun': { power: 80, intelligence: 78, speed: 80, strength: 75, popularity: 88 },
+      'Ram Charan': { power: 82, intelligence: 80, speed: 78, strength: 80, popularity: 87 }
+    };
+
+    // Default stats for heroes not in database
+    const defaultStats = { power: 75, intelligence: 75, speed: 70, strength: 70, popularity: 80 };
+
+    function compareHeroes() {
+      const hero1Name = document.getElementById('compareHero1').value;
+      const hero2Name = document.getElementById('compareHero2').value;
+
+      if (!hero1Name || !hero2Name) {
+        showNotification('Please select two heroes to compare!', 'warning');
+        return;
+      }
+
+      // Track comparison
+      AppState.userInteractions.comparisons++;
+      checkMultiverseMasterAchievement();
+
+      const hero1 = heroStats[hero1Name] || defaultStats;
+      const hero2 = heroStats[hero2Name] || defaultStats;
+
+      const resultsDiv = document.getElementById('comparisonResults');
+      const hero1Panel = document.getElementById('hero1Panel');
+      const hero2Panel = document.getElementById('hero2Panel');
+      const statComparison = document.getElementById('statComparison');
+
+      // Hero 1 Panel
+      hero1Panel.innerHTML = `
+        <h3>${hero1Name}</h3>
+        <img src="/static/assets/${getHeroImage(hero1Name)}" alt="${hero1Name}" onerror="this.src='https://via.placeholder.com/150'">
+      `;
+
+      // Hero 2 Panel
+      hero2Panel.innerHTML = `
+        <h3>${hero2Name}</h3>
+        <img src="/static/assets/${getHeroImage(hero2Name)}" alt="${hero2Name}" onerror="this.src='https://via.placeholder.com/150'">
+      `;
+
+      // Stats Comparison
+      const stats = [
+        { name: 'Power', key: 'power' },
+        { name: 'Intelligence', key: 'intelligence' },
+        { name: 'Speed', key: 'speed' },
+        { name: 'Strength', key: 'strength' },
+        { name: 'Popularity', key: 'popularity' }
+      ];
+
+      statComparison.innerHTML = stats.map(stat => `
+        <div class="stat-row">
+          <div class="stat-name">${stat.name}</div>
+          <div class="stat-bar-container">
+            <div class="stat-bar hero1" style="width: ${hero1[stat.key]}%"></div>
+          </div>
+          <div class="stat-value">${hero1[stat.key]}</div>
+        </div>
+        <div class="stat-row">
+          <div class="stat-name"></div>
+          <div class="stat-bar-container">
+            <div class="stat-bar hero2" style="width: ${hero2[stat.key]}%"></div>
+          </div>
+          <div class="stat-value">${hero2[stat.key]}</div>
+        </div>
+      `).join('');
+
+      resultsDiv.classList.add('active');
+    }
+
+    // Setup scroll reveal
+    document.addEventListener('DOMContentLoaded', () => {
+      createParticles();
+    });
+  </script>
+</body>
+</html>

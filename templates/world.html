@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🌍 Interactive World Map - Multiverse Hub</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;600;700&family=Montserrat:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="/static/css/main.css">
+  <style>
+    .world-page {
+      min-height: 100vh;
+      padding-top: 80px;
+      background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #0a0a0a 100%);
+    }
+
+    .world-header {
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .world-header h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 3rem;
+      background: linear-gradient(90deg, #e62429, #1e90ff, #d4af37);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 1rem;
+    }
+
+    .world-header p {
+      color: #aaa;
+      font-size: 1.1rem;
+    }
+
+    .world-map-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    .world-map {
+      position: relative;
+      width: 100%;
+      height: 600px;
+      background: 
+        linear-gradient(135deg, rgba(30, 144, 255, 0.1) 0%, rgba(0, 0, 0, 0.5) 100%),
+        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 500"><path fill="%231a1a2e" d="M0 0h1000v500H0z"/><path fill="%232a2a4e" d="M100 100 Q200 50 300 150 T500 100 T700 200 T900 150 V400 Q800 450 600 400 T300 450 T100 400z"/></svg>');
+      background-size: cover;
+      border-radius: 30px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .map-title {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.5rem;
+      color: #fff;
+      text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+    }
+
+    .map-location {
+      position: absolute;
+      cursor: pointer;
+      transition: all 0.4s ease;
+    }
+
+    .map-location:hover {
+      transform: scale(1.2);
+    }
+
+    .map-location:hover .map-marker {
+      box-shadow: 0 0 40px var(--universe-glow, rgba(230, 36, 41, 0.8));
+    }
+
+    .map-marker {
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, var(--universe-primary, #e62429), var(--universe-primary-dark, #ff6b6b));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      box-shadow: 0 0 20px var(--universe-glow, rgba(230, 36, 41, 0.5));
+      animation: pulse 2s infinite;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+    }
+
+    @keyframes pulse {
+      0%, 100% { 
+        box-shadow: 0 0 20px var(--universe-glow, rgba(230, 36, 41, 0.5));
+      }
+      50% { 
+        box-shadow: 0 0 40px var(--universe-glow, rgba(230, 36, 41, 0.8)),
+                    0 0 60px var(--universe-glow, rgba(230, 36, 41, 0.4));
+      }
+    }
+
+    .map-label {
+      position: absolute;
+      top: 70px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.8);
+      padding: 0.5rem 1rem;
+      border-radius: 10px;
+      white-space: nowrap;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.8rem;
+      color: #fff;
+      opacity: 0;
+      transition: all 0.3s ease;
+      pointer-events: none;
+    }
+
+    .map-location:hover .map-label {
+      opacity: 1;
+      transform: translateX(-50%) translateY(5px);
+    }
+
+    /* Location Positions */
+    .location-wakanda {
+      top: 35%;
+      left: 28%;
+    }
+
+    .location-new-york {
+      top: 28%;
+      left: 25%;
+    }
+
+    .location-tokyo {
+      top: 35%;
+      right: 22%;
+    }
+
+    .location-hyderabad {
+      top: 42%;
+      right: 18%;
+    }
+
+    .location-asgard {
+      top: 8%;
+      left: 45%;
+    }
+
+    .location-guardian {
+      top: 60%;
+      left: 15%;
+    }
+
+    /* Modal */
+    .world-map-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      z-index: 2000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .world-map-modal.active {
+      display: flex;
+      opacity: 1;
+    }
+
+    .modal-content {
+      background: linear-gradient(135deg, #1a1a2e 0%, #0a0a0a 100%);
+      border-radius: 30px;
+      padding: 2rem;
+      max-width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+      position: relative;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-size: 2rem;
+      color: #aaa;
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+
+    .modal-close:hover {
+      color: #fff;
+    }
+
+    .location-heroes {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .location-hero-card {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 15px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .location-hero-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .location-hero-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .location-hero-info {
+      padding: 1rem;
+      text-align: center;
+    }
+
+    .location-hero-name {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1rem;
+      color: #fff;
+    }
+
+    /* Legend */
+    .map-legend {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-top: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #aaa;
+    }
+
+    .legend-dot {
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+    }
+
+    .legend-dot.marvel { background: #e62429; }
+    .legend-dot.anime { background: #1e90ff; }
+    .legend-dot.telugu { background: #d4af37; }
+    .legend-dot.cosmic { background: #9b59b6; }
+
+    @media (max-width: 768px) {
+      .world-map {
+        height: 400px;
+      }
+      
+      .map-marker {
+        width: 45px;
+        height: 45px;
+        font-size: 1rem;
+      }
+      
+      .map-location:hover {
+        transform: scale(1.1);
+      }
+    }
+  </style>
+</head>
+<body data-theme="dark" data-universe="marvel">
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="nav-brand" id="navBrand" onclick="window.location.href='/'">🌌 MULTIVERSE HUB</div>
+    <button class="hamburger" onclick="toggleMenu()">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <ul class="nav-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/universe/marvel">Marvel</a></li>
+      <li><a href="/universe/anime">Anime</a></li>
+      <li><a href="/universe/telugu">Telugu</a></li>
+      <li><a href="/compare">Compare</a></li>
+      <li><a href="/world">World Map</a></li>
+      <li><a href="/timeline">Timeline</a></li>
+    </ul>
+    <div class="theme-toggle dark" id="themeToggle" onclick="toggleTheme()"></div>
+  </nav>
+
+  <!-- Particles Background -->
+  <div class="particles"></div>
+
+  <!-- Main Content -->
+  <div class="world-page">
+    <div class="world-header">
+      <h1>🌍 INTERACTIVE WORLD MAP</h1>
+      <p>Click on locations to discover heroes from each region</p>
+    </div>
+
+    <div class="world-map-container">
+      <div class="world-map" id="worldMap">
+        <div class="map-title">🗺️ EXPLORE THE MULTIVERSE</div>
+
+        <!-- Wakanda -->
+        <div class="map-location location-wakanda" data-location="wakanda" onclick="showLocationHeroes('wakanda')">
+          <div class="map-marker">🐆</div>
+          <div class="map-label">Wakanda</div>
+        </div>
+
+        <!-- New York -->
+        <div class="map-location location-new-york" data-location="new-york" onclick="showLocationHeroes('new-york')">
+          <div class="map-marker">🗽</div>
+          <div class="map-label">New York</div>
+        </div>
+
+        <!-- Tokyo -->
+        <div class="map-location location-tokyo" data-location="tokyo" onclick="showLocationHeroes('tokyo')">
+          <div class="map-marker">🏯</div>
+          <div class="map-label">Tokyo</div>
+        </div>
+
+        <!-- Hyderabad -->
+        <div class="map-location location-hyderabad" data-location="hyderabad" onclick="showLocationHeroes('hyderabad')">
+          <div class="map-marker">🎬</div>
+          <div class="map-label">Hyderabad</div>
+        </div>
+
+        <!-- Asgard -->
+        <div class="map-location location-asgard" data-location="asgard" onclick="showLocationHeroes('asgard')">
+          <div class="map-marker">⚡</div>
+          <div class="map-label">Asgard</div>
+        </div>
+
+        <!-- Guardian Galaxy -->
+        <div class="map-location location-guardian" data-location="guardian" onclick="showLocationHeroes('guardian')">
+          <div class="map-marker">🌌</div>
+          <div class="map-label">Knowhere</div>
+        </div>
+      </div>
+
+      <div class="map-legend">
+        <div class="legend-item">
+          <div class="legend-dot marvel"></div>
+          <span>Marvel Universe</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot anime"></div>
+          <span>Anime Universe</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot telugu"></div>
+          <span>Telugu Cinema</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot cosmic"></div>
+          <span>Cosmic</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Location Modal -->
+  <div class="world-map-modal" id="worldMapModal">
+    <div class="modal-content">
+      <span class="modal-close" onclick="closeWorldMapModal()">&times;</span>
+      <h2 id="modalTitle" style="font-family: 'Orbitron', sans-serif; text-align: center;"></h2>
+      <div class="location-heroes" id="locationHeroes">
+        <!-- Heroes will be loaded here -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Reality Shift Overlay -->
+  <div class="reality-shift" id="realityShift"></div>
+
+  <script src="/static/js/main.js"></script>
+  <script>
+    // Location heroes data
+    const locationHeroes = {
+      'wakanda': [
+        { name: 'Black Panther', category: 'Wakanda', image: 'black panther.jpg' },
+        { name: 'Shuri', category: 'Wakanda', image: 'shuri.jpg' },
+        { name: 'Namor', category: 'Wakanda', image: 'namor.jpg' },
+        { name: 'M\'Baku', category: 'Wakanda', image: 'm-baku.jpg' }
+      ],
+      'new-york': [
+        { name: 'Iron Man', category: 'Avengers', image: 'Iron-Man.jpg' },
+        { name: 'Spider-Man', category: 'Spider-Man', image: 'spider-man.jpg' },
+        { name: 'Doctor Strange', category: 'Mystic', image: 'doctor strange.jpg' },
+        { name: 'Captain America', category: 'Avengers', image: 'captain america.jpg' }
+      ],
+      'tokyo': [
+        { name: 'Gojo Satoru', category: 'Anime', image: 'gojo-satoru.jpg' },
+        { name: 'Yuji Itadori', category: 'Anime', image: 'yuji-itadori.jpg' },
+        { name: 'Tanjiro Kamado', category: 'Anime', image: 'tanjiro-kamado.jpg' },
+        { name: 'Sung Jin-Woo', category: 'Anime', image: 'sung-jin-woo.jpg' }
+      ],
+      'hyderabad': [
+        { name: 'Prabhas', category: 'Telugu', image: 'prabhas.jpg' },
+        { name: 'Allu Arjun', category: 'Telugu', image: 'allu-arjun.jpg' },
+        { name: 'Ram Charan', category: 'Telugu', image: 'ram-charan.jpg' },
+        { name: 'Mahesh Babu', category: 'Telugu', image: 'mahesh-babu.jpg' }
+      ],
+      'asgard': [
+        { name: 'Thor', category: 'Asgard', image: 'thor.jpg' },
+        { name: 'Loki', category: 'Villains', image: 'loki.jpg' },
+        { name: 'King Valkyrie', category: 'Asgard', image: 'valkyrie.jpg' },
+        { name: 'Jane Foster', category: 'Asgard', image: 'jane-foster.jpg' }
+      ],
+      'guardian': [
+        { name: 'Star-Lord', category: 'Guardians', image: 'star-lord.jpg' },
+        { name: 'Gamora', category: 'Guardians', image: 'gamora.jpg' },
+        { name: 'Rocket', category: 'Guardians', image: 'rocket.jpg' },
+        { name: 'Groot', category: 'Guardians', image: 'groot.jpg' }
+      ]
+    };
+
+    function showLocationHeroes(location) {
+      const heroes = locationHeroes[location] || [];
+      const modal = document.getElementById('worldMapModal');
+      const title = document.getElementById('modalTitle');
+      const heroesContainer = document.getElementById('locationHeroes');
+
+      // Set title
+      const locationNames = {
+        'wakanda': '🦸 WAKANDA',
+        'new-york': '🗽 NEW YORK',
+        'tokyo': '🏯 TOKYO',
+        'hyderabad': '🎬 HYDERABAD',
+        'asgard': '⚡ ASGARD',
+        'guardian': '🌌 KNOWHERE'
+      };
+      title.textContent = locationNames[location] || location.toUpperCase();
+
+      // Render heroes
+      heroesContainer.innerHTML = heroes.map(hero => `
+        <div class="location-hero-card" onclick="navigateToHero('${hero.name}')">
+          <img src="/static/assets/${hero.image}" alt="${hero.name}" onerror="this.src='https://via.placeholder.com/200x200?text=${hero.name}'">
+          <div class="location-hero-info">
+            <div class="location-hero-name">${hero.name}</div>
+            <div style="color: #aaa; font-size: 0.8rem;">${hero.category}</div>
+          </div>
+        </div>
+      `).join('');
+
+      // Show modal
+      modal.classList.add('active');
+      
+      // Trigger reality shift based on location
+      const universeMap = {
+        'wakanda': 'marvel',
+        'new-york': 'marvel',
+        'asgard': 'marvel',
+        'guardian': 'marvel',
+        'tokyo': 'anime',
+        'hyderabad': 'telugu'
+      };
+      triggerRealityShift(universeMap[location]);
+    }
+
+    function closeWorldMapModal() {
+      const modal = document.getElementById('worldMapModal');
+      modal.classList.remove('active');
+    }
+
+    // Close modal on outside click
+    document.getElementById('worldMapModal').addEventListener('click', (e) => {
+      if (e.target.classList.contains('world-map-modal')) {
+        closeWorldMapModal();
+      }
+    });
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      createParticles();
+    });
+  </script>
+</body>
+</html>

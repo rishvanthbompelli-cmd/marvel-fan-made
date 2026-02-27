@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% if category == 'marvel' %}Marvel Universe{% elif category == 'anime' %}Anime Universe{% else %}Telugu Cinema{% endif %}</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;600;700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="/static/css/universe.css">
+  <script>
+    // Theme configuration - set before page loads
+    const CATEGORY = '{{ category }}';
+    const THEME_CONFIG = {
+      marvel: { primary: '#e62429', primaryGlow: 'rgba(230, 36, 41, 0.6)' },
+      anime: { primary: '#1e90ff', primaryGlow: 'rgba(30, 144, 255, 0.6)' },
+      telugu: { primary: '#d4af37', primaryGlow: 'rgba(212, 175, 55, 0.6)' }
+    };
+    
+    // Apply theme immediately
+    (function() {
+      const theme = THEME_CONFIG[CATEGORY] || THEME_CONFIG.marvel;
+      document.documentElement.style.setProperty('--primary-color', theme.primary);
+      document.documentElement.style.setProperty('--primary-glow', theme.primaryGlow);
+      document.documentElement.style.setProperty('--card-border', theme.primaryGlow.replace('0.6', '0.3'));
+    })();
+  </script>
+</head>
+<body {% if category == 'marvel' %}class="marvel-video-bg"{% endif %}>
+  <!-- Video Background for Marvel -->
+  {% if category == 'marvel' %}
+  <div class="video-background">
+    <video autoplay muted loop playsinline>
+      <source src="{{ url_for('static', filename='assets/marvel-bg.mp4') }}" type="video/mp4">
+    </video>
+  </div>
+  <div class="video-overlay"></div>
+  {% endif %}
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="nav-brand">
+      {% if category == 'marvel' %}🦸‍♂️ MARVEL{% elif category == 'anime' %}🎌 ANIME{% else %}🎬 TELUGU{% endif %}
+    </div>
+    <button class="hamburger" onclick="toggleMenu()">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <ul class="nav-links">
+      <li><a href="{{ url_for('universe', category='marvel') }}" class="{% if category == 'marvel' %}active{% endif %}">MARVEL</a></li>
+      <li><a href="{{ url_for('universe', category='anime') }}" class="{% if category == 'anime' %}active{% endif %}">ANIME</a></li>
+      <li><a href="{{ url_for('universe', category='telugu') }}" class="{% if category == 'telugu' %}active{% endif %}">TELUGU</a></li>
+      <li><a href="{{ url_for('home') }}">Home</a></li>
+      <li><a href="#" onclick="showFavorites(); return false;">❤️ Favorites (<span id="favCount">0</span>)</a></li>
+      <li><a href="#" onclick="handleLogout(); return false;">Logout</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO HEADER -->
+  <header class="hero-header">
+    <h1 id="categoryTitle">
+      {% if category == 'marvel' %}🦸‍♂️ MARVEL HEROES
+      {% elif category == 'anime' %}🎌 ANIME HEROES
+      {% else %}🎬 TELUGU CINEMA{% endif %}
+    </h1>
+    <p>Explore your favorite characters</p>
+  </header>
+
+  <!-- FILTERS -->
+  <div class="filters-container">
+    <div class="search-box">
+      <i class="fas fa-search"></i>
+      <input type="text" id="heroSearch" placeholder="Search heroes..." onkeyup="filterHeroes()">
+    </div>
+    
+    <div class="filter-group">
+      <select id="sortFilter" onchange="filterHeroes()">
+        <option value="name-asc">Name: A-Z</option>
+        <option value="name-desc">Name: Z-A</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- HEROES GRID -->
+  <main class="container">
+    <div class="card-grid" id="heroGrid">
+      <div class="loading">Loading heroes...</div>
+    </div>
+  </main>
+
+  <!-- FAVORITES MODAL -->
+  <div id="favoritesModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeFavorites()">&times;</span>
+      <h2>❤️ My Favorites</h2>
+      <div class="card-grid" id="favoritesGrid"></div>
+    </div>
+  </div>
+
+  <!-- HERO DETAIL MODAL -->
+  <div id="heroModal" class="modal">
+    <div class="modal-content hero-detail">
+      <span class="close" onclick="closeHeroModal()">&times;</span>
+      <div class="hero-detail-grid">
+        <div class="hero-image-container">
+          <img id="modalHeroImage" src="" alt="">
+        </div>
+        <div class="hero-info">
+          <h2 id="modalHeroName"></h2>
+          <span class="category-badge" id="modalHeroCategory"></span>
+          <p id="modalHeroDesc"></p>
+          
+          <!-- Special features for different categories -->
+          <div id="specialFeatures"></div>
+          
+          <button class="fav-btn" id="modalFavBtn" onclick="toggleFavoriteFromModal()">
+            <i class="fas fa-heart"></i> Add to Favorites
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let allHeroes = [];
+    let currentHero = null;
+
+    // Load heroes on page load
+    document.addEventListener('DOMContentLoaded', async () => {
+      await loadHeroes();
+      updateFavCount();
+    });
+
+    async function loadHeroes() {
+      const grid = document.getElementById('heroGrid');
+      grid.innerHTML = '<div class="loading">Loading heroes...</div>';
+      
+      try {
+        const response = await fetch(`/category-heroes/${CATEGORY}`, {
+          credentials: 'include'
+        });
+        allHeroes = await response.json();
+        
+        if (allHeroes.length === 0) {
+          grid.innerHTML = '<div class="no-results">No heroes found</div>';
+          return;
+        }
+        
+        renderHeroes(allHeroes);
+      } catch (error) {
+        console.error('Error loading heroes:', error);
+        grid.innerHTML = '<div class="error">Error loading heroes</div>';
+      }
+    }
+
+    function renderHeroes(heroes) {
+      const grid = document.getElementById('heroGrid');
+      
+      grid.innerHTML = heroes.map(hero => {
+        const slug = hero.name.toLowerCase().replace(/\s+/g, '-');
+        const imageSrc = getHeroImage(hero.name);
+        const isFav = isFavorite(hero.name);
+        
+        return `
+          <article class="card" onclick="openHeroModal('${hero.name}')">
+            <div class="card-image">
+              <img src="${imageSrc}" alt="${hero.name}" loading="lazy" onerror="this.src='/static/assets/Iron-Man.jpg'">
+              <button class="fav-icon ${isFav ? 'active' : ''}" onclick="event.stopPropagation(); toggleFavorite('${hero.name}')">
+                <i class="fas fa-heart"></i>
+              </button>
+            </div>
+            <div class="card-content">
+              <h3>${hero.name}</h3>
+              <span class="category-badge">${hero.category || CATEGORY}</span>
+            </div>
+          </article>
+        `;
+      }).join('');
+    }
+
+    function getHeroImage(heroName) {
+      const imageMap = {
+        'Iron Man': '/static/assets/Iron-Man.jpg',
+        'Captain America': '/static/assets/captain america.jpg',
+        'Thor': '/static/assets/thor.jpg',
+        'Hulk': '/static/assets/hulk.jpg',
+        'Black Widow': '/static/assets/black widow.jpg',
+        'Hawkeye': '/static/assets/hawkeye.jpg',
+        'Scarlet Witch': '/static/assets/scarlet witch.jpg',
+        'Vision': '/static/assets/vision.jpg',
+        'Falcon': '/static/assets/falcon.jpg',
+        'Winter Soldier': '/static/assets/winter soldier.jpg',
+        'War Machine': '/static/assets/war machine.jpg',
+        'Ant-Man': '/static/assets/ant-man.jpg',
+        'Wasp': '/static/assets/wasp.jpg',
+        'Star-Lord': '/static/assets/star-lord.jpg',
+        'Gamora': '/static/assets/gamora.jpg',
+        'Drax': '/static/assets/drax.jpg',
+        'Rocket': '/static/assets/rocket.jpg',
+        'Groot': '/static/assets/groot.jpg',
+        'Mantis': '/static/assets/mantis.jpg',
+        'Nebula': '/static/assets/nebula.jpg',
+        'Wolverine': '/static/assets/wolverine.jpg',
+        'Professor X': '/static/assets/professor x.jpg',
+        'Magneto': '/static/assets/magneto.jpg',
+        'Deadpool': '/static/assets/deapool.jpg',
+        'Storm': '/static/assets/storm.jpg',
+        'Quicksilver': '/static/assets/quicksilver.jpg',
+        'Thanos': '/static/assets/thanos.jpg',
+        'Loki': '/static/assets/loki.jpg',
+        'Ultron': '/static/assets/ultron.jpg',
+        'Venom': '/static/assets/venom.jpg',
+        'Green Goblin': '/static/assets/green goblin.jpg',
+        'Doctor Octopus': '/static/assets/doctor octopus.jpg',
+        'Spider-Man': '/static/assets/spider-man.jpg',
+        'Black Panther': '/static/assets/black panther.jpg',
+        'Captain Marvel': '/static/assets/captain marvel.jpg',
+        'Doctor Strange': '/static/assets/doctor strange.jpg',
+        'Gojo Satoru': '/static/assets/gojo.jpg',
+        'Yuji Itadori': '/static/assets/yuji.jpg',
+        'Sung Jin-Woo': '/static/assets/sungjinwoo.jpg',
+        'Tanjiro Kamado': '/static/assets/tanjiro.jpg',
+        'Eren Yeager': '/static/assets/eren.jpg',
+        'Prabhas': '/static/assets/prabhas.jpg',
+        'Allu Arjun': '/static/assets/alluarjun.jpg',
+        'Ram Charan': '/static/assets/ramcharan.jpg',
+        'NTR Jr': '/static/assets/ntrjr.jpg',
+        'Mahesh Babu': '/static/assets/maheshbabu.jpg'
+      };
+      
+      return imageMap[heroName] || '/static/assets/Iron-Man.jpg';
+    }
+
+    function filterHeroes() {
+      const query = document.getElementById('heroSearch').value.toLowerCase();
+      const sort = document.getElementById('sortFilter').value;
+      
+      let filtered = allHeroes.filter(hero => 
+        hero.name.toLowerCase().includes(query)
+      );
+      
+      // Sort
+      if (sort === 'name-asc') {
+        filtered.sort((a, b) => a.name.localeCompare(b.name));
+      } else {
+        filtered.sort((a, b) => b.name.localeCompare(a.name));
+      }
+      
+      renderHeroes(filtered);
+    }
+
+    // Favorites management
+    function getFavorites() {
+      return JSON.parse(localStorage.getItem('favorites') || '[]');
+    }
+
+    function saveFavorites(favorites) {
+      localStorage.setItem('favorites', JSON.stringify(favorites));
+    }
+
+    function isFavorite(heroName) {
+      return getFavorites().includes(heroName);
+    }
+
+    function toggleFavorite(heroName) {
+      const favorites = getFavorites();
+      const index = favorites.indexOf(heroName);
+      
+      if (index > -1) {
+        favorites.splice(index, 1);
+      } else {
+        favorites.push(heroName);
+      }
+      
+      saveFavorites(favorites);
+      renderHeroes(allHeroes); // Re-render to update heart icons
+      updateFavCount();
+      
+      // Also sync with backend
+      syncFavoriteWithBackend(heroName, index === -1);
+    }
+
+    async function syncFavoriteWithBackend(heroName, isAdding) {
+      try {
+        await fetch('/toggle-favorite', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ heroName, action: isAdding ? 'add' : 'remove' }),
+          credentials: 'include'
+        });
+      } catch (error) {
+        console.error('Error syncing favorite:', error);
+      }
+    }
+
+    function updateFavCount() {
+      document.getElementById('favCount').textContent = getFavorites().length;
+    }
+
+    async function showFavorites() {
+      const modal = document.getElementById('favoritesModal');
+      const grid = document.getElementById('favoritesGrid');
+      modal.style.display = 'block';
+      
+      const favorites = getFavorites();
+      
+      if (favorites.length === 0) {
+        grid.innerHTML = '<div class="no-results">No favorites yet. Click the heart icon on any hero to add them!</div>';
+        return;
+      }
+      
+      // Get hero details from allHeroes
+      const favHeroes = allHeroes.filter(h => favorites.includes(h.name));
+      
+      grid.innerHTML = favHeroes.map(hero => {
+        const slug = hero.name.toLowerCase().replace(/\s+/g, '-');
+        const imageSrc = getHeroImage(hero.name);
+        
+        return `
+          <article class="card" onclick="closeFavorites(); openHeroModal('${hero.name}')">
+            <div class="card-image">
+              <img src="${imageSrc}" alt="${hero.name}" loading="lazy" onerror="this.src='/static/assets/Iron-Man.jpg'">
+            </div>
+            <div class="card-content">
+              <h3>${hero.name}</h3>
+              <span class="category-badge">${hero.category || CATEGORY}</span>
+            </div>
+          </article>
+        `;
+      }).join('');
+    }
+
+    function closeFavorites() {
+      document.getElementById('favoritesModal').style.display = 'none';
+    }
+
+    // Hero Modal
+    async function openHeroModal(heroName) {
+      const modal = document.getElementById('heroModal');
+      const hero = allHeroes.find(h => h.name === heroName);
+      
+      if (!hero) return;
+      
+      currentHero = hero;
+      
+      document.getElementById('modalHeroName').textContent = hero.name;
+      document.getElementById('modalHeroImage').src = getHeroImage(hero.name);
+      document.getElementById('modalHeroCategory').textContent = hero.category || CATEGORY;
+      document.getElementById('modalHeroDesc').textContent = hero.description || `Meet ${hero.name} from the ${CATEGORY} universe!`;
+      
+      // Update favorite button
+      const isFav = isFavorite(heroName);
+      const favBtn = document.getElementById('modalFavBtn');
+      favBtn.innerHTML = isFav ? '<i class="fas fa-heart"></i> Remove from Favorites' : '<i class="fas fa-heart"></i> Add to Favorites';
+      favBtn.classList.toggle('active', isFav);
+      
+      // Add special features based on category
+      let specialHtml = '';
+      
+      if (CATEGORY === 'anime') {
+        const powerLevel = Math.floor(Math.random() * 40) + 60;
+        specialHtml = `
+          <div class="special-section anime-power">
+            <h4>⚡ Power Level</h4>
+            <div class="power-bar">
+              <div class="power-fill" style="width: ${powerLevel}%"></div>
+            </div>
+          </div>
+          <div class="special-section anime-abilities">
+            <h4>🎯 Abilities</h4>
+            <ul class="abilities-list">
+              <li>Super Strength</li>
+              <li>Speed</li>
+              <li>Special Technique</li>
+            </ul>
+          </div>
+        `;
+      } else if (CATEGORY === 'telugu') {
+        const boxOffice = ['🔥 Industry Hit', '💥 Blockbuster', '⭐ Super Hit', '🎬 Century'];
+        specialHtml = `
+          <div class="special-section telugu-boxoffice">
+            <h4>💰 Box Office Status</h4>
+            <span class="boxoffice-badge">${boxOffice[Math.floor(Math.random() * boxOffice.length)]}</span>
+          </div>
+          <div class="special-section telugu-movies">
+            <h4>🎬 Notable Films</h4>
+            <ul class="movies-list">
+              <li>Major Hit (2023)</li>
+              <li>Blockbuster (2021)</li>
+              <li>Industry Hit (2019)</li>
+            </ul>
+          </div>
+        `;
+      }
+      
+      document.getElementById('specialFeatures').innerHTML = specialHtml;
+      
+      modal.style.display = 'block';
+    }
+
+    function closeHeroModal() {
+      document.getElementById('heroModal').style.display = 'none';
+    }
+
+    function toggleFavoriteFromModal() {
+      if (currentHero) {
+        toggleFavorite(currentHero.name);
+        openHeroModal(currentHero.name); // Refresh modal
+      }
+    }
+
+    function handleLogout() {
+      window.location.href = '/logout';
+    }
+
+    function toggleMenu() {
+      document.querySelector('.nav-links').classList.toggle('active');
+    }
+
+    // Close modals on outside click
+    window.onclick = function(event) {
+      if (event.target.classList.contains('modal')) {
+        event.target.style.display = 'none';
+      }
+    }
+  </script>
+</body>
+</html>

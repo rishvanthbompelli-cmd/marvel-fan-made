@@ -3,217 +3,537 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Marvel Universe - {{ hero_name }}</title>
-  <link rel="stylesheet" href="/static/css/hero.css" />
-  <link rel="stylesheet" href="/static/css/hero_detail.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <title>🌌 {{ hero_name }} - Multiverse Hub</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;600;700&family=Montserrat:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="/static/css/main.css">
+  <style>
+    /* Hero Detail Specific Styles */
+    .hero-detail-page {
+      min-height: 100vh;
+      padding-top: 80px;
+    }
+
+    .hero-banner {
+      position: relative;
+      width: 100%;
+      height: 60vh;
+      overflow: hidden;
+    }
+
+    .hero-banner img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(0.7);
+    }
+
+    .hero-banner-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.3) 0%,
+        rgba(0, 0, 0, 0.6) 50%,
+        rgba(0, 0, 0, 0.95) 100%
+      );
+    }
+
+    .hero-banner-content {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      padding: 3rem;
+    }
+
+    .hero-detail-name {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 4rem;
+      font-weight: 900;
+      color: #fff;
+      text-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+      animation: nameReveal 1s ease-out;
+    }
+
+    @keyframes nameReveal {
+      0% {
+        opacity: 0;
+        transform: translateX(-50px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .hero-detail-category {
+      display: inline-block;
+      padding: 0.5rem 1.5rem;
+      background: var(--universe-primary, #e62429);
+      border-radius: 30px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.9rem;
+      color: #fff;
+      margin-top: 1rem;
+    }
+
+    .hero-detail-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+    }
+
+    .hero-main-info {
+      padding: 2rem;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .hero-description {
+      font-size: 1.1rem;
+      line-height: 1.8;
+      color: #ccc;
+      margin-bottom: 2rem;
+    }
+
+    .hero-stats-panel {
+      padding: 2rem;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .stats-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.3rem;
+      margin-bottom: 1.5rem;
+      color: var(--universe-primary, #e62429);
+    }
+
+    .stat-row {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .stat-label {
+      width: 120px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.9rem;
+      color: #aaa;
+    }
+
+    .stat-bar-container {
+      flex: 1;
+      height: 15px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .stat-bar {
+      height: 100%;
+      border-radius: 10px;
+      transition: width 1s ease-out;
+    }
+
+    .stat-value {
+      width: 40px;
+      text-align: right;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.9rem;
+      color: #fff;
+    }
+
+    /* Movies Section */
+    .movies-section {
+      grid-column: 1 / -1;
+      padding: 2rem;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .movies-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+      color: var(--universe-primary, #e62429);
+    }
+
+    .movies-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1rem;
+    }
+
+    .movie-item {
+      padding: 1rem;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      font-size: 0.9rem;
+      color: #ccc;
+      transition: all 0.3s;
+    }
+
+    .movie-item:hover {
+      background: var(--universe-primary, #e62429);
+      color: #fff;
+      transform: translateX(10px);
+    }
+
+    /* Action Buttons */
+    .action-buttons {
+      display: flex;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .action-btn {
+      padding: 1rem 2rem;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1rem;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .favorite-btn {
+      background: linear-gradient(135deg, #e62429, #ff6b6b);
+      color: #fff;
+    }
+
+    .favorite-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 10px 30px rgba(230, 36, 41, 0.4);
+    }
+
+    .favorite-btn.active {
+      background: linear-gradient(135deg, #ff6b6b, #e62429);
+      animation: heartBeat 0.5s ease;
+    }
+
+    @keyframes heartBeat {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+    }
+
+    .compare-btn {
+      background: rgba(255, 255, 255, 0.1);
+      border: 2px solid var(--universe-primary, #e62429);
+      color: #fff;
+    }
+
+    .compare-btn:hover {
+      background: var(--universe-primary, #e62429);
+    }
+
+    .back-btn {
+      position: absolute;
+      top: 100px;
+      left: 2rem;
+      padding: 0.8rem 1.5rem;
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 30px;
+      color: #fff;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.3s;
+      z-index: 10;
+    }
+
+    .back-btn:hover {
+      background: var(--universe-primary, #e62429);
+      transform: translateX(-10px);
+    }
+
+    /* Related Heroes */
+    .related-section {
+      grid-column: 1 / -1;
+      padding: 2rem;
+      margin-top: 2rem;
+    }
+
+    .related-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .related-heroes {
+      display: flex;
+      gap: 1rem;
+      overflow-x: auto;
+      padding: 1rem 0;
+    }
+
+    .related-card {
+      min-width: 180px;
+      border-radius: 15px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .related-card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .related-card img {
+      width: 180px;
+      height: 220px;
+      object-fit: cover;
+    }
+
+    .related-card-name {
+      padding: 0.8rem;
+      background: rgba(0, 0, 0, 0.8);
+      text-align: center;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 768px) {
+      .hero-detail-content {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-detail-name {
+        font-size: 2.5rem;
+      }
+
+      .hero-banner {
+        height: 40vh;
+      }
+
+      .action-buttons {
+        flex-direction: column;
+      }
+    }
+  </style>
 </head>
-<body>
-  <!-- NAVBAR -->
+<body data-theme="dark" data-universe="marvel">
+  <!-- Navbar -->
   <nav class="navbar">
-    <div class="nav-brand">🦸‍♂️ MARVEL</div>
+    <div class="nav-brand" id="navBrand" onclick="window.location.href='/'">🌌 MULTIVERSE HUB</div>
     <button class="hamburger" onclick="toggleMenu()">
       <span></span>
       <span></span>
       <span></span>
     </button>
     <ul class="nav-links">
-      <li><a href="/hero">Home</a></li>
+      <li><a href="/">Home</a></li>
+      <li><a href="/universe/marvel">Marvel</a></li>
+      <li><a href="/universe/anime">Anime</a></li>
+      <li><a href="/universe/telugu">Telugu</a></li>
+      <li><a href="/compare">Compare</a></li>
+      <li><a href="/world">World Map</a></li>
       <li><a href="/timeline">Timeline</a></li>
-      <li><a href="#" onclick="showFavorites(); return false;">❤️ My Favorites</a></li>
-      <li><a href="#" onclick="handleLogout(); return false;">Logout</a></li>
     </ul>
+    <div class="theme-toggle dark" id="themeToggle" onclick="toggleTheme()"></div>
   </nav>
 
-  <!-- HERO DETAIL CONTENT -->
-  <main class="hero-detail-container">
-    <div class="hero-detail-card">
-      <!-- Back Button -->
-      <a href="/hero" class="back-btn">
-        <i class="fas fa-arrow-left"></i> Back to Heroes
-      </a>
+  <!-- Particles Background -->
+  <div class="particles"></div>
 
-      <!-- Hero Image -->
-      <div class="hero-image-section">
-        <img src="{{ hero_image }}" alt="{{ hero_name }}" class="hero-large-image" 
-             onerror="this.src='/static/assets/Iron-Man.jpg'">
+  <!-- Hero Detail Page -->
+  <div class="hero-detail-page">
+    <!-- Back Button -->
+    <a href="javascript:history.back()" class="back-btn">
+      <i class="fas fa-arrow-left"></i> Back
+    </a>
+
+    <!-- Hero Banner -->
+    <div class="hero-banner">
+      <img src="{{ hero_image }}" alt="{{ hero_name }}" onerror="this.src='/static/assets/Iron-Man.jpg'">
+      <div class="hero-banner-overlay"></div>
+      <div class="hero-banner-content">
+        <h1 class="hero-detail-name">{{ hero_name }}</h1>
+        <span class="hero-detail-category">{{ hero_data.category }}</span>
       </div>
+    </div>
 
-      <!-- Hero Info -->
-      <div class="hero-info">
-        <h1 class="hero-name">{{ hero_name }}</h1>
-        <span class="hero-category">{{ hero_data.category }}</span>
-        
+    <!-- Hero Content -->
+    <div class="hero-detail-content">
+      <!-- Main Info -->
+      <div class="hero-main-info">
+        <h2 style="font-family: 'Orbitron', sans-serif; margin-bottom: 1rem;">ABOUT</h2>
         <p class="hero-description">{{ hero_data.description }}</p>
-
-        <!-- Movies Section -->
-        <div class="movies-section">
-          <h3><i class="fas fa-film"></i> Movies & Appearances</h3>
-          <ul class="movies-list">
-            {% for movie in hero_data.movies %}
-            <li>{{ movie }}</li>
-            {% endfor %}
-          </ul>
-        </div>
 
         <!-- Action Buttons -->
         <div class="action-buttons">
-          <button id="favoriteBtn" class="favorite-btn" onclick="toggleFavorite()">
+          <button id="favoriteBtn" class="action-btn favorite-btn" onclick="toggleFavorite('{{ hero_name }}')">
             <i class="fas fa-heart"></i> Add to Favorites
           </button>
-          <button id="removeBtn" class="remove-btn" onclick="removeFromFavorites()" style="display: none;">
-            <i class="fas fa-heart-broken"></i> Remove from Favorites
+          <button class="action-btn compare-btn" onclick="goToCompare('{{ hero_name }}')">
+            <i class="fas fa-balance-scale"></i> Compare
           </button>
         </div>
-        <p id="favoriteMsg" class="favorite-message"></p>
+      </div>
+
+      <!-- Stats Panel -->
+      <div class="hero-stats-panel">
+        <h3 class="stats-title">⚡ POWER STATS</h3>
+        <div id="statsContainer">
+          <!-- Stats will be populated by JavaScript -->
+        </div>
+      </div>
+
+      <!-- Movies Section -->
+      <div class="movies-section">
+        <h3 class="movies-title">🎬 Movies & Appearances</h3>
+        <div class="movies-grid">
+          {% for movie in hero_data.movies %}
+          <div class="movie-item">{{ movie }}</div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Related Heroes -->
+      <div class="related-section">
+        <h3 class="related-title">🔥 EXPLORE MORE</h3>
+        <div class="related-heroes" id="relatedHeroes">
+          <!-- Related heroes will be loaded by JavaScript -->
+        </div>
       </div>
     </div>
-  </main>
+  </div>
 
-  <!-- FAVORITES MODAL -->
-  <dialog id="favoritesModal" class="modal">
-    <div class="modal-content">
-      <button class="modal-close" onclick="closeFavoritesModal()">&times;</button>
-      <h2 style="color: #e50914;">❤️ My Favorites</h2>
-      <div id="favoritesList" style="margin-top: 1rem; text-align: left;"></div>
-    </div>
-  </dialog>
+  <!-- Reality Shift Overlay -->
+  <div class="reality-shift" id="realityShift"></div>
 
+  <script src="/static/js/main.js"></script>
   <script>
-    let currentHeroName = "{{ hero_name }}";
-    let userFavorites = [];
+    // Hero stats database
+    const heroStats = {
+      'Iron Man': { power: 95, intelligence: 98, speed: 70, strength: 75, combat: 85 },
+      'Captain America': { power: 80, intelligence: 85, speed: 65, strength: 90, combat: 95 },
+      'Thor': { power: 98, intelligence: 75, speed: 85, strength: 98, combat: 80 },
+      'Hulk': { power: 100, intelligence: 60, speed: 60, strength: 100, combat: 70 },
+      'Spider-Man': { power: 85, intelligence: 90, speed: 90, strength: 70, combat: 88 },
+      'Doctor Strange': { power: 95, intelligence: 98, speed: 60, strength: 50, combat: 75 },
+      'Black Panther': { power: 85, intelligence: 90, speed: 75, strength: 80, combat: 90 },
+      'Thanos': { power: 100, intelligence: 95, speed: 70, strength: 100, combat: 90 },
+      'Loki': { power: 90, intelligence: 92, speed: 80, strength: 70, combat: 85 },
+      'Deadpool': { power: 75, intelligence: 80, speed: 85, strength: 70, combat: 90 },
+      'Wolverine': { power: 80, intelligence: 75, speed: 75, strength: 85, combat: 95 },
+      'Gojo Satoru': { power: 99, intelligence: 95, speed: 90, strength: 75, combat: 92 },
+      'Prabhas': { power: 85, intelligence: 80, speed: 75, strength: 85, combat: 80 },
+      'Allu Arjun': { power: 80, intelligence: 78, speed: 80, strength: 75, combat: 82 },
+      'Ram Charan': { power: 82, intelligence: 80, speed: 78, strength: 80, combat: 85 }
+    };
 
-    // Hamburger menu toggle
-    function toggleMenu() {
-      document.querySelector('.nav-links').classList.toggle('active');
+    const heroName = '{{ hero_name }}';
+    const stats = heroStats[heroName] || { power: 75, intelligence: 75, speed: 70, strength: 70, combat: 75 };
+
+    // Determine universe based on category
+    const category = '{{ hero_data.category }}';
+    let universe = 'marvel';
+    if (category === 'Anime') universe = 'anime';
+    if (category === 'Telugu') universe = 'telugu';
+    
+    document.body.setAttribute('data-universe', universe);
+    
+    // Set theme color based on universe
+    const colors = {
+      marvel: '#e62429',
+      anime: '#1e90ff',
+      telugu: '#d4af37'
+    };
+    document.documentElement.style.setProperty('--universe-primary', colors[universe]);
+
+    // Render stats
+    const statsContainer = document.getElementById('statsContainer');
+    const statLabels = {
+      power: 'Power',
+      intelligence: 'Intelligence',
+      speed: 'Speed',
+      strength: 'Strength',
+      combat: 'Combat'
+    };
+
+    statsContainer.innerHTML = Object.entries(stats).map(([key, value]) => `
+      <div class="stat-row">
+        <div class="stat-label">${statLabels[key]}</div>
+        <div class="stat-bar-container">
+          <div class="stat-bar" style="width: ${value}%; background: linear-gradient(90deg, ${colors[universe]}, ${colors[universe]}88);"></div>
+        </div>
+        <div class="stat-value">${value}</div>
+      </div>
+    `).join('');
+
+    // Track hero click
+    trackHeroClick(heroName, category);
+
+    // Check if hero is in favorites
+    checkFavoriteStatus(heroName);
+
+    function checkFavoriteStatus(heroName) {
+      fetch('/favorites')
+        .then(res => res.json())
+        .then(data => {
+          if (data.success && data.favorites.includes(heroName)) {
+            const btn = document.getElementById('favoriteBtn');
+            btn.innerHTML = '<i class="fas fa-heart"></i> In Favorites';
+            btn.classList.add('active');
+          }
+        });
     }
 
-    // Load user favorites
-    async function loadFavorites() {
-      try {
-        const response = await fetch('/favorites');
-        const data = await response.json();
-        if (data.success) {
-          userFavorites = data.favorites || [];
-          updateFavoriteButtons();
-        }
-      } catch (e) {
-        console.log('Could not load favorites');
-      }
-    }
-
-    function updateFavoriteButtons() {
-      const isFavorite = userFavorites.includes(currentHeroName);
-      const favoriteBtn = document.getElementById('favoriteBtn');
-      const removeBtn = document.getElementById('removeBtn');
-      
-      if (isFavorite) {
-        favoriteBtn.style.display = 'none';
-        removeBtn.style.display = 'inline-flex';
+    function toggleFavorite(heroName) {
+      const btn = document.getElementById('favoriteBtn');
+      if (btn.classList.contains('active')) {
+        removeFromFavorites(heroName);
+        btn.innerHTML = '<i class="fas fa-heart"></i> Add to Favorites';
+        btn.classList.remove('active');
       } else {
-        favoriteBtn.style.display = 'inline-flex';
-        removeBtn.style.display = 'none';
+        addToFavorites(heroName);
+        btn.innerHTML = '<i class="fas fa-heart"></i> In Favorites';
+        btn.classList.add('active');
       }
     }
 
-    async function toggleFavorite() {
-      try {
-        const response = await fetch('/favorites', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ heroName: currentHeroName })
-        });
-        const data = await response.json();
-        
-        if (data.success) {
-          userFavorites = data.favorites;
-          updateFavoriteButtons();
-          document.getElementById('favoriteMsg').textContent = data.message;
-        }
-      } catch (e) {
-        alert('Failed to add to favorites');
-      }
+    function goToCompare(heroName) {
+      window.location.href = `/compare?hero=${encodeURIComponent(heroName)}`;
     }
 
-    async function removeFromFavorites() {
-      try {
-        const response = await fetch('/favorites/remove', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ heroName: currentHeroName })
-        });
-        const data = await response.json();
-        
-        if (data.success) {
-          userFavorites = data.favorites;
-          updateFavoriteButtons();
-          document.getElementById('favoriteMsg').textContent = data.message;
-        }
-      } catch (e) {
-        alert('Failed to remove from favorites');
-      }
-    }
-
-    async function showFavorites() {
-      await loadFavorites();
-      
-      const favoritesList = document.getElementById('favoritesList');
-      
-      if (userFavorites.length === 0) {
-        favoritesList.innerHTML = '<p style="color: #888; text-align: center;">No favorites yet! Click on a hero and add them to your favorites.</p>';
-      } else {
-        favoritesList.innerHTML = userFavorites.map(hero => `
-          <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.5rem; background: rgba(229, 9, 20, 0.1); border-radius: 8px; margin-bottom: 0.5rem;">
-            <a href="/hero/${hero.toLowerCase().replace(/\\s+/g, '-')}" style="color: #fff; text-decoration: none; flex: 1;">${hero}</a>
-            <button onclick="removeFav('${hero}')" style="background: #ff4444; border: none; color: white; padding: 0.3rem 0.8rem; border-radius: 5px; cursor: pointer;">❌</button>
-          </div>
-        `).join('');
-      }
-      
-      document.getElementById('favoritesModal').showModal();
-    }
-
-    async function removeFav(name) {
-      try {
-        const response = await fetch('/favorites/remove', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ heroName: name })
-        });
-        const data = await response.json();
-        if (data.success) {
-          userFavorites = data.favorites;
-          showFavorites();
-        }
-      } catch (e) {
-        console.log('Failed to remove');
-      }
-    }
-
-    function closeFavoritesModal() {
-      document.getElementById('favoritesModal').close();
-    }
-
-    // Close modal on backdrop click
-    document.getElementById('favoritesModal').addEventListener('click', function(e) {
-      if (e.target === this) {
-        closeFavoritesModal();
-      }
+    // Load related heroes
+    document.addEventListener('DOMContentLoaded', () => {
+      createParticles();
+      loadRelatedHeroes();
     });
 
-    // Logout
-    async function handleLogout() {
-      try {
-        await fetch('/logout', { method: 'POST' });
-        localStorage.removeItem('marvelUser');
-        window.location.href = '/';
-      } catch (e) {
-        console.log('Logout failed');
-      }
+    function loadRelatedHeroes() {
+      fetch(`/category-heroes/${universe}`)
+        .then(res => res.json())
+        .then(heroes => {
+          // Filter out current hero and get random 5
+          const related = heroes.filter(h => h.name !== heroName).slice(0, 5);
+          const container = document.getElementById('relatedHeroes');
+          
+          container.innerHTML = related.map(hero => `
+            <div class="related-card" onclick="navigateToHero('${hero.name}')">
+              <img src="${hero.image}" alt="${hero.name}" onerror="this.src='https://via.placeholder.com/180x220'">
+              <div class="related-card-name">${hero.name}</div>
+            </div>
+          `).join('');
+        });
     }
-
-    // Load favorites on page load
-    loadFavorites();
   </script>
 </body>
 </html>

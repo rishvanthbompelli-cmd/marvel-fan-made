@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🌌 Multiverse Hub - Enter Your Favorite Universe</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;600;700&family=Montserrat:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="/static/css/main.css">
+  <style>
+    /* Additional landing page styles */
+    .landing-container {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #0a0a0a 100%);
+    }
+
+    .title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 4rem;
+      font-weight: 900;
+      text-align: center;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(90deg, #fff, #e62429, #1e90ff, #d4af37);
+      background-size: 300% 300%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: gradient-shift 5s ease infinite;
+    }
+
+    @keyframes gradient-shift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .subtitle {
+      font-size: 1.5rem;
+      color: #aaa;
+      text-align: center;
+      margin-bottom: 3rem;
+      font-weight: 300;
+      letter-spacing: 2px;
+    }
+
+    .nav-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(10, 10, 10, 0.9);
+      backdrop-filter: blur(10px);
+      z-index: 100;
+    }
+
+    .nav-brand {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: var(--universe-primary, #e62429);
+    }
+
+    .theme-toggle {
+      position: relative;
+      width: 60px;
+      height: 30px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 30px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .theme-toggle::before {
+      content: '🌙';
+      position: absolute;
+      top: 50%;
+      left: 5px;
+      transform: translateY(-50%);
+      font-size: 1rem;
+      transition: left 0.3s;
+    }
+
+    .theme-toggle.dark::before {
+      content: '☀️';
+      left: 35px;
+    }
+
+    /* Quick Links Section */
+    .quick-links {
+      display: flex;
+      gap: 1rem;
+      margin-top: 2rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .quick-link {
+      padding: 0.8rem 1.5rem;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 30px;
+      color: #fff;
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+
+    .quick-link:hover {
+      background: var(--universe-primary, #e62429);
+      transform: translateY(-3px);
+    }
+
+    @media (max-width: 768px) {
+      .title {
+        font-size: 2.5rem;
+      }
+      
+      .subtitle {
+        font-size: 1rem;
+      }
+      
+      .nav-links {
+        display: none;
+      }
+      
+      .portals-container {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  </style>
+</head>
+<body data-theme="dark" data-universe="marvel">
+  <!-- Navbar -->
+  <nav class="nav-bar">
+    <div class="nav-brand" id="navBrand">🌌 MULTIVERSE HUB</div>
+    <ul class="nav-links">
+      <li><a href="{{ url_for('universe', category='marvel') }}">Marvel</a></li>
+      <li><a href="{{ url_for('universe', category='anime') }}">Anime</a></li>
+      <li><a href="{{ url_for('universe', category='telugu') }}">Telugu</a></li>
+      <li><a href="{{ url_for('compare') }}">Compare</a></li>
+      <li><a href="{{ url_for('world') }}">World Map</a></li>
+    </ul>
+    <div class="theme-toggle dark" id="themeToggle" onclick="toggleTheme()"></div>
+  </nav>
+
+  <!-- Cinematic Intro Overlay -->
+  <div class="intro-overlay" id="introOverlay">
+    <div class="intro-particles" id="introParticles"></div>
+    <h1 class="intro-text">The Multiverse Is Expanding...</h1>
+    <div class="intro-portals">
+      <button class="intro-portal-btn marvel" onclick="navigateToUniverse('marvel')">
+        <i class="icon">🦸</i>
+        <span class="label">Marvel<br>Universe</span>
+      </button>
+      <button class="intro-portal-btn anime" onclick="navigateToUniverse('anime')">
+        <i class="icon">🎌</i>
+        <span class="label">Anime<br>Universe</span>
+      </button>
+      <button class="intro-portal-btn telugu" onclick="navigateToUniverse('telugu')">
+        <i class="icon">🎬</i>
+        <span class="label">Telugu<br>Cinema</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Reality Shift Overlay -->
+  <div class="reality-shift" id="realityShift"></div>
+
+  <!-- Particles Background -->
+  <div class="particles"></div>
+
+  <!-- Main Content -->
+  <div class="landing-container">
+    <h1 class="title">MULTIVERSE HUB</h1>
+    <p class="subtitle">Explore the Infinite Dimensions of Entertainment</p>
+
+    <!-- Portal Buttons -->
+    <div class="portals-container">
+      <a href="{{ url_for('universe', category='marvel') }}" class="portal-btn marvel" onclick="navigateToUniverse('marvel'); return false;">
+        <i class="icon">🦸</i>
+        <span class="label">Marvel Universe</span>
+      </a>
+      <a href="{{ url_for('universe', category='anime') }}" class="portal-btn anime" onclick="navigateToUniverse('anime'); return false;">
+        <i class="icon">🎌</i>
+        <span class="label">Anime Universe</span>
+      </a>
+      <a href="{{ url_for('universe', category='telugu') }}" class="portal-btn telugu" onclick="navigateToUniverse('telugu'); return false;">
+        <i class="icon">🎬</i>
+        <span class="label">Telugu Cinema</span>
+      </a>
+    </div>
+
+    <!-- Quick Links -->
+    <div class="quick-links">
+      <a href="{{ url_for('compare') }}" class="quick-link">
+        <i class="fas fa-balance-scale"></i> Compare Heroes
+      </a>
+      <a href="{{ url_for('world') }}" class="quick-link">
+        <i class="fas fa-globe"></i> Explore World Map
+      </a>
+      <a href="{{ url_for('timeline') }}" class="quick-link">
+        <i class="fas fa-history"></i> MCU Timeline
+      </a>
+    </div>
+  </div>
+
+  <script src="/static/js/main.js"></script>
+  <script>
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', () => {
+      // Check if intro should be shown
+      const introShown = sessionStorage.getItem('introShown');
+      const introOverlay = document.getElementById('introOverlay');
+      
+      if (!introShown && introOverlay) {
+        // Intro will be shown by main.js
+      } else {
+        // Hide intro, show particles
+        if (introOverlay) {
+          introOverlay.classList.add('hidden');
+        }
+        createParticles();
+      }
+    });
+  </script>
+</body>
+</html>

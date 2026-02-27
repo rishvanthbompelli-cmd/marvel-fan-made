@@ -328,3 +328,13 @@
     font-size: 16px;
   }
 }
+
+/* FOOTER */
+.footer {
+  padding: 2rem;
+  text-align: center;
+  color: #666;
+  font-size: 0.9rem;
+  background: rgba(0, 0, 0, 0.5);
+  margin-top: 3rem;
+}

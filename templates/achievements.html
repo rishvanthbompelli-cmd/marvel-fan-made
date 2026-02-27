@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🏆 Achievements - Multiverse Hub</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;600;700&family=Montserrat:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="/static/css/main.css">
+  <style>
+    .feature-page {
+      min-height: 100vh;
+      padding-top: 80px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #0a0a0a 100%);
+    }
+
+    .feature-icon {
+      font-size: 6rem;
+      margin-bottom: 2rem;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    .feature-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 3rem;
+      color: #fff;
+      margin-bottom: 1rem;
+    }
+
+    .feature-message {
+      font-size: 1.5rem;
+      color: #aaa;
+      text-align: center;
+      max-width: 600px;
+    }
+
+    .nav-back {
+      margin-top: 2rem;
+      padding: 1rem 2rem;
+      background: rgba(230, 36, 41, 0.8);
+      border: none;
+      border-radius: 30px;
+      color: #fff;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .nav-back:hover {
+      background: #e62429;
+      transform: translateY(-3px);
+    }
+  </style>
+</head>
+<body>
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="nav-brand">
+      🏆 ACHIEVEMENTS
+    </div>
+    <button class="hamburger" onclick="toggleMenu()">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <ul class="nav-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/hero">Heroes</a></li>
+      <li><a href="/compare">Compare</a></li>
+      <li><a href="/world">World</a></li>
+      <li><a href="#" onclick="showFavorites(); return false;">❤️ Favorites</a></li>
+      <li><a href="#" onclick="handleLogout(); return false;">Logout</a></li>
+    </ul>
+  </nav>
+
+  <!-- FEATURE CONTENT -->
+  <div class="feature-page">
+    <div class="feature-icon">🚧</div>
+    <h1 class="feature-title">Feature Under Development</h1>
+    <p class="feature-message">
+      Unlock badges and achievements as you explore the multiverse! 
+      Complete challenges to earn exclusive rewards.
+    </p>
+    <button class="nav-back" onclick="window.location.href='/'">Back to Home</button>
+  </div>
+</body>
+</html>

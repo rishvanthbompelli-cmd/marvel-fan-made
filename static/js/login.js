@@ -2,7 +2,7 @@
     // Check session on load
     async function checkSession() {
       try {
-        const response = await fetch('/check-session');
+        const response = await fetch('/check-session', { credentials: 'include' });
         const data = await response.json();
         if (data.authenticated) {
           document.getElementById('logoutItem').style.display = 'block';
@@ -65,6 +65,7 @@
         const response = await fetch('/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
           body: JSON.stringify({ fullName, emailPhone, favoriteHero })
         });
 
@@ -81,7 +82,7 @@
             }));
           }
 
-          window.location.href = '/hero';
+          window.location.href = '/';
         } else {
           alert(data.message);
         }
@@ -93,7 +94,7 @@
     // Logout
     async function handleLogout() {
       try {
-        await fetch('/logout', { method: 'POST' });
+        await fetch('/logout', { method: 'POST', credentials: 'include' });
         localStorage.removeItem('marvelUser');
         window.location.reload();
       } catch (e) {
