@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Error - Multiverse Hub</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;600;700&family=Montserrat:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="/static/css/main.css">
+  <style>
+    .error-page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #0a0a0a 100%);
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .error-code {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 8rem;
+      font-weight: 900;
+      color: #e62429;
+      text-shadow: 0 0 50px rgba(230, 36, 41, 0.6);
+      margin-bottom: 1rem;
+      animation: glitch 1s infinite;
+    }
+
+    @keyframes glitch {
+      0%, 100% { transform: translate(0); }
+      20% { transform: translate(-2px, 2px); }
+      40% { transform: translate(-2px, -2px); }
+      60% { transform: translate(2px, 2px); }
+      80% { transform: translate(2px, -2px); }
+    }
+
+    .error-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2.5rem;
+      color: #fff;
+      margin-bottom: 1rem;
+    }
+
+    .error-message {
+      font-size: 1.2rem;
+      color: #aaa;
+      margin-bottom: 2rem;
+      max-width: 500px;
+    }
+
+    .error-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .error-btn {
+      padding: 1rem 2rem;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1rem;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .error-btn.primary {
+      background: linear-gradient(135deg, #e62429, #ff6b6b);
+      color: #fff;
+    }
+
+    .error-btn.primary:hover {
+      transform: scale(1.05);
+      box-shadow: 0 10px 30px rgba(230, 36, 41, 0.4);
+    }
+
+    .error-btn.secondary {
+      background: rgba(255, 255, 255, 0.1);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+    }
+
+    .error-btn.secondary:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-3px);
+    }
+
+    .error-portal {
+      margin-top: 3rem;
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .portal-link {
+      width: 120px;
+      height: 150px;
+      border-radius: 15px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+
+    .portal-link:hover {
+      transform: scale(1.1);
+    }
+
+    .portal-link.marvel {
+      background: linear-gradient(135deg, #1a0000 0%, #e62429 100%);
+      box-shadow: 0 0 20px rgba(230, 36, 41, 0.4);
+    }
+
+    .portal-link.anime {
+      background: linear-gradient(135deg, #001a33 0%, #1e90ff 100%);
+      box-shadow: 0 0 20px rgba(30, 144, 255, 0.4);
+    }
+
+    .portal-link.telugu {
+      background: linear-gradient(135deg, #1a1400 0%, #d4af37 100%);
+      box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+    }
+
+    .portal-link i {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .portal-link span {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.8rem;
+      color: #fff;
+    }
+  </style>
+</head>
+<body data-theme="dark" data-universe="marvel">
+  <!-- Particles Background -->
+  <div class="particles"></div>
+
+  <div class="error-page">
+    <div class="error-code">404</div>
+    <h1 class="error-title">Page Not Found</h1>
+    <p class="error-message">{{ message or "The page you're looking for doesn't exist in this universe. It may have been moved or deleted." }}</p>
+    
+    <div class="error-actions">
+      <a href="/" class="error-btn primary">
+        <i class="fas fa-home"></i> Go Home
+      </a>
+      <button onclick="history.back()" class="error-btn secondary">
+        <i class="fas fa-arrow-left"></i> Go Back
+      </button>
+    </div>
+
+    <div class="error-portal">
+      <a href="/universe/marvel" class="portal-link marvel">
+        <i class="fas fa-shield-alt"></i>
+        <span>Marvel</span>
+      </a>
+      <a href="/universe/anime" class="portal-link anime">
+        <i class="fas fa-dragon"></i>
+        <span>Anime</span>
+      </a>
+      <a href="/universe/telugu" class="portal-link telugu">
+        <i class="fas fa-film"></i>
+        <span>Telugu</span>
+      </a>
+    </div>
+  </div>
+
+  <script src="/static/js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      createParticles();
+    });
+  </script>
+</body>
+</html>

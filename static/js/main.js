@@ -389,7 +389,17 @@ function displayRecommendations() {
   }
   
   // Fetch and display recommended heroes
-  fetch(`/category-heroes/${recommendations.category.toLowerCase()}`)
+  // Map category names to universe/category pairs
+  let universe = 'marvel';
+  let category = recommendations.category.toLowerCase();
+  
+  // For universe-level categories, use 'all' to get all heroes
+  if (category === 'anime' || category === 'telugu') {
+    universe = category;
+    category = 'all';
+  }
+  
+  fetch(`/category-heroes/${universe}/${category}`)
     .then(res => res.json())
     .then(heroes => {
       const shuffled = heroes.sort(() => 0.5 - Math.random()).slice(0, 6);
@@ -697,24 +707,108 @@ function showNotification(message, type = 'info') {
 // ========== UTILITY FUNCTIONS ==========
 function getHeroImage(heroName) {
   const map = {
-    'Iron Man': 'Iron-Man.jpg',
-    'Captain America': 'captain america.jpg',
-    'Thor': 'thor.jpg',
-    'Hulk': 'hulk.jpg',
-    'Black Widow': 'black widow.jpg',
-    'Spider-Man': 'spider-man.jpg',
-    'Doctor Strange': 'doctor strange.jpg',
+    'ant-man': 'ant-man.jpg',
+    'Ant-Man': 'ant-man.jpg',
+    'black panther': 'black panther.jpg',
     'Black Panther': 'black panther.jpg',
-    'Thanos': 'thanos.jpg',
-    'Loki': 'loki.jpg',
+    'black widow': 'black widow.jpg',
+    'Black Widow': 'black widow.jpg',
+    'captain america': 'captain america.jpg',
+    'Captain America': 'captain america.jpg',
+    'captain marvel': 'captain marvel.jpg',
+    'Captain Marvel': 'captain marvel.jpg',
+    'deadpool': 'deapool.jpg',
     'Deadpool': 'deapool.jpg',
+    'doctor octopus': 'doctor octopus.jpg',
+    'Doctor Octopus': 'doctor octopus.jpg',
+    'doctor strange': 'doctor strange.jpg',
+    'Doctor Strange': 'doctor strange.jpg',
+    'drax': 'drax.jpg',
+    'Drax': 'drax.jpg',
+    'falcon': 'falcon.jpg',
+    'Falcon': 'falcon.jpg',
+    'gamora': 'gamora.jpg',
+    'Gamora': 'gamora.jpg',
+    'green goblin': 'green goblin.jpg',
+    'Green Goblin': 'green goblin.jpg',
+    'groot': 'groot.jpg',
+    'Groot': 'groot.jpg',
+    'hawkeye': 'hawkeye.jpg',
+    'Hawkeye': 'hawkeye.jpg',
+    'hulk': 'hulk.jpg',
+    'Hulk': 'hulk.jpg',
+    'iron man': 'Iron-Man.jpg',
+    'Iron Man': 'Iron-Man.jpg',
+    'Iron-Man': 'Iron-Man.jpg',
+    'loki': 'loki.jpg',
+    'Loki': 'loki.jpg',
+    'magneto': 'magneto.jpg',
+    'Magneto': 'magneto.jpg',
+    'mantis': 'mantis.jpg',
+    'Mantis': 'mantis.jpg',
+    'nebula': 'nebula.jpg',
+    'Nebula': 'nebula.jpg',
+    'professor x': 'professor x.jpg',
+    'Professor X': 'professor x.jpg',
+    'quicksilver': 'quicksilver.jpg',
+    'Quicksilver': 'quicksilver.jpg',
+    'rocket': 'rocket.jpg',
+    'Rocket': 'rocket.jpg',
+    'scarlet witch': 'scarlet witch.jpg',
+    'Scarlet Witch': 'scarlet witch.jpg',
+    'spider-man': 'spider-man.jpg',
+    'Spider-Man': 'spider-man.jpg',
+    'star-lord': 'star-lord.jpg',
+    'Star-Lord': 'star-lord.jpg',
+    'star lord': 'star-lord.jpg',
+    'Star Lord': 'star-lord.jpg',
+    'storm': 'storm.jpg',
+    'Storm': 'storm.jpg',
+    'thanos': 'thanos.jpg',
+    'Thanos': 'thanos.jpg',
+    'thor': 'thor.jpg',
+    'Thor': 'thor.jpg',
+    'ultron': 'ultron.jpg',
+    'Ultron': 'ultron.jpg',
+    'venom': 'venom.jpg',
+    'Venom': 'venom.jpg',
+    'vision': 'vision.jpg',
+    'Vision': 'vision.jpg',
+    'war machine': 'war machine.jpg',
+    'War Machine': 'war machine.jpg',
+    'wasp': 'wasp.jpg',
+    'Wasp': 'wasp.jpg',
+    'winter soldier': 'winter soldier.jpg',
+    'Winter Soldier': 'winter soldier.jpg',
+    'wolverine': 'wolverine.jpg',
     'Wolverine': 'wolverine.jpg',
-    'Prabhas': 'prabhas.jpg',
-    'Allu Arjun': 'allu-arjun.jpg',
-    'Ram Charan': 'ram-charan.jpg'
   };
   
-  return map[heroName] || `${heroName.toLowerCase().replace(/ /g, '-')}.jpg`;
+  // First try: direct match
+  if (map[heroName]) {
+    return map[heroName];
+  }
+  
+  // Second try: lowercase with spaces
+  const lowerSpace = heroName.toLowerCase();
+  if (map[lowerSpace]) {
+    return map[lowerSpace];
+  }
+  
+  // Third try: lowercase with hyphens (spaces replaced with -)
+  const lowerHyphen = lowerSpace.replace(/ /g, '-');
+  if (map[lowerHyphen]) {
+    return map[lowerHyphen];
+  }
+  
+  // Fourth try: original with hyphens (for Iron-Man edge case)
+  const originalHyphen = heroName.replace(/ /g, '-');
+  if (map[originalHyphen]) {
+    return map[originalHyphen];
+  }
+  
+  // Fallback: use lowercase with hyphens
+  return `${lowerHyphen}.jpg`;
 }
 
 function getThemeColor() {

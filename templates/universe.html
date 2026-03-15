@@ -25,15 +25,15 @@
     })();
   </script>
 </head>
-<body {% if category == 'marvel' %}class="marvel-video-bg"{% endif %}>
-  <!-- Video Background for Marvel -->
+<body {% if category == 'marvel' %}class="marvel-category"{% endif %}>
+  <!-- Video Background for Marvel Universe -->
   {% if category == 'marvel' %}
-  <div class="video-background">
-    <video autoplay muted loop playsinline>
-      <source src="{{ url_for('static', filename='assets/marvel-bg.mp4') }}" type="video/mp4">
+  <div class="video-bg">
+    <video autoplay muted loop playsinline class="bg-video">
+      <source src="{{ url_for('static', filename='assets/marvel.mp4') }}" type="video/mp4">
     </video>
+    <div class="video-overlay"></div>
   </div>
-  <div class="video-overlay"></div>
   {% endif %}
 
   <!-- NAVBAR -->
@@ -47,16 +47,39 @@
       <span></span>
     </button>
     <ul class="nav-links">
-      <li><a href="{{ url_for('universe', category='marvel') }}" class="{% if category == 'marvel' %}active{% endif %}">MARVEL</a></li>
-      <li><a href="{{ url_for('universe', category='anime') }}" class="{% if category == 'anime' %}active{% endif %}">ANIME</a></li>
-      <li><a href="{{ url_for('universe', category='telugu') }}" class="{% if category == 'telugu' %}active{% endif %}">TELUGU</a></li>
-      <li><a href="{{ url_for('home') }}">Home</a></li>
+      <li><a href="/universe/marvel" class="{% if category == 'marvel' %}active{% endif %}">MARVEL</a></li>
+      <li><a href="/universe/anime" class="{% if category == 'anime' %}active{% endif %}">ANIME</a></li>
+      <li><a href="/universe/telugu" class="{% if category == 'telugu' %}active{% endif %}">TELUGU</a></li>
+      <li><a href="/">Home</a></li>
       <li><a href="#" onclick="showFavorites(); return false;">❤️ Favorites (<span id="favCount">0</span>)</a></li>
       <li><a href="#" onclick="handleLogout(); return false;">Logout</a></li>
     </ul>
   </nav>
 
-  <!-- HERO HEADER -->
+  <!-- Hero Content Section for Marvel -->
+{% if category == 'marvel' %}
+<div class="video-hero">
+    <video autoplay muted loop playsinline class="video-bg">
+        <source src="/static/assets/marvel.mp4" type="video/mp4">
+    </video>
+    <div class="video-overlay"></div>
+
+    <div class="hero-content">
+        <h1>🦸 MARVEL HEROES</h1>
+        <p>Explore your favorite characters</p>
+
+        <div class="hero-search">
+            <input type="text" id="heroSearch" placeholder="Search heroes..." onkeyup="filterHeroes()">
+            <select id="sortFilter" onchange="filterHeroes()">
+                <option value="name-asc">Name: A-Z</option>
+                <option value="name-desc">Name: Z-A</option>
+            </select>
+        </div>
+    </div>
+</div>
+{% else %}
+
+  <!-- Non-Marvel Hero Header -->
   <header class="hero-header">
     <h1 id="categoryTitle">
       {% if category == 'marvel' %}🦸‍♂️ MARVEL HEROES
@@ -68,18 +91,42 @@
 
   <!-- FILTERS -->
   <div class="filters-container">
-    <div class="search-box">
-      <i class="fas fa-search"></i>
-      <input type="text" id="heroSearch" placeholder="Search heroes..." onkeyup="filterHeroes()">
+    {% if category == 'marvel' %}
+    <!-- Category Filter Buttons for Marvel -->
+    <div class="category-filters">
+      <button class="category-btn active" data-category="all" onclick="filterByCategory('all')">
+        <i class="fas fa-globe"></i> All Heroes
+      </button>
+      <button class="category-btn" data-category="avengers" onclick="filterByCategory('avengers')">
+        <i class="fas fa-shield-alt"></i> Avengers
+      </button>
+      <button class="category-btn" data-category="guardians" onclick="filterByCategory('guardians')">
+        <i class="fas fa-star"></i> Guardians
+      </button>
+      <button class="category-btn" data-category="xmen" onclick="filterByCategory('xmen')">
+        <i class="fas fa-x"></i> X-Men
+      </button>
+      <button class="category-btn" data-category="villains" onclick="filterByCategory('villains')">
+        <i class="fas fa-skull"></i> Villains
+      </button>
     </div>
+    {% endif %}
     
-    <div class="filter-group">
-      <select id="sortFilter" onchange="filterHeroes()">
-        <option value="name-asc">Name: A-Z</option>
-        <option value="name-desc">Name: Z-A</option>
-      </select>
+    <div class="search-sort-row">
+      <div class="search-box">
+        <i class="fas fa-search"></i>
+        <input type="text" id="heroSearch" placeholder="Search heroes..." onkeyup="filterHeroes()">
+      </div>
+      
+      <div class="filter-group">
+        <select id="sortFilter" onchange="filterHeroes()">
+          <option value="name-asc">Name: A-Z</option>
+          <option value="name-desc">Name: Z-A</option>
+        </select>
+      </div>
     </div>
   </div>
+{% endif %}
 
   <!-- HEROES GRID -->
   <main class="container">
@@ -125,6 +172,8 @@
     let allHeroes = [];
     let currentHero = null;
 
+    let currentCategory = 'all';
+
     // Load heroes on page load
     document.addEventListener('DOMContentLoaded', async () => {
       await loadHeroes();
@@ -136,7 +185,8 @@
       grid.innerHTML = '<div class="loading">Loading heroes...</div>';
       
       try {
-        const response = await fetch(`/category-heroes/${CATEGORY}`, {
+        // CATEGORY is the universe (marvel/anime/telugu), use 'all' to get all heroes
+        const response = await fetch(`/category-heroes/${CATEGORY}/all`, {
           credentials: 'include'
         });
         allHeroes = await response.json();
@@ -228,7 +278,31 @@
         'Mahesh Babu': '/static/assets/maheshbabu.jpg'
       };
       
-      return imageMap[heroName] || '/static/assets/Iron-Man.jpg';
+      // First try: direct match
+      if (imageMap[heroName]) {
+        return imageMap[heroName];
+      }
+      
+      // Second try: lowercase with spaces
+      const lowerSpace = heroName.toLowerCase();
+      if (imageMap[lowerSpace]) {
+        return imageMap[lowerSpace];
+      }
+      
+      // Third try: lowercase with hyphens (spaces replaced with -)
+      const lowerHyphen = lowerSpace.replace(/ /g, '-');
+      if (imageMap[lowerHyphen]) {
+        return imageMap[lowerHyphen];
+      }
+      
+      // Fourth try: original with hyphens (for Iron-Man edge case)
+      const originalHyphen = heroName.replace(/ /g, '-');
+      if (imageMap[originalHyphen]) {
+        return imageMap[originalHyphen];
+      }
+      
+      // Fallback: use lowercase with hyphens
+      return `/static/assets/${lowerHyphen}.jpg`;
     }
 
     function filterHeroes() {
@@ -239,6 +313,11 @@
         hero.name.toLowerCase().includes(query)
       );
       
+      // Filter by category (for Marvel)
+      if (currentCategory !== 'all') {
+        filtered = filtered.filter(hero => hero.category === currentCategory);
+      }
+      
       // Sort
       if (sort === 'name-asc') {
         filtered.sort((a, b) => a.name.localeCompare(b.name));
@@ -247,6 +326,21 @@
       }
       
       renderHeroes(filtered);
+    }
+    
+    function filterByCategory(category) {
+      currentCategory = category;
+      
+      // Update active button
+      document.querySelectorAll('.category-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.dataset.category === category) {
+          btn.classList.add('active');
+        }
+      });
+      
+      // Re-render heroes with new filter
+      filterHeroes();
     }
 
     // Favorites management

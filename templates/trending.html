@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🔥 Trending Heroes - Multiverse Hub</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;600;700&family=Montserrat:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="/static/css/main.css">
+  <style>
+    .trending-page {
+      min-height: 100vh;
+      padding-top: 80px;
+      background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #0a0a0a 100%);
+    }
+
+    .trending-header {
+      text-align: center;
+      padding: 3rem 2rem;
+      position: relative;
+    }
+
+    .trending-header h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 3.5rem;
+      background: linear-gradient(90deg, #ff6b6b, #ffd700, #ff6b6b);
+      background-size: 200% 200%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: gradient-shift 3s ease infinite;
+      margin-bottom: 0.5rem;
+    }
+
+    @keyframes gradient-shift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .trending-header p {
+      color: #aaa;
+      font-size: 1.2rem;
+    }
+
+    .trending-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      padding: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .trending-tab {
+      padding: 0.8rem 1.5rem;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 30px;
+      color: #fff;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .trending-tab:hover,
+    .trending-tab.active {
+      background: linear-gradient(135deg, #e62429, #ff6b6b);
+      border-color: #e62429;
+      transform: translateY(-3px);
+    }
+
+    .trending-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    /* Top 3 Featured */
+    .top-trending {
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      gap: 1rem;
+      margin-bottom: 3rem;
+      padding: 2rem 0;
+    }
+
+    .top-card {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 20px;
+      padding: 1.5rem;
+      text-align: center;
+      transition: all 0.3s;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .top-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .top-card.rank-1 {
+      order: 2;
+      transform: scale(1.1);
+      border: 3px solid gold;
+      box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+    }
+
+    .top-card.rank-1:hover {
+      transform: scale(1.15) translateY(-10px);
+    }
+
+    .top-card.rank-2 {
+      order: 1;
+      border: 3px solid silver;
+    }
+
+    .top-card.rank-3 {
+      order: 3;
+      border: 3px solid #cd7f32;
+    }
+
+    .rank-badge {
+      position: absolute;
+      top: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+
+    .rank-1 .rank-badge {
+      background: linear-gradient(135deg, #ffd700, #ffaa00);
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+    }
+
+    .rank-2 .rank-badge {
+      background: linear-gradient(135deg, #c0c0c0, #a0a0a0);
+    }
+
+    .rank-3 .rank-badge {
+      background: linear-gradient(135deg, #cd7f32, #b87333);
+    }
+
+    .top-card img {
+      width: 150px;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 15px;
+      margin-bottom: 1rem;
+    }
+
+    .top-card h3 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.1rem;
+      color: #fff;
+      margin-bottom: 0.3rem;
+    }
+
+    .top-card .views {
+      color: #aaa;
+      font-size: 0.9rem;
+    }
+
+    .top-card .views i {
+      color: #e62429;
+    }
+
+    /* Rest of trending */
+    .trending-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .trending-item {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      padding: 1rem;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 15px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .trending-item:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateX(10px);
+    }
+
+    .trending-item .rank {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.5rem;
+      width: 40px;
+      text-align: center;
+      color: #666;
+    }
+
+    .trending-item img {
+      width: 80px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+
+    .trending-item .info {
+      flex: 1;
+    }
+
+    .trending-item h4 {
+      font-family: 'Orbitron', sans-serif;
+      color: #fff;
+      margin-bottom: 0.3rem;
+    }
+
+    .trending-item .category {
+      color: #e62429;
+      font-size: 0.85rem;
+    }
+
+    .trending-item .views {
+      color: #aaa;
+      font-size: 0.85rem;
+    }
+
+    @media (max-width: 768px) {
+      .trending-header h1 {
+        font-size: 2.5rem;
+      }
+      
+      .top-trending {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .top-card.rank-1 {
+        order: 1;
+        transform: none;
+      }
+      
+      .top-card.rank-2 {
+        order: 2;
+      }
+      
+      .top-card.rank-3 {
+        order: 3;
+      }
+      
+      .top-card img {
+        width: 120px;
+        height: 160px;
+      }
+    }
+  </style>
+</head>
+<body data-theme="dark" data-universe="marvel">
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="nav-brand" id="navBrand" onclick="window.location.href='/'">🌌 MULTIVERSE HUB</div>
+    <button class="hamburger" onclick="toggleMenu()">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <ul class="nav-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/universe/marvel">Marvel</a></li>
+      <li><a href="/universe/anime">Anime</a></li>
+      <li><a href="/universe/telugu">Telugu</a></li>
+      <li><a href="/compare">Compare</a></li>
+      <li><a href="/world">World Map</a></li>
+      <li><a href="/timeline">Timeline</a></li>
+    </ul>
+    <div class="theme-toggle dark" id="themeToggle" onclick="toggleTheme()"></div>
+  </nav>
+
+  <!-- Particles Background -->
+  <div class="particles"></div>
+
+  <!-- Main Content -->
+  <div class="trending-page">
+    <div class="trending-header">
+      <h1>🔥 TRENDING HEROES</h1>
+      <p>Most popular characters this week across all universes</p>
+    </div>
+
+    <div class="trending-tabs">
+      <button class="trending-tab active" onclick="filterTrending('all')">
+        <i class="fas fa-globe"></i> All
+      </button>
+      <button class="trending-tab" onclick="filterTrending('marvel')">
+        <i class="fas fa-shield-alt"></i> Marvel
+      </button>
+      <button class="trending-tab" onclick="filterTrending('anime')">
+        <i class="fas fa-dragon"></i> Anime
+      </button>
+      <button class="trending-tab" onclick="filterTrending('telugu')">
+        <i class="fas fa-film"></i> Telugu
+      </button>
+    </div>
+
+    <div class="trending-container">
+      <!-- Top 3 -->
+      <div class="top-trending" id="topTrending">
+        <!-- Will be populated by JavaScript -->
+      </div>
+
+      <!-- Rest of list -->
+      <div class="trending-list" id="trendingList">
+        <!-- Will be populated by JavaScript -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Reality Shift Overlay -->
+  <div class="reality-shift" id="realityShift"></div>
+
+  <script src="/static/js/main.js"></script>
+  <script>
+    // Trending data (mock data)
+    const trendingHeroes = [
+      { rank: 1, name: 'Spider-Man', category: 'Marvel', universe: 'marvel', image: 'spider-man.jpg', views: '2.5M' },
+      { rank: 2, name: 'Iron Man', category: 'Marvel', universe: 'marvel', image: 'Iron-Man.jpg', views: '2.1M' },
+      { rank: 3, name: 'Thor', category: 'Marvel', universe: 'marvel', image: 'thor.jpg', views: '1.8M' },
+      { rank: 4, name: 'Gojo Satoru', category: 'Anime', universe: 'anime', image: 'gojo.jpg', views: '1.5M' },
+      { rank: 5, name: 'Black Panther', category: 'Marvel', universe: 'marvel', image: 'black panther.jpg', views: '1.3M' },
+      { rank: 6, name: 'Thanos', category: 'Villains', universe: 'marvel', image: 'thanos.jpg', views: '1.2M' },
+      { rank: 7, name: 'Loki', category: 'Villains', universe: 'marvel', image: 'loki.jpg', views: '1.1M' },
+      { rank: 8, name: 'Prabhas', category: 'Telugu', universe: 'telugu', image: 'prabhas.jpg', views: '980K' },
+      { rank: 9, name: 'Deadpool', category: 'Marvel', universe: 'marvel', image: 'deapool.jpg', views: '950K' },
+      { rank: 10, name: 'Doctor Strange', category: 'Marvel', universe: 'marvel', image: 'doctor strange.jpg', views: '890K' },
+    ];
+
+    function renderTrending(heroes) {
+      const top3 = heroes.slice(0, 3);
+      const rest = heroes.slice(3);
+
+      // Render top 3
+      const topContainer = document.getElementById('topTrending');
+      topContainer.innerHTML = top3.map((hero, index) => `
+        <div class="top-card rank-${hero.rank}" onclick="viewHero('${hero.name}')">
+          <div class="rank-badge">${hero.rank}</div>
+          <img src="/static/assets/${hero.image}" alt="${hero.name}" onerror="this.src='https://via.placeholder.com/150x200?text=${hero.name}'">
+          <h3>${hero.name}</h3>
+          <div class="views"><i class="fas fa-eye"></i> ${hero.views}</div>
+        </div>
+      `).join('');
+
+      // Render rest
+      const listContainer = document.getElementById('trendingList');
+      listContainer.innerHTML = rest.map(hero => `
+        <div class="trending-item" onclick="viewHero('${hero.name}')">
+          <div class="rank">${hero.rank}</div>
+          <img src="/static/assets/${hero.image}" alt="${hero.name}" onerror="this.src='https://via.placeholder.com/80x100?text=${hero.name}'">
+          <div class="info">
+            <h4>${hero.name}</h4>
+            <div class="category">${hero.category}</div>
+          </div>
+          <div class="views"><i class="fas fa-eye"></i> ${hero.views}</div>
+        </div>
+      `).join('');
+    }
+
+    function filterTrending(filter) {
+      // Update active tab
+      document.querySelectorAll('.trending-tab').forEach(tab => {
+        tab.classList.remove('active');
+        if (tab.textContent.toLowerCase().includes(filter) || (filter === 'all' && tab.textContent.includes('All'))) {
+          tab.classList.add('active');
+        }
+      });
+
+      // Filter heroes
+      let filtered = trendingHeroes;
+      if (filter !== 'all') {
+        filtered = trendingHeroes.filter(h => h.universe === filter);
+      }
+
+      renderTrending(filtered);
+      
+      // Trigger reality shift
+      triggerRealityShift(filter === 'all' ? 'marvel' : filter);
+    }
+
+    function viewHero(heroName) {
+      window.location.href = `/hero/${heroName.toLowerCase().replace(/\s+/g, '-')}`;
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      createParticles();
+      renderTrending(trendingHeroes);
+    });
+  </script>
+</body>
+</html>

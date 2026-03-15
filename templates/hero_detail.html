@@ -519,7 +519,9 @@
     });
 
     function loadRelatedHeroes() {
-      fetch(`/category-heroes/${universe}`)
+      // Get the hero's category and convert to lowercase for API
+      const heroCategory = '{{ hero_data.category }}'.toLowerCase();
+      fetch(`/category-heroes/${universe}/${heroCategory}`)
         .then(res => res.json())
         .then(heroes => {
           // Filter out current hero and get random 5

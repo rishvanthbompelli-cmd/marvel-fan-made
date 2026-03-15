@@ -162,11 +162,11 @@
   <nav class="nav-bar">
     <div class="nav-brand" id="navBrand">🌌 MULTIVERSE HUB</div>
     <ul class="nav-links">
-      <li><a href="{{ url_for('universe', category='marvel') }}">Marvel</a></li>
-      <li><a href="{{ url_for('universe', category='anime') }}">Anime</a></li>
-      <li><a href="{{ url_for('universe', category='telugu') }}">Telugu</a></li>
-      <li><a href="{{ url_for('compare') }}">Compare</a></li>
-      <li><a href="{{ url_for('world') }}">World Map</a></li>
+      <li><a href="/universe/marvel">Marvel</a></li>
+      <li><a href="/universe/anime">Anime</a></li>
+      <li><a href="/universe/telugu">Telugu</a></li>
+      <li><a href="/compare">Compare</a></li>
+      <li><a href="/world">World Map</a></li>
     </ul>
     <div class="theme-toggle dark" id="themeToggle" onclick="toggleTheme()"></div>
   </nav>
@@ -204,15 +204,15 @@
 
     <!-- Portal Buttons -->
     <div class="portals-container">
-      <a href="{{ url_for('universe', category='marvel') }}" class="portal-btn marvel" onclick="navigateToUniverse('marvel'); return false;">
+      <a href="/universe/marvel" class="portal-btn marvel" onclick="navigateToUniverse('marvel'); return false;">
         <i class="icon">🦸</i>
         <span class="label">Marvel Universe</span>
       </a>
-      <a href="{{ url_for('universe', category='anime') }}" class="portal-btn anime" onclick="navigateToUniverse('anime'); return false;">
+      <a href="/universe/anime" class="portal-btn anime" onclick="navigateToUniverse('anime'); return false;">
         <i class="icon">🎌</i>
         <span class="label">Anime Universe</span>
       </a>
-      <a href="{{ url_for('universe', category='telugu') }}" class="portal-btn telugu" onclick="navigateToUniverse('telugu'); return false;">
+      <a href="/universe/telugu" class="portal-btn telugu" onclick="navigateToUniverse('telugu'); return false;">
         <i class="icon">🎬</i>
         <span class="label">Telugu Cinema</span>
       </a>
@@ -220,13 +220,13 @@
 
     <!-- Quick Links -->
     <div class="quick-links">
-      <a href="{{ url_for('compare') }}" class="quick-link">
+      <a href="/compare" class="quick-link">
         <i class="fas fa-balance-scale"></i> Compare Heroes
       </a>
-      <a href="{{ url_for('world') }}" class="quick-link">
+      <a href="/world" class="quick-link">
         <i class="fas fa-globe"></i> Explore World Map
       </a>
-      <a href="{{ url_for('timeline') }}" class="quick-link">
+      <a href="/timeline" class="quick-link">
         <i class="fas fa-history"></i> MCU Timeline
       </a>
     </div>

@@ -8,66 +8,229 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="stylesheet" href="/static/css/main.css">
   <style>
-    .feature-page {
+    .recommendations-page {
       min-height: 100vh;
       padding-top: 80px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
       background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #0a0a0a 100%);
     }
 
-    .feature-icon {
-      font-size: 6rem;
-      margin-bottom: 2rem;
-      animation: pulse 2s infinite;
+    .recommendations-header {
+      text-align: center;
+      padding: 3rem 2rem;
     }
 
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.1); }
-    }
-
-    .feature-title {
+    .recommendations-header h1 {
       font-family: 'Orbitron', sans-serif;
-      font-size: 3rem;
+      font-size: 3.5rem;
+      background: linear-gradient(90deg, #e62429, #1e90ff, #d4af37);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.5rem;
+    }
+
+    .recommendations-header p {
+      color: #aaa;
+      font-size: 1.2rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* Preference Tags */
+    .preference-section {
+      max-width: 800px;
+      margin: 0 auto 3rem;
+      padding: 2rem;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .preference-title {
+      font-family: 'Orbitron', sans-serif;
       color: #fff;
       margin-bottom: 1rem;
-    }
-
-    .feature-message {
-      font-size: 1.5rem;
-      color: #aaa;
       text-align: center;
-      max-width: 600px;
     }
 
-    .nav-back {
-      margin-top: 2rem;
-      padding: 1rem 2rem;
-      background: rgba(230, 36, 41, 0.8);
-      border: none;
-      border-radius: 30px;
+    .preference-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      justify-content: center;
+    }
+
+    .preference-tag {
+      padding: 0.6rem 1.2rem;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 25px;
       color: #fff;
-      font-family: 'Orbitron', sans-serif;
-      font-size: 1rem;
+      font-size: 0.9rem;
       cursor: pointer;
       transition: all 0.3s;
     }
 
-    .nav-back:hover {
+    .preference-tag:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-2px);
+    }
+
+    .preference-tag.active {
+      background: linear-gradient(135deg, #e62429, #ff6b6b);
+      border-color: #e62429;
+    }
+
+    /* Recommendations Grid */
+    .recommendations-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    .recommendation-section {
+      margin-bottom: 3rem;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .section-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.5rem;
+      color: #fff;
+    }
+
+    .section-subtitle {
+      color: #aaa;
+      font-size: 0.9rem;
+    }
+
+    .recommendations-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .recommendation-card {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 15px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.3s;
+      position: relative;
+    }
+
+    .recommendation-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .recommendation-card img {
+      width: 100%;
+      height: 280px;
+      object-fit: cover;
+    }
+
+    .recommendation-info {
+      padding: 1rem;
+      text-align: center;
+    }
+
+    .recommendation-name {
+      font-family: 'Orbitron', sans-serif;
+      color: #fff;
+      font-size: 1rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .recommendation-category {
+      color: #e62429;
+      font-size: 0.85rem;
+    }
+
+    .recommendation-reason {
+      padding: 0 1rem 1rem;
+      text-align: center;
+    }
+
+    .reason-tag {
+      display: inline-block;
+      padding: 0.3rem 0.8rem;
+      background: rgba(30, 144, 255, 0.2);
+      border-radius: 15px;
+      font-size: 0.75rem;
+      color: #1e90ff;
+    }
+
+    /* Because you liked section */
+    .because-section {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      padding: 0.8rem;
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 10px;
+    }
+
+    .because-section img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .because-section span {
+      color: #aaa;
+      font-size: 0.85rem;
+    }
+
+    /* Refresh button */
+    .refresh-btn {
+      padding: 0.8rem 1.5rem;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 25px;
+      color: #fff;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .refresh-btn:hover {
       background: #e62429;
-      transform: translateY(-3px);
+      border-color: #e62429;
+    }
+
+    @media (max-width: 768px) {
+      .recommendations-header h1 {
+        font-size: 2.5rem;
+      }
+      
+      .recommendations-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .section-header {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+      }
     }
   </style>
 </head>
-<body>
-  <!-- NAVBAR -->
+<body data-theme="dark" data-universe="marvel">
+  <!-- Navbar -->
   <nav class="navbar">
-    <div class="nav-brand">
-      💡 RECOMMENDATIONS
-    </div>
+    <div class="nav-brand" id="navBrand" onclick="window.location.href='/'">🌌 MULTIVERSE HUB</div>
     <button class="hamburger" onclick="toggleMenu()">
       <span></span>
       <span></span>
@@ -75,23 +238,230 @@
     </button>
     <ul class="nav-links">
       <li><a href="/">Home</a></li>
-      <li><a href="/hero">Heroes</a></li>
+      <li><a href="/universe/marvel">Marvel</a></li>
+      <li><a href="/universe/anime">Anime</a></li>
+      <li><a href="/universe/telugu">Telugu</a></li>
       <li><a href="/compare">Compare</a></li>
-      <li><a href="/world">World</a></li>
-      <li><a href="#" onclick="showFavorites(); return false;">❤️ Favorites</a></li>
-      <li><a href="#" onclick="handleLogout(); return false;">Logout</a></li>
+      <li><a href="/world">World Map</a></li>
+      <li><a href="/timeline">Timeline</a></li>
     </ul>
+    <div class="theme-toggle dark" id="themeToggle" onclick="toggleTheme()"></div>
   </nav>
 
-  <!-- FEATURE CONTENT -->
-  <div class="feature-page">
-    <div class="feature-icon">🚧</div>
-    <h1 class="feature-title">Feature Under Development</h1>
-    <p class="feature-message">
-      Get personalized hero recommendations based on your favorites and viewing history!
-      Discover new characters you'll love.
-    </p>
-    <button class="nav-back" onclick="window.location.href='/'">Back to Home</button>
+  <!-- Particles Background -->
+  <div class="particles"></div>
+
+  <!-- Main Content -->
+  <div class="recommendations-page">
+    <div class="recommendations-header">
+      <h1>💡 RECOMMENDATIONS</h1>
+      <p>Discover new heroes based on your favorites and preferences</p>
+    </div>
+
+    <!-- Preference Tags -->
+    <div class="preference-section">
+      <h3 class="preference-title">What do you like?</h3>
+      <div class="preference-tags">
+        <button class="preference-tag active" onclick="filterByPreference('all')">All</button>
+        <button class="preference-tag" onclick="filterByPreference('avengers')">Avengers</button>
+        <button class="preference-tag" onclick="filterByPreference('xmen')">X-Men</button>
+        <button class="preference-tag" onclick="filterByPreference('guardians')">Guardians</button>
+        <button class="preference-tag" onclick="filterByPreference('villains')">Villains</button>
+        <button class="preference-tag" onclick="filterByPreference('anime')">Anime</button>
+        <button class="preference-tag" onclick="filterByPreference('telugu')">Telugu Stars</button>
+      </div>
+    </div>
+
+    <div class="recommendations-container">
+      <!-- Because You Liked -->
+      <div class="recommendation-section">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Because you liked Iron Man</h2>
+            <p class="section-subtitle">Heroes with similar traits</p>
+          </div>
+          <button class="refresh-btn" onclick="refreshRecommendations()">
+            <i class="fas fa-sync-alt"></i> Refresh
+          </button>
+        </div>
+
+        <div class="because-section">
+          <img src="/static/assets/Iron-Man.jpg" alt="Iron Man" onerror="this.src='https://via.placeholder.com/40'">
+          <span>Based on your favorite: Iron Man</span>
+        </div>
+
+        <div class="recommendations-grid" id="becauseGrid">
+          <div class="recommendation-card" onclick="viewHero('War Machine')">
+            <img src="/static/assets/war machine.jpg" alt="War Machine" onerror="this.src='https://via.placeholder.com/200x280?text=War+Machine'">
+            <div class="recommendation-info">
+              <h4 class="recommendation-name">War Machine</h4>
+              <span class="recommendation-category">Avengers</span>
+            </div>
+            <div class="recommendation-reason">
+              <span class="reason-tag">Similar: Tech Hero</span>
+            </div>
+          </div>
+
+          <div class="recommendation-card" onclick="viewHero('Captain America')">
+            <img src="/static/assets/captain america.jpg" alt="Captain America" onerror="this.src='https://via.placeholder.com/200x280?text=Captain+America'">
+            <div class="recommendation-info">
+              <h4 class="recommendation-name">Captain America</h4>
+              <span class="recommendation-category">Avengers</span>
+            </div>
+            <div class="recommendation-reason">
+              <span class="reason-tag">Team: Original Avengers</span>
+            </div>
+          </div>
+
+          <div class="recommendation-card" onclick="viewHero('Black Panther')">
+            <img src="/static/assets/black panther.jpg" alt="Black Panther" onerror="this.src='https://via.placeholder.com/200x280?text=Black+Panther'">
+            <div class="recommendation-info">
+              <h4 class="recommendation-name">Black Panther</h4>
+              <span class="recommendation-category">Avengers</span>
+            </div>
+            <div class="recommendation-reason">
+              <span class="reason-tag">Similar: Tech & Leadership</span>
+            </div>
+          </div>
+
+          <div class="recommendation-card" onclick="viewHero('Doctor Strange')">
+            <img src="/static/assets/doctor strange.jpg" alt="Doctor Strange" onerror="this.src='https://via.placeholder.com/200x280?text=Doctor+Strange'">
+            <div class="recommendation-info">
+              <h4 class="recommendation-name">Doctor Strange</h4>
+              <span class="recommendation-category">Mystic</span>
+            </div>
+            <div class="recommendation-reason">
+              <span class="reason-tag">Similar: Genius Level Intellect</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Trending Now -->
+      <div class="recommendation-section">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">🔥 Trending Now</h2>
+            <p class="section-subtitle">Popular heroes this week</p>
+          </div>
+        </div>
+
+        <div class="recommendations-grid" id="trendingGrid">
+          <div class="recommendation-card" onclick="viewHero('Spider-Man')">
+            <img src="/static/assets/spider-man.jpg" alt="Spider-Man" onerror="this.src='https://via.placeholder.com/200x280?text=Spider-Man'">
+            <div class="recommendation-info">
+              <h4 class="recommendation-name">Spider-Man</h4>
+              <span class="recommendation-category">Spider-Verse</span>
+            </div>
+          </div>
+
+          <div class="recommendation-card" onclick="viewHero('Thanos')">
+            <img src="/static/assets/thanos.jpg" alt="Thanos" onerror="this.src='https://via.placeholder.com/200x280?text=Thanos'">
+            <div class="recommendation-info">
+              <h4 class="recommendation-name">Thanos</h4>
+              <span class="recommendation-category">Villains</span>
+            </div>
+          </div>
+
+          <div class="recommendation-card" onclick="viewHero('Loki')">
+            <img src="/static/assets/loki.jpg" alt="Loki" onerror="this.src='https://via.placeholder.com/200x280?text=Loki'">
+            <div class="recommendation-info">
+              <h4 class="recommendation-name">Loki</h4>
+              <span class="recommendation-category">Villains</span>
+            </div>
+          </div>
+
+          <div class="recommendation-card" onclick="viewHero('Deadpool')">
+            <img src="/static/assets/deapool.jpg" alt="Deadpool" onerror="this.src='https://via.placeholder.com/200x280?text=Deadpool'">
+            <div class="recommendation-info">
+              <h4 class="recommendation-name">Deadpool</h4>
+              <span class="recommendation-category">X-Men</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Explore Different Universe -->
+      <div class="recommendation-section">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">🎌 Explore Anime Universe</h2>
+            <p class="section-subtitle">Try something different</p>
+          </div>
+        </div>
+
+        <div class="recommendations-grid" id="animeGrid">
+          <div class="recommendation-card" onclick="viewHero('Gojo Satoru')">
+            <img src="/static/assets/gojo.jpg" alt="Gojo Satoru" onerror="this.src='https://via.placeholder.com/200x280?text=Gojo'">
+            <div class="recommendation-info">
+              <h4 class="recommendation-name">Gojo Satoru</h4>
+              <span class="recommendation-category">Anime</span>
+            </div>
+          </div>
+
+          <div class="recommendation-card" onclick="viewHero('Yuji Itadori')">
+            <img src="/static/assets/yuji.jpg" alt="Yuji Itadori" onerror="this.src='https://via.placeholder.com/200x280?text=Yuji'">
+            <div class="recommendation-info">
+              <h4 class="recommendation-name">Yuji Itadori</h4>
+              <span class="recommendation-category">Anime</span>
+            </div>
+          </div>
+
+          <div class="recommendation-card" onclick="viewHero('Tanjiro Kamado')">
+            <img src="/static/assets/tanjiro.jpg" alt="Tanjiro Kamado" onerror="this.src='https://via.placeholder.com/200x280?text=Tanjiro'">
+            <div class="recommendation-info">
+              <h4 class="recommendation-name">Tanjiro Kamado</h4>
+              <span class="recommendation-category">Anime</span>
+            </div>
+          </div>
+
+          <div class="recommendation-card" onclick="viewHero('Sung Jin-Woo')">
+            <img src="/static/assets/sungjinwoo.jpg" alt="Sung Jin-Woo" onerror="this.src='https://via.placeholder.com/200x280?text=Sung+Jin-Woo'">
+            <div class="recommendation-info">
+              <h4 class="recommendation-name">Sung Jin-Woo</h4>
+              <span class="recommendation-category">Anime</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
+
+  <!-- Reality Shift Overlay -->
+  <div class="reality-shift" id="realityShift"></div>
+
+  <script src="/static/js/main.js"></script>
+  <script>
+    function viewHero(heroName) {
+      window.location.href = `/hero/${heroName.toLowerCase().replace(/\s+/g, '-')}`;
+    }
+
+    function filterByPreference(preference) {
+      // Update active tag
+      document.querySelectorAll('.preference-tag').forEach(tag => {
+        tag.classList.remove('active');
+        if (tag.textContent.toLowerCase().includes(preference) || (preference === 'all' && tag.textContent === 'All')) {
+          tag.classList.add('active');
+        }
+      });
+
+      // In a real app, this would filter recommendations from backend
+      console.log('Filtering by:', preference);
+    }
+
+    function refreshRecommendations() {
+      // In a real app, this would fetch new recommendations
+      const btn = document.querySelector('.refresh-btn i');
+      btn.classList.add('fa-spin');
+      setTimeout(() => {
+        btn.classList.remove('fa-spin');
+      }, 1000);
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      createParticles();
+    });
+  </script>
 </body>
 </html>

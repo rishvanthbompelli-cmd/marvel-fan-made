@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Starfield</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            overflow: hidden;
+            background: linear-gradient(to bottom, #0a0a1a 0%, #0d0d2b 50%, #1a0a2e 100%);
+            min-height: 100vh;
+            cursor: none;
+        }
+
+        .starfield {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .star {
+            position: absolute;
+            border-radius: 50%;
+            background: white;
+            animation: twinkle var(--duration) ease-in-out infinite;
+            animation-delay: var(--delay);
+        }
+
+        @keyframes twinkle {
+            0%, 100% { 
+                opacity: var(--base-opacity);
+                transform: scale(1);
+            }
+            50% { 
+                opacity: 1;
+                transform: scale(1.2);
+            }
+        }
+
+        .shooting-star {
+            position: absolute;
+            width: 100px;
+            height: 2px;
+            background: linear-gradient(to right, rgba(255,255,255,0), rgba(255,255,255,0.8), rgba(255,255,255,0));
+            opacity: 0;
+            animation: shoot 3s ease-out infinite;
+        }
+
+        @keyframes shoot {
+            0% {
+                transform: translateX(0) translateY(0) rotate(-45deg);
+                opacity: 0;
+            }
+            5% {
+                opacity: 1;
+            }
+            15% {
+                transform: translateX(300px) translateY(300px) rotate(-45deg);
+                opacity: 0;
+            }
+            100% {
+                opacity: 0;
+            }
+        }
+
+        .cursor-glow {
+            position: fixed;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(100, 149, 237, 0.15) 0%, transparent 70%);
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+            transition: transform 0.1s ease-out;
+        }
+
+        .title {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255, 255, 255, 0.6);
+            font-family: 'Georgia', serif;
+            font-size: 14px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            z-index: 10;
+        }
+
+        .breath-guide {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: rgba(255, 255, 255, 0.3);
+            font-family: 'Georgia', serif;
+            font-size: 18px;
+            letter-spacing: 2px;
+            z-index: 10;
+            opacity: 0;
+            animation: breathe 8s ease-in-out infinite;
+        }
+
+        @keyframes breathe {
+            0%, 100% { opacity: 0; }
+            20%, 80% { opacity: 0.5; }
+        }
+    </style>
+</head>
+<body>
+    <div class="starfield" id="starfield"></div>
+    <div class="cursor-glow" id="cursorGlow"></div>
+    <div class="breath-guide">breathe</div>
+    <div class="title">move to guide the stars</div>
+
+    <script>
+        const starfield = document.getElementById('starfield');
+        const cursorGlow = document.getElementById('cursorGlow');
+        
+        let mouseX = window.innerWidth / 2;
+        let mouseY = window.innerHeight / 2;
+        let targetX = mouseX;
+        let targetY = mouseY;
+        
+        const stars = [];
+        const STAR_COUNT = 200;
+        
+        // Color palettes for calming effect
+        const starColors = [
+            'rgba(255, 255, 255, 0.9)',
+            'rgba(200, 220, 255, 0.8)',
+            'rgba(255, 240, 200, 0.7)',
+            'rgba(220, 200, 255, 0.6)',
+            'rgba(200, 255, 240, 0.5)'
+        ];
+        
+        // Create stars
+        function createStars() {
+            for (let i = 0; i < STAR_COUNT; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                
+                const size = Math.random() * 3 + 1;
+                const x = Math.random() * 100;
+                const y = Math.random() * 100;
+                const color = starColors[Math.floor(Math.random() * starColors.length)];
+                
+                star.style.cssText = `
+                    left: ${x}%;
+                    top: ${y}%;
+                    width: ${size}px;
+                    height: ${size}px;
+                    background: ${color};
+                    box-shadow: 0 0 ${size * 2}px ${color};
+                    --duration: ${Math.random() * 4 + 2}s;
+                    --delay: ${Math.random() * 5}s;
+                    --base-opacity: ${Math.random() * 0.5 + 0.3};
+                `;
+                
+                starfield.appendChild(star);
+                stars.push({
+                    element: star,
+                    x: x,
+                    y: y,
+                    size: size,
+                    originalX: x,
+                    originalY: y,
+                    vx: 0,
+                    vy: 0
+                });
+            }
+        }
+        
+        // Create shooting stars
+        function createShootingStars() {
+            for (let i = 0; i < 3; i++) {
+                const shootingStar = document.createElement('div');
+                shootingStar.className = 'shooting-star';
+                shootingStar.style.cssText = `
+                    left: ${Math.random() * 50}%;
+                    top: ${Math.random() * 30}%;
+                    animation-delay: ${Math.random() * 10}s;
+                `;
+                starfield.appendChild(shootingStar);
+            }
+        }
+        
+        // Mouse tracking
+        document.addEventListener('mousemove', (e) => {
+            targetX = e.clientX;
+            targetY = e.clientY;
+        });
+        
+        // Smooth cursor movement
+        function updateCursorGlow() {
+            mouseX += (targetX - mouseX) * 0.08;
+            mouseY += (targetY - mouseY) * 0.08;
+            
+            cursorGlow.style.left = mouseX + 'px';
+            cursorGlow.style.top = mouseY + 'px';
+            
+            requestAnimationFrame(updateCursorGlow);
+        }
+        
+        // Animate stars based on mouse
+        function animateStars() {
+            stars.forEach((star, index) => {
+                // Calculate distance from mouse
+                const dx = (mouseX / window.innerWidth * 100) - star.x;
+                const dy = (mouseY / window.innerHeight * 100) - star.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                
+                // Gentle attraction/repulsion based on distance
+                const influence = Math.max(0, 1 - distance / 40);
+                const force = influence * 8;
+                
+                // Target position with mouse influence
+                const targetX = star.originalX + (dx > 0 ? -force : force) * 0.3;
+                const targetY = star.originalY + (dy > 0 ? -force : force) * 0.3;
+                
+                // Smooth interpolation
+                star.x += (targetX - star.x) * 0.02;
+                star.y += (targetY - star.y) * 0.02;
+                
+                star.element.style.left = star.x + '%';
+                star.element.style.top = star.y + '%';
+                
+                // Parallax effect based on star size (smaller stars move more)
+                const parallax = (3 - star.size) * 0.5;
+                const offsetX = (mouseX / window.innerWidth - 0.5) * parallax;
+                const offsetY = (mouseY / window.innerHeight - 0.5) * parallax;
+                
+                star.element.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
+            });
+            
+            requestAnimationFrame(animateStars);
+        }
+        
+        // Initialize
+        createStars();
+        createShootingStars();
+        updateCursorGlow();
+        animateStars();
+        
+        // Handle resize
+        window.addEventListener('resize', () => {
+            // Recalculate original positions on resize
+            stars.forEach(star => {
+                star.originalX = parseFloat(star.element.style.left);
+                star.originalY = parseFloat(star.element.style.top);
+            });
+        });
+    </script>
+</body>
+</html>

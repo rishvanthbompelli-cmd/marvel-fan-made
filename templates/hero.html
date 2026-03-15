@@ -109,9 +109,38 @@
 
     .category-title {
       font-family: 'Orbitron', sans-serif;
-      font-size: 1.5rem;
+      font-size: 1.8rem;
+      margin: 3rem 0 1.5rem 0;
+      color: #fff;
+      text-shadow: 0 0 20px #e62429, 0 0 40px #e62429, 0 0 60px #e62429;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid #e62429;
+    }
+
+    .category-title:first-child {
+      margin-top: 0;
+    }
+
+    .team-section {
       margin-bottom: 2rem;
-      color: var(--universe-primary, #e62429);
+    }
+
+    .team-section:last-child {
+      margin-bottom: 4rem;
+    }
+
+    .section-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: #e62429;
+      margin-top: 50px;
+      margin-bottom: 20px;
+      text-shadow: 0 0 10px #e62429, 0 0 20px #e62429;
+    }
+
+    .section-title:first-child {
+      margin-top: 0;
     }
 
     /* Hero Grid */
@@ -153,7 +182,103 @@
       font-size: 1rem;
       color: #fff;
       text-align: center;
+      font-weight: 700;
     }
+
+    /* Enhanced Hero Card with Real Name */
+    .hero-card {
+      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.08);
+      position: relative;
+    }
+
+    .hero-card .card-image-container {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-card .card-image-container img {
+      width: 100%;
+      height: 280px;
+      object-fit: cover;
+      transition: all 0.3s;
+    }
+
+    .hero-card:hover .card-image-container img {
+      transform: scale(1.1);
+    }
+
+    .hero-card .favorite-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(0, 0, 0, 0.6);
+      border: none;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s;
+      z-index: 10;
+    }
+
+    .hero-card .favorite-btn:hover {
+      background: rgba(230, 36, 41, 0.8);
+      transform: scale(1.1);
+    }
+
+    .hero-card .favorite-btn i {
+      color: #fff;
+      font-size: 1rem;
+    }
+
+    .hero-card .favorite-btn.favorited i {
+      color: #e62429;
+    }
+
+    .hero-card .card-content {
+      padding: 0.8rem;
+    }
+
+    .hero-card .hero-name {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.95rem;
+      color: #fff;
+      text-align: center;
+      font-weight: 700;
+      margin-bottom: 0.3rem;
+    }
+
+    .hero-card .real-name {
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.75rem;
+      color: #888;
+      text-align: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .hero-card .category-badge {
+      display: inline-block;
+      padding: 0.25rem 0.6rem;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.6rem;
+      border-radius: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .hero-card .category-badge.avengers { background: #e62429; color: #fff; }
+    .hero-card .category-badge.xmen { background: #1e90ff; color: #fff; }
+    .hero-card .category-badge.guardians { background: #9b59b6; color: #fff; }
+    .hero-card .category-badge.cosmic { background: #f39c12; color: #000; }
+    .hero-card .category-badge.spiderverse { background: #e74c3c; color: #fff; }
+    .hero-card .category-badge.mystic { background: #8e44ad; color: #fff; }
+    .hero-card .category-badge.street { background: #27ae60; color: #fff; }
 
     /* Recommendations Section */
     .recommendations-section {
@@ -283,6 +408,46 @@
       color: #666;
     }
 
+    /* Background Video */
+    .video-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -2;
+      overflow: hidden;
+    }
+
+    .video-bg video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Dark cinematic overlay */
+    .video-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.65);
+      z-index: -1;
+    }
+
+    /* Keep content above video */
+    .page-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Make hero cards float nicely */
+    .hero-card {
+      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
     @media (max-width: 768px) {
       .hero-header h1 {
         font-size: 2rem;
@@ -327,8 +492,17 @@
   <!-- Particles Background -->
   <div class="particles"></div>
 
+  <!-- Background Video (Marvel page only) -->
+  <div class="video-bg">
+    <video autoplay muted loop playsinline>
+      <source src="/static/assets/marvel.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class="video-overlay"></div>
+
   <!-- Main Content -->
-  <div class="hero-page">
+  <div class="page-content">
+    <div class="hero-page">
     <header class="hero-header">
       <h1 id="heroTitle">Marvel Heroes</h1>
       <p id="heroSubtitle">Explore characters from the MCU and beyond</p>
@@ -351,10 +525,54 @@
     <main class="container">
       <h2 class="category-title" id="categoryTitle">🦸‍♂️ MARVEL HEROES</h2>
       
-      <!-- Hero Grid -->
-      <div class="card-grid" id="heroGrid">
-        <div class="loading">Loading heroes...</div>
-      </div>
+      <!-- SECTION 1: AVENGERS -->
+      <section class="team-section">
+        <h2 class="section-title">🛡️ AVENGERS</h2>
+        <div class="card-grid" id="avengersGrid">
+        </div>
+      </section>
+
+      <!-- SECTION 2: X-MEN -->
+      <section class="team-section">
+        <h2 class="section-title">🧬 X-MEN</h2>
+        <div class="card-grid" id="xmenGrid">
+        </div>
+      </section>
+
+      <!-- SECTION 3: GUARDIANS OF THE GALAXY -->
+      <section class="team-section">
+        <h2 class="section-title">🌌 GUARDIANS OF THE GALAXY</h2>
+        <div class="card-grid" id="guardiansGrid">
+        </div>
+      </section>
+
+      <!-- SECTION 4: GALACTUS / COSMIC ENTITIES -->
+      <section class="team-section">
+        <h2 class="section-title">🪐 GALACTUS / COSMIC ENTITIES</h2>
+        <div class="card-grid" id="cosmicGrid">
+        </div>
+      </section>
+
+      <!-- SECTION 5: SPIDER-VERSE -->
+      <section class="team-section">
+        <h2 class="section-title">🕷️ SPIDER-VERSE</h2>
+        <div class="card-grid" id="spiderverseGrid">
+        </div>
+      </section>
+
+      <!-- SECTION 6: MYSTIC / MAGIC SIDE -->
+      <section class="team-section">
+        <h2 class="section-title">🧙 MYSTIC / MAGIC SIDE</h2>
+        <div class="card-grid" id="mysticGrid">
+        </div>
+      </section>
+
+      <!-- SECTION 7: STREET LEVEL HEROES -->
+      <section class="team-section">
+        <h2 class="section-title">🦸 STREET LEVEL HEROES</h2>
+        <div class="card-grid" id="streetGrid">
+        </div>
+      </section>
 
       <!-- Recommendations -->
       <div class="recommendations-section">
@@ -373,6 +591,7 @@
         </div>
       </div>
     </main>
+  </div>
   </div>
 
   <!-- Favorites Modal -->
@@ -411,23 +630,182 @@
       }
     };
 
+    // Real name mapping for Marvel characters
+    const REAL_NAME_MAP = {
+      'Iron Man': 'Tony Stark',
+      'Captain America': 'Steve Rogers',
+      'Thor': 'Thor Odinson',
+      'Hulk': 'Bruce Banner',
+      'Black Widow': 'Natasha Romanoff',
+      'Hawkeye': 'Clint Barton',
+      'Scarlet Witch': 'Wanda Maximoff',
+      'Vision': 'Vision',
+      'Falcon': 'Sam Wilson',
+      'War Machine': 'James Rhodes',
+      'Ant-Man': 'Scott Lang',
+      'Wasp': 'Hope van Dyne',
+      'Doctor Strange': 'Stephen Strange',
+      'Black Panther': 'T\'Challa',
+      'Captain Marvel': 'Carol Danvers',
+      'Spider-Man': 'Peter Parker',
+      'She-Hulk': 'Jennifer Walters',
+      'Shang-Chi': 'Shang-Chi',
+      'Moon Knight': 'Marc Spector',
+      'Professor X': 'Charles Xavier',
+      'Wolverine': 'Logan',
+      'Cyclops': 'Scott Summers',
+      'Jean Grey': 'Jean Grey',
+      'Storm': 'Ororo Munroe',
+      'Beast': 'Hank McCoy',
+      'Rogue': 'Anna Marie',
+      'Gambit': 'Remy LeBeau',
+      'Nightcrawler': 'Kurt Wagner',
+      'Iceman': 'Bobby Drake',
+      'Colossus': 'Piotr Rasputin',
+      'Kitty Pryde': 'Katherine Pryde',
+      'Psylocke': 'Betsy Braddock',
+      'Magneto': 'Erik Lehnsherr',
+      'Mystique': 'Raven Darkholme',
+      'Sabretooth': 'Victor Creed',
+      'Apocalypse': 'En Sabah Nur',
+      'Mr. Sinister': 'Nathaniel Essex',
+      'Star-Lord': 'Peter Quill',
+      'Gamora': 'Gamora',
+      'Drax': 'Drax',
+      'Rocket Raccoon': 'Rocket',
+      'Rocket': 'Rocket',
+      'Groot': 'Groot',
+      'Mantis': 'Mantis',
+      'Nebula': 'Nebula',
+      'Adam Warlock': 'Adam Warlock',
+      'Nova': 'Richard Rider',
+      'Silver Surfer': 'Norrin Radd',
+      'Galactus': 'Galactus',
+      'Thanos': 'Thanos',
+      'The Watcher': 'Uatu',
+      'Watcher': 'Uatu',
+      'Eternity': 'Eternity',
+      'Living Tribunal': 'Living Tribunal',
+      'Celestials': 'Celestials',
+      'Kang the Conqueror': 'Nathaniel Richards',
+      'Kang': 'Nathaniel Richards',
+      'Miles Morales': 'Miles Morales',
+      'Spider-Gwen': 'Gwen Stacy',
+      'Venom': 'Eddie Brock',
+      'Carnage': 'Cletus Kasady',
+      'Green Goblin': 'Norman Osborn',
+      'Doctor Octopus': 'Otto Octavius',
+      'Sandman': 'Flint Marko',
+      'Lizard': 'Curt Connors',
+      'Loki': 'Loki Laufeyson',
+      'Wong': 'Wong',
+      'Agatha Harkness': 'Agatha Harkness',
+      'Agatha': 'Agatha Harkness',
+      'Ghost Rider': 'Johnny Blaze',
+      'Blade': 'Eric Brooks',
+      'Daredevil': 'Matt Murdock',
+      'Luke Cage': 'Luke Cage',
+      'Iron Fist': 'Danny Rand',
+      'Jessica Jones': 'Jessica Jones',
+      'Punisher': 'Frank Castle',
+      'Echo': 'Maya Lopez'
+    };
+
+    // Team category mapping for badges
+    const TEAM_CATEGORIES = {
+      'avengers': 'avengers',
+      'xmen': 'xmen',
+      'guardians': 'guardians',
+      'cosmic': 'cosmic',
+      'spiderverse': 'spiderverse',
+      'mystic': 'mystic',
+      'street': 'street',
+      'Avengers': 'avengers',
+      'X-Men': 'xmen',
+      'Guardians': 'guardians',
+      'Cosmic': 'cosmic',
+      'Spider-Verse': 'spiderverse',
+      'Mystic': 'mystic',
+      'Street': 'street'
+    };
+
+    // Marvel team order as specified
+    const MARVEL_TEAM_ORDER = [
+      { id: 'avengers', name: 'AVENGERS', emoji: '⚡' },
+      { id: 'xmen', name: 'X-MEN', emoji: '🔵' },
+      { id: 'guardians', name: 'GUARDIANS OF THE GALAXY', emoji: '🌌' },
+      { id: 'cosmic', name: 'GALACTUS / COSMIC ENTITIES', emoji: '🌟' },
+      { id: 'spiderverse', name: 'SPIDER-VERSE', emoji: '🕷️' },
+      { id: 'mystic', name: 'MYSTIC / MAGIC SIDE', emoji: '🔮' },
+      { id: 'street', name: 'STREET LEVEL HEROES', emoji: '🏙️' }
+    ];
+
     let currentCategory = 'marvel';
     let allHeroes = [];
+    let favoriteHeroes = [];
 
     // Initialize
     document.addEventListener('DOMContentLoaded', () => {
       createParticles();
       loadHeroes();
+      loadFavorites();
       displayRecommendations();
       loadTrendingHeroes();
     });
+
+    // Load favorites from localStorage
+    function loadFavorites() {
+      const saved = localStorage.getItem('marvelFavorites');
+      if (saved) {
+        favoriteHeroes = JSON.parse(saved);
+      }
+    }
+
+    // Check if hero is favorited
+    function isFavorited(heroName) {
+      return favoriteHeroes.includes(heroName);
+    }
+
+    // Toggle favorite
+    function toggleFavorite(heroName, event) {
+      event.stopPropagation();
+      const index = favoriteHeroes.indexOf(heroName);
+      if (index > -1) {
+        favoriteHeroes.splice(index, 1);
+      } else {
+        favoriteHeroes.push(heroName);
+      }
+      localStorage.setItem('marvelFavorites', JSON.stringify(favoriteHeroes));
+      
+      // Update UI
+      const btn = event.currentTarget;
+      btn.classList.toggle('favorited');
+      const icon = btn.querySelector('i');
+      icon.classList.toggle('far');
+      icon.classList.toggle('fas');
+    }
+
+    // Get real name
+    function getRealName(heroName) {
+      return REAL_NAME_MAP[heroName] || '';
+    }
+
+    // Get team category for badge
+    function getTeamCategory(teamId) {
+      return TEAM_CATEGORIES[teamId] || 'avengers';
+    }
 
     async function loadHeroes() {
       const grid = document.getElementById('heroGrid');
       grid.innerHTML = '<div class="loading">Loading heroes...</div>';
       
       try {
-        const response = await fetch(`/category-heroes/${currentCategory}`, {
+        // Determine universe and category from currentCategory
+        // Use 'all' to get all heroes from the universe
+        const universe = currentCategory;
+        const category = 'all';
+        
+        const response = await fetch(`/category-heroes/${universe}/${category}`, {
           credentials: 'include'
         });
         const heroes = await response.json();
@@ -438,19 +816,103 @@
           return;
         }
         
-        grid.innerHTML = heroes.map(hero => {
-          const slug = hero.name.toLowerCase().replace(/\s+/g, '-');
-          return `
-            <article class="card" onclick="navigateToHero('${hero.name}')">
-              <img src="${hero.image}" alt="${hero.name}" loading="lazy" onerror="this.src='/static/assets/Iron-Man.jpg'">
-              <h3>${hero.name}</h3>
-            </article>
-          `;
-        }).join('');
+        // If Marvel category, display in categorized sections
+        if (currentCategory === 'marvel') {
+          grid.innerHTML = renderCategorizedHeroes(heroes);
+        } else {
+          // For other categories, use single grid
+          grid.innerHTML = heroes.map(hero => {
+            const slug = hero.name.toLowerCase().replace(/\s+/g, '-');
+            const realName = getRealName(hero.name);
+            const teamCat = getTeamCategory(hero.category || 'avengers');
+            const favorited = isFavorited(hero.name);
+            return `
+              <article class="card hero-card" onclick="navigateToHero('${hero.name}')">
+                <div class="card-image-container">
+                  <img src="${hero.image}" alt="${hero.name}" loading="lazy" onerror="this.src='/static/assets/Iron-Man.jpg'">
+                  <button class="favorite-btn ${favorited ? 'favorited' : ''}" onclick="toggleFavorite('${hero.name}', event)">
+                    <i class="${favorited ? 'fas' : 'far'} fa-heart"></i>
+                  </button>
+                </div>
+                <div class="card-content">
+                  <div class="hero-name">${hero.name}</div>
+                  ${realName ? `<div class="real-name">${realName}</div>` : ''}
+                  <span class="category-badge ${teamCat}">${hero.category || 'Hero'}</span>
+                </div>
+              </article>
+            `;
+          }).join('');
+        }
       } catch (error) {
         console.error('Error loading heroes:', error);
         grid.innerHTML = '<div class="error">Error loading heroes</div>';
       }
+    }
+
+    // Render heroes in categorized sections
+    function renderCategorizedHeroes(heroes) {
+      // Group heroes by team
+      const teamHeroes = {};
+      MARVEL_TEAM_ORDER.forEach(team => {
+        teamHeroes[team.id] = [];
+      });
+      
+      heroes.forEach(hero => {
+        const teamId = hero.team || hero.category?.toLowerCase() || 'avengers';
+        // Map category names to team IDs
+        let mappedTeam = teamId;
+        if (teamId === 'X-Men' || teamId === 'xmen') mappedTeam = 'xmen';
+        else if (teamId === 'Spider-Man' || teamId === 'Spider-Verse') mappedTeam = 'spiderverse';
+        else if (teamId === 'Guardians') mappedTeam = 'guardians';
+        else if (teamId === 'Cosmic' || teamId === 'Villains') mappedTeam = 'cosmic';
+        else if (teamId === 'Mystic') mappedTeam = 'mystic';
+        else if (teamId === 'Street') mappedTeam = 'street';
+        else mappedTeam = 'avengers';
+        
+        if (teamHeroes[mappedTeam]) {
+          teamHeroes[mappedTeam].push(hero);
+        } else {
+          teamHeroes['avengers'].push(hero);
+        }
+      });
+      
+      // Render sections in order
+      let html = '';
+      MARVEL_TEAM_ORDER.forEach(team => {
+        const teamHeroList = teamHeroes[team.id];
+        if (teamHeroList && teamHeroList.length > 0) {
+          html += `
+            <section class="team-section">
+              <h2 class="category-title">${team.emoji} ${team.name}</h2>
+              <div class="card-grid">
+                ${teamHeroList.map(hero => {
+                  const slug = hero.name.toLowerCase().replace(/\s+/g, '-');
+                  const realName = getRealName(hero.name);
+                  const teamCat = getTeamCategory(team.id);
+                  const favorited = isFavorited(hero.name);
+                  return `
+                    <article class="card hero-card" onclick="navigateToHero('${hero.name}')">
+                      <div class="card-image-container">
+                        <img src="${hero.image}" alt="${hero.name}" loading="lazy" onerror="this.src='/static/assets/Iron-Man.jpg'">
+                        <button class="favorite-btn ${favorited ? 'favorited' : ''}" onclick="toggleFavorite('${hero.name}', event)">
+                          <i class="${favorited ? 'fas' : 'far'} fa-heart"></i>
+                        </button>
+                      </div>
+                      <div class="card-content">
+                        <div class="hero-name">${hero.name}</div>
+                        ${realName ? `<div class="real-name">${realName}</div>` : ''}
+                        <span class="category-badge ${teamCat}">${hero.role || 'Hero'}</span>
+                      </div>
+                    </article>
+                  `;
+                }).join('')}
+              </div>
+            </section>
+          `;
+        }
+      });
+      
+      return html;
     }
 
     async function switchCategory(category) {
@@ -493,15 +955,32 @@
         hero.name.toLowerCase().includes(query)
       );
       
-      grid.innerHTML = filtered.map(hero => {
-        const slug = hero.name.toLowerCase().replace(/\s+/g, '-');
-        return `
-          <article class="card" onclick="navigateToHero('${hero.name}')">
-            <img src="${hero.image}" alt="${hero.name}" loading="lazy" onerror="this.src='/static/assets/Iron-Man.jpg'">
-            <h3>${hero.name}</h3>
-          </article>
-        `;
-      }).join('');
+      // If Marvel category, use categorized layout
+      if (currentCategory === 'marvel') {
+        grid.innerHTML = renderCategorizedHeroes(filtered);
+      } else {
+        grid.innerHTML = filtered.map(hero => {
+          const slug = hero.name.toLowerCase().replace(/\s+/g, '-');
+          const realName = getRealName(hero.name);
+          const teamCat = getTeamCategory(hero.team || hero.category);
+          const favorited = isFavorited(hero.name);
+          return `
+            <article class="card hero-card" onclick="navigateToHero('${hero.name}')">
+              <div class="card-image-container">
+                <img src="${hero.image}" alt="${hero.name}" loading="lazy" onerror="this.src='/static/assets/Iron-Man.jpg'">
+                <button class="favorite-btn ${favorited ? 'favorited' : ''}" onclick="toggleFavorite('${hero.name}', event)">
+                  <i class="${favorited ? 'fas' : 'far'} fa-heart"></i>
+                </button>
+              </div>
+              <div class="card-content">
+                <div class="hero-name">${hero.name}</div>
+                ${realName ? `<div class="real-name">${realName}</div>` : ''}
+                <span class="category-badge ${teamCat}">${hero.role || 'Hero'}</span>
+              </div>
+            </article>
+          `;
+        }).join('');
+      }
     }
 
     // Favorites
@@ -521,7 +1000,7 @@
             grid.innerHTML = data.favorites.map(hero => {
               const slug = hero.toLowerCase().replace(/\s+/g, '-');
               return `
-                <article class="card" onclick="navigateToHero('${hero}')">
+                <article class="card hero-card" onclick="navigateToHero('${hero}')">
                   <img src="/static/assets/${getHeroImage(hero)}" alt="${hero}" onerror="this.src='/static/assets/Iron-Man.jpg'">
                   <h3>${hero}</h3>
                 </article>
@@ -548,9 +1027,76 @@
         'Thanos': 'thanos.jpg',
         'Loki': 'loki.jpg',
         'Deadpool': 'deapool.jpg',
-        'Wolverine': 'wolverine.jpg'
+        'Wolverine': 'wolverine.jpg',
+        'Black Widow': 'black widow.jpg',
+        'Captain Marvel': 'captain marvel.jpg',
+        'Doctor Strange': 'doctor strange.jpg',
+        'Ant-Man': 'ant-man.jpg',
+        'Star-Lord': 'star-lord.jpg',
+        'Gamora': 'gamora.jpg',
+        'Drax': 'drax.jpg',
+        'Rocket': 'rocket.jpg',
+        'Groot': 'groot.jpg',
+        'Vision': 'vision.jpg',
+        'Scarlet Witch': 'scarlet witch.jpg',
+        'Hawkeye': 'hawkeye.jpg',
+        'Falcon': 'falcon.jpg',
+        'Winter Soldier': 'winter soldier.jpg',
+        'War Machine': 'war machine.jpg',
+        'Wasp': 'wasp.jpg',
+        'Quicksilver': 'quicksilver.jpg',
+        'Storm': 'storm.jpg',
+        'Magneto': 'magneto.jpg',
+        'Professor X': 'professor x.jpg',
+        'Ultron': 'ultron.jpg',
+        'Venom': 'venom.jpg',
+        'Green Goblin': 'green goblin.jpg',
+        'Doctor Octopus': 'doctor octopus.jpg',
+        'Nebula': 'nebula.jpg',
+        'Mantis': 'mantis.jpg',
+        'Star Lord': 'star-lord.jpg',
+        'iron man': 'Iron-Man.jpg',
+        'deadpool': 'deapool.jpg',
+        'ant-man': 'ant-man.jpg',
+        'star-lord': 'star-lord.jpg',
+        'spider-man': 'spider-man.jpg',
+        'black panther': 'black panther.jpg',
+        'black widow': 'black widow.jpg',
+        'captain america': 'captain america.jpg',
+        'captain marvel': 'captain marvel.jpg',
+        'doctor strange': 'doctor strange.jpg',
+        'doctor octopus': 'doctor octopus.jpg',
+        'green goblin': 'green goblin.jpg',
+        'winter soldier': 'winter soldier.jpg',
+        'war machine': 'war machine.jpg',
+        'scarlet witch': 'scarlet witch.jpg'
       };
-      return map[heroName] || `${heroName.toLowerCase().replace(/ /g, '-')}.jpg`;
+      
+      // First try: direct match
+      if (map[heroName]) {
+        return map[heroName];
+      }
+      
+      // Second try: lowercase with spaces
+      const lowerSpace = heroName.toLowerCase();
+      if (map[lowerSpace]) {
+        return map[lowerSpace];
+      }
+      
+      // Third try: lowercase with hyphens (spaces replaced with -)
+      const lowerHyphen = lowerSpace.replace(/ /g, '-');
+      if (map[lowerHyphen]) {
+        return map[lowerHyphen];
+      }
+      
+      // Fourth try: original with hyphens (for Iron-Man edge case)
+      const originalHyphen = heroName.replace(/ /g, '-');
+      if (map[originalHyphen]) {
+        return map[originalHyphen];
+      }
+      
+      // Fallback: use lowercase with hyphens
+      return `${lowerHyphen}.jpg`;
     }
 
     function handleLogout() {
